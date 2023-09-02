@@ -18,6 +18,7 @@ public class VoxelCraftClient extends ApplicationAdapter {
         atlasManager.init();
 
         this.gameScreen = new GameScreen(this);
+        this.gameScreen.show();
     }
 
     @Override
