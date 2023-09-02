@@ -48,6 +48,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setCursorCatched(true);
+
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int keycode) {
@@ -130,9 +132,8 @@ public class GameScreen implements Screen {
     private void walking(float timeElapsed) {
         float speed = movementSpeed;
         if ((forward | back) & (right | left)) {
-            speed /= Math.sqrt(2);
+            speed /= (float) Math.sqrt(2);
         }
-        System.out.println(speed);
         if (forward) {
             Vector3 v = camera.direction.cpy();
             v.y = 0f;
@@ -175,8 +176,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         walking(delta);
-
-        camera.update();
 
         tempChunk.render(camera.combined);
     }
