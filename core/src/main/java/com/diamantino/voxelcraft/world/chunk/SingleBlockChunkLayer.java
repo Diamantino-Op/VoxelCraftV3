@@ -1,6 +1,7 @@
 package com.diamantino.voxelcraft.world.chunk;
 
 import com.diamantino.voxelcraft.blocks.Block;
+import com.diamantino.voxelcraft.blocks.Blocks;
 
 public class SingleBlockChunkLayer implements IChunkLayer {
     private final Chunk chunk;
@@ -15,7 +16,11 @@ public class SingleBlockChunkLayer implements IChunkLayer {
 
     @Override
     public Block getBlock(int localX, int localZ) {
-        return block;
+        if (localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0) {
+            return Blocks.air;
+        } else {
+            return block;
+        }
     }
 
     public Block getBlock() {
@@ -24,12 +29,18 @@ public class SingleBlockChunkLayer implements IChunkLayer {
 
     @Override
     public short getBlockId(int localX, int localZ) {
-        return block.id;
+        if (localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ || localZ < 0) {
+            return Blocks.air.id;
+        } else {
+            return block.id;
+        }
     }
 
     @Override
     public void setBlock(Block block, int localX, int localZ) {
-        this.block = block;
+        if (!(localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0)) {
+            this.block = block;
+        }
     }
 
     @Override

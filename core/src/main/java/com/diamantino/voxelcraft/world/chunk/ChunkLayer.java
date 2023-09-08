@@ -25,27 +25,27 @@ public class ChunkLayer implements IChunkLayer {
 
     @Override
     public Block getBlock(int localX, int localZ) {
-        if (localX >= Chunk.sizeX || localZ >= Chunk.sizeZ) {
+        if (localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0) {
+            return Blocks.air;
+        } else {
             int pos = localX + (localZ * Chunk.sizeX);
             return Blocks.blocks.get(blocksInLayer[pos]);
-        } else {
-            return Blocks.air;
         }
     }
 
     @Override
     public short getBlockId(int localX, int localZ) {
-        if (localX >= Chunk.sizeX || localZ >= Chunk.sizeZ) {
+        if (localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0) {
+            return Blocks.air.id;
+        } else {
             int pos = localX + (localZ * Chunk.sizeX);
             return blocksInLayer[pos];
-        } else {
-            return Blocks.air.id;
         }
     }
 
     @Override
     public void setBlock(Block block, int localX, int localZ) {
-        if (localX >= Chunk.sizeX || localZ >= Chunk.sizeZ) {
+        if (!(localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0)) {
             int pos = localX + (localZ * Chunk.sizeX);
             blocksInLayer[pos] = block.id;
         }

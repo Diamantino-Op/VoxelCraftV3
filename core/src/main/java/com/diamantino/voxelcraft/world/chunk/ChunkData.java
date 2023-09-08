@@ -12,7 +12,7 @@ public class ChunkData {
     }
 
     public Block getBlock(int localX, int localY, int localZ) {
-        if (localY < Chunk.sizeY || localY >= Chunk.sizeY)
+        if (localY < 0 || localY >= Chunk.sizeY)
             return Blocks.air;
 
         IChunkLayer layer = chunkLayers[localY];
@@ -20,7 +20,7 @@ public class ChunkData {
     }
 
     public short getBlockId(int localX, int localY, int localZ) {
-        if (localY < Chunk.sizeY || localY >= Chunk.sizeY)
+        if (localY < 0 || localY >= Chunk.sizeY)
             return Blocks.air.id;
 
         IChunkLayer layer = chunkLayers[localY];

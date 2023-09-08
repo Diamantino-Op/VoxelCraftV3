@@ -46,6 +46,10 @@ public class Chunk {
 
         Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
         Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl.glEnable(GL20.GL_CULL_FACE);
+        Gdx.gl.glCullFace(GL20.GL_NONE);
+        Gdx.gl.glFrontFace(GL20.GL_CW);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         AtlasManager.blockAtlasTexture.bind();
@@ -59,10 +63,12 @@ public class Chunk {
         chunkMesh.dispose();
     }
 
-    public void setBlockAt(Block block, int localX, int localY, int localZ) {
+    public void setBlockAt(Block block, int localX, int localY, int localZ, boolean regenerateMesh) {
         chunkData.setBlock(block, localX, localY, localZ);
 
-        regenerateMesh();
+        if (regenerateMesh) {
+            regenerateMesh();
+        }
     }
 
     public Block getBlockAt(int localX, int localY, int localZ) {
@@ -74,7 +80,6 @@ public class Chunk {
 
         builder.begin(new VertexAttributes(
             new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-            new VertexAttribute(VertexAttributes.Usage.Normal, 3, ShaderProgram.NORMAL_ATTRIBUTE),
             new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
             new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0")
             ), GL20.GL_TRIANGLES);
@@ -82,6 +87,7 @@ public class Chunk {
         int currVertex = 0;
 
         // TODO: Use world to get block from nearby chunks
+        // TODO: Optimize
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 for (int z = 0; z < sizeZ; z++) {
@@ -90,84 +96,78 @@ public class Chunk {
                     if (currBlock != Blocks.air) {
                         // Front Face
                         if ((chunkData.getBlock(x, y, z - 1) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x, y, z - 1).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Front");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getFrontTexIndex());
                             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }
 
                         // Right Face
                         if ((chunkData.getBlock(x + 1, y, z) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x + 1, y, z).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Right");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getRightTexIndex());
                             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }
 
                         // Back Face
                         if ((chunkData.getBlock(x, y, z + 1) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x, y, z + 1).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Back");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getBackTexIndex());
                             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }
 
                         // Left Face
                         if ((chunkData.getBlock(x - 1, y, z) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x - 1, y, z).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Left");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getLeftTexIndex());
                             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }
 
                         // Top Face
                         if ((chunkData.getBlock(x, y + 1, z) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x, y + 1, z).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Top");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getTopTexIndex());
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
                             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }
 
                         // Bottom Face
                         if ((chunkData.getBlock(x, y - 1, z) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && chunkData.getBlock(x, y - 1, z).renderType != RenderType.OPAQUE)) {
-                            System.out.println(currBlock.name + " Bottom");
                             TextureRegion currFaceRegion = AtlasManager.blockAtlas.getRegions().get(currBlock.texture.getBottomTexIndex());
-                            builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
-                            builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
-                            builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
                             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
-                            builder.index((short) currVertex, (short) (currVertex + 1), (short) (currVertex + 3));
-                            builder.index((short) (currVertex + 1), (short) (currVertex + 2), (short) (currVertex + 3));
+                            builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
+                            builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
+                            builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 1), (short) currVertex);
+                            builder.index((short) (currVertex + 3), (short) (currVertex + 2), (short) (currVertex + 1));
 
                             currVertex += 4;
                         }

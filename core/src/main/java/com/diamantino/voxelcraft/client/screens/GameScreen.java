@@ -23,12 +23,14 @@ public class GameScreen implements Screen {
 
     // TODO: Just temporary
     private int dragX, dragY;
-    private final float rotateSpeed = 0.2f;
-    private final float movementSpeed = 0.2f;
+    private final float rotateSpeed = 0.4f;
+    private final float movementSpeed = 0.6f;
     private boolean forward = false;
     private boolean back = false;
     private boolean right = false;
     private boolean left = false;
+    private boolean up = false;
+    private boolean down = false;
 
     public GameScreen(final VoxelCraftClient game) {
         this.game = game;
@@ -40,10 +42,14 @@ public class GameScreen implements Screen {
         for (int x = 0; x < Chunk.sizeX; x++) {
             for (int y = 0; y < Chunk.sizeY; y++) {
                 for (int z = 0; z < Chunk.sizeZ; z++) {
-                    this.tempChunk.setBlockAt(Blocks.stone, x, y, z);
+                    this.tempChunk.setBlockAt(Blocks.stone, x, y, z, false);
                 }
             }
         }
+
+        this.tempChunk.setBlockAt(Blocks.glass, 1, 0, 1, false);
+
+        this.tempChunk.regenerateMesh();
     }
 
     @Override
@@ -58,6 +64,8 @@ public class GameScreen implements Screen {
                     case Input.Keys.A -> left = true;
                     case Input.Keys.S -> back = true;
                     case Input.Keys.D -> right = true;
+                    case Input.Keys.SPACE -> up = true;
+                    case Input.Keys.SHIFT_LEFT -> down = true;
                 }
 
                 return false;
@@ -70,6 +78,8 @@ public class GameScreen implements Screen {
                     case Input.Keys.A -> left = false;
                     case Input.Keys.S -> back = false;
                     case Input.Keys.D -> right = false;
+                    case Input.Keys.SPACE -> up = false;
+                    case Input.Keys.SHIFT_LEFT -> down = false;
                 }
 
                 return false;
@@ -105,12 +115,12 @@ public class GameScreen implements Screen {
                 Vector3 direction = camera.direction.cpy();
 
                 // rotating on the y axis
-                float x = dragX -screenX;
+                float x = dragX - screenX;
                 // change this Vector3.y with cam.up if you have a dynamic up.
                 camera.rotate(Vector3.Y,x * rotateSpeed);
 
                 // rotating on the x and z axis is different
-                float y = (float) Math.sin( (double)(dragY -screenY)/180f);
+                float y = (float) Math.sin((double) (dragY - screenY) / 180f);
                 if (Math.abs(camera.direction.y + y * (rotateSpeed * 5.0f)) < 0.9) {
                     camera.direction.y += y * (rotateSpeed * 5.0f) ;
                 }
@@ -130,15 +140,11 @@ public class GameScreen implements Screen {
     }
 
     private void walking(float timeElapsed) {
-        float speed = movementSpeed;
-        if ((forward | back) & (right | left)) {
-            speed /= (float) Math.sqrt(2);
-        }
         if (forward) {
             Vector3 v = camera.direction.cpy();
             v.y = 0f;
-            v.x *= speed * timeElapsed;
-            v.z *= speed * timeElapsed;
+            v.x *= movementSpeed * 4 * timeElapsed;
+            v.z *= movementSpeed * 4 * timeElapsed;
             camera.translate(v);
             camera.update();
         }
@@ -147,8 +153,8 @@ public class GameScreen implements Screen {
             v.y = 0f;
             v.x = -v.x;
             v.z = -v.z;
-            v.x *= speed * timeElapsed;
-            v.z *= speed * timeElapsed;
+            v.x *= movementSpeed * 4 * timeElapsed;
+            v.z *= movementSpeed * 4 * timeElapsed;
             camera.translate(v);
             camera.update();
         }
@@ -156,8 +162,8 @@ public class GameScreen implements Screen {
             Vector3 v = camera.direction.cpy();
             v.y = 0f;
             v.rotate(Vector3.Y, 90);
-            v.x *= speed * timeElapsed;
-            v.z *= speed * timeElapsed;
+            v.x *= movementSpeed * 4 * timeElapsed;
+            v.z *= movementSpeed * 4 * timeElapsed;
             camera.translate(v);
             camera.update();
         }
@@ -165,8 +171,27 @@ public class GameScreen implements Screen {
             Vector3 v = camera.direction.cpy();
             v.y = 0f;
             v.rotate(Vector3.Y, -90);
-            v.x *= speed * timeElapsed;
-            v.z *= speed * timeElapsed;
+            v.x *= movementSpeed * 4 * timeElapsed;
+            v.z *= movementSpeed * 4 * timeElapsed;
+            camera.translate(v);
+            camera.update();
+
+        }
+        if (up) {
+            Vector3 v = camera.direction.cpy();
+            v.y = 0f;
+            v.y += movementSpeed * 4 * timeElapsed;
+            v.x = 0f;
+            v.z = 0f;
+            camera.translate(v);
+            camera.update();
+        }
+        if (down) {
+            Vector3 v = camera.direction.cpy();
+            v.y = 0f;
+            v.y += -movementSpeed * 4 * timeElapsed;
+            v.x = 0f;
+            v.z = 0f;
             camera.translate(v);
             camera.update();
 
