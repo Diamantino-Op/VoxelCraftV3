@@ -5,7 +5,10 @@ mainClassName = 'com.diamantino.voxelcraft.server.ServerLauncher'
 eclipse.project.name = appName + '-server'
 
 dependencies {
-
+  implementation project(":core")
+  implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+  implementation "org.java-websocket:Java-WebSocket:1.5.3"
 }
 
 jar {

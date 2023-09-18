@@ -23,9 +23,9 @@ eclipse.project.name = appName + '-desktop'
 sourceCompatibility = 19
 
 dependencies {
+  implementation project(':core')
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-  implementation project(':core')
 }
 
 def os = System.properties['os.name'].toLowerCase()

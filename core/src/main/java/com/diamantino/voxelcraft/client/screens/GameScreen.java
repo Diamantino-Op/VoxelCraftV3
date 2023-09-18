@@ -6,9 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.diamantino.voxelcraft.blocks.Blocks;
-import com.diamantino.voxelcraft.client.VoxelCraftClient;
-import com.diamantino.voxelcraft.world.chunk.Chunk;
+import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
 public class GameScreen implements Screen {
     private final VoxelCraftClient game;
@@ -18,8 +16,6 @@ public class GameScreen implements Screen {
     private int FOV = 70;
     private int resX = 1920;
     private int rexY = 1080;
-
-    private Chunk tempChunk;
 
     // TODO: Just temporary
     private int dragX, dragY;
@@ -36,20 +32,6 @@ public class GameScreen implements Screen {
         this.game = game;
 
         this.camera = new PerspectiveCamera(FOV, resX, rexY);
-
-        this.tempChunk = new Chunk(0, 0, 0);
-
-        for (int x = 0; x < Chunk.sizeX; x++) {
-            for (int y = 0; y < Chunk.sizeY; y++) {
-                for (int z = 0; z < Chunk.sizeZ; z++) {
-                    this.tempChunk.setBlockAt(Blocks.stone, x, y, z, false);
-                }
-            }
-        }
-
-        this.tempChunk.setBlockAt(Blocks.glass, 1, 0, 1, false);
-
-        this.tempChunk.regenerateMesh();
     }
 
     @Override
@@ -201,8 +183,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         walking(delta);
-
-        tempChunk.render(camera.combined);
     }
 
     @Override
@@ -227,6 +207,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        tempChunk.dispose();
+
     }
 }

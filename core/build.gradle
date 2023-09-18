@@ -4,4 +4,6 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+  implementation "io.netty:netty-all:$nettyVersion"
+  implementation 'org.jetbrains:annotations:24.0.0'
 }
