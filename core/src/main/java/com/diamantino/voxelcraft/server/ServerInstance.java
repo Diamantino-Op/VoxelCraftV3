@@ -1,7 +1,10 @@
 package com.diamantino.voxelcraft.server;
 
 import com.diamantino.voxelcraft.common.networking.ConnectedClient;
+import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
+import com.diamantino.voxelcraft.common.world.WorldSettings;
+import com.diamantino.voxelcraft.server.world.ServerWorld;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -15,15 +18,25 @@ import java.util.Map;
 
 public class ServerInstance {
     private final NioEventLoopGroup bossNioEventLoopGroup = new NioEventLoopGroup(1), workerNioEventLoopGroup = new NioEventLoopGroup(0);
-    private final Map<String, ConnectedClient> connectedClients = new HashMap<>();
+    public final Map<String, ConnectedClient> connectedClients = new HashMap<>();
     private ChannelFuture channelFuture;
 
     private final String ip;
     private final int port;
 
+    public ServerWorld world;
+
+    public static ServerInstance instance;
+
     public ServerInstance(String ip, int port) {
+        instance = this;
+
         this.ip = ip;
         this.port = port;
+
+        Packets.registerPackets();
+
+        this.world = new ServerWorld("Test", new WorldSettings());
     }
 
     public void start() throws InterruptedException {

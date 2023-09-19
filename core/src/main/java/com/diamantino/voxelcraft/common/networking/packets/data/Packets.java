@@ -1,7 +1,10 @@
 package com.diamantino.voxelcraft.common.networking.packets.data;
 
+import com.diamantino.voxelcraft.client.ClientInstance;
+import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
 import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
+import com.diamantino.voxelcraft.server.ServerInstance;
 
 import java.util.HashMap;
 
@@ -22,5 +25,14 @@ public class Packets {
         registerPacket(ChunkSyncPacket.class);
 
         // C2S
+        registerPacket(RequestChunkPacket.class);
+    }
+
+    public static void sendToServer(BasePacket packet) {
+        ClientInstance.instance.serverConnection.writeAndFlush(packet);
+    }
+
+    public static void sendToPlayer(String playerName, BasePacket packet) {
+        ServerInstance.instance.connectedClients.get(playerName).sendPacket(packet);
     }
 }

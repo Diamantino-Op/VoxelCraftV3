@@ -27,7 +27,7 @@ public class World {
     }
 
     public Chunk getChunkForPos(ChunkPos chunkPos) {
-        return chunkMap.get(chunkPos);
+        return chunkMap.containsKey(chunkPos) ? chunkMap.get(chunkPos) : chunkMap.put(chunkPos, new Chunk(this, chunkPos));
     }
 
     public Chunk getChunkForBlockPos(BlockPos blockPos) {
