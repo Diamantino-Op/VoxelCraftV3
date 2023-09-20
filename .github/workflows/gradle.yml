@@ -33,21 +33,11 @@ jobs:
     - name: Build Desktop
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        arguments: :desktop:build
+        arguments: :desktop:publish
         gradle-version: '8.3'
 
     - name: Build Server
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        arguments: :server:build
+        arguments: :server:publish
         gradle-version: '8.3'
-
-#    - name: Upload Jar To Releases
-#      uses: svenstaro/upload-release-action@2.6.1
-#      with:
-#        repo_token: ${{ secrets.GITHUB_TOKEN }}
-#        file: ./out/HorizonOS.iso
-#        asset_name: HorizonOS.iso
-#        tag: ${{ github.ref }}
-#        overwrite: true
-#        body: "Release for VoxelCraft"
