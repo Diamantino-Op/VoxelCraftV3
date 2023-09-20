@@ -10,7 +10,11 @@ public class VoxelCraftServer extends ApplicationAdapter {
     public void create() {
         serverInstance = new ServerInstance("127.0.0.1", 25000);
 
-        serverInstance.start();
+        try {
+            serverInstance.start();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
