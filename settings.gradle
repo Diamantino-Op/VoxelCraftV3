@@ -1,1 +1,3 @@
 include 'desktop', 'server', 'core'
+
+rootProject.name = "VoxelCraft"

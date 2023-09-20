@@ -14,21 +14,24 @@ buildscript {
 }
 
 allprojects {
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
+  apply plugin: "idea"
+  apply plugin: "maven-publish"
 }
 
 configure(subprojects) {
   apply plugin: 'java-library'
-  sourceCompatibility = 19
+  sourceCompatibility = 20
   compileJava {
     options.incremental = true
   }
 }
 
 subprojects {
-  version = '1.0.0'
-  ext.appName = 'VoxelCraft'
+  apply plugin: "maven-publish"
+
+  version = "${voxelcraftVersion}"
+  ext.appName = "VoxelCraft"
+
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
@@ -38,6 +41,22 @@ subprojects {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
   }
-}
 
-eclipse.project.name = 'VoxelCraft' + '-parent'
+  publishing {
+    repositories {
+      maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/VoxelGames24/VoxelCraft")
+        credentials {
+          username = new File(project.projectDir.getAbsolutePath() + "/.." + "/Creds/User").getText().replace("\n", "")
+          password = new File(project.projectDir.getAbsolutePath() + "/.." + "/Creds/Password").getText().replace("\n", "")
+        }
+      }
+    }
+    publications {
+      gpr(MavenPublication) {
+        from(components.java)
+      }
+    }
+  }
+}
