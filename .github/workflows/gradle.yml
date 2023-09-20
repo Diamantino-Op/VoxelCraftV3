@@ -41,13 +41,3 @@ jobs:
       with:
         arguments: :server:publish
         gradle-version: '8.3'
-
-#    - name: Upload Jar To Releases
-#      uses: svenstaro/upload-release-action@2.7.0
-#      with:
-#        repo_token: ${{ secrets.GITHUB_TOKEN }}
-#        file: ./out/HorizonOS.iso
-#        asset_name: HorizonOS.iso
-#        tag: ${{ github.ref }}
-#        overwrite: true
-#        body: "Release for VoxelCraft"
