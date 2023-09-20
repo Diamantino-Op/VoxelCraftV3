@@ -23,11 +23,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     - name: Set up JDK 20
       uses: actions/setup-java@v3
       with:
         java-version: '20'
-        distribution: 'openjdk'
+        distribution: 'temurin'
         
     - name: Build Desktop
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
