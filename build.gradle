@@ -20,7 +20,7 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: 'java-library'
-  sourceCompatibility = 20
+  sourceCompatibility = javaVersion
   compileJava {
     options.incremental = true
   }

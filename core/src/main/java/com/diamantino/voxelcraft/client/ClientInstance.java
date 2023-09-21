@@ -29,7 +29,7 @@ public class ClientInstance {
         Packets.registerPackets();
 
         // TODO: Move
-        world = new ClientWorld("Test", new WorldSettings());
+        world = new ClientWorld("Test", new WorldSettings(123456));
     }
 
     public void connect() throws InterruptedException {

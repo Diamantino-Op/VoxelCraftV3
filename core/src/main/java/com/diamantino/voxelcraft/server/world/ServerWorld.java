@@ -4,8 +4,9 @@ import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.WorldSettings;
 import com.diamantino.voxelcraft.server.world.chunk.Chunk;
 import com.diamantino.voxelcraft.server.world.chunk.ChunkPos;
-import de.articdive.jnoise.core.api.functions.Interpolation;
-import de.articdive.jnoise.generators.noise_parameters.fade_functions.FadeFunction;
+import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex2DVariant;
+import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex3DVariant;
+import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex4DVariant;
 import de.articdive.jnoise.pipeline.JNoise;
 
 public class ServerWorld extends World {
@@ -14,7 +15,7 @@ public class ServerWorld extends World {
     public ServerWorld(String name, WorldSettings settings) {
         super(name, settings);
 
-        this.noise = JNoise.newBuilder().perlin(settings.seed(), Interpolation.COSINE, FadeFunction.QUINTIC_POLY).build();
+        this.noise = JNoise.newBuilder().superSimplex(settings.seed(), Simplex2DVariant.CLASSIC, Simplex3DVariant.CLASSIC, Simplex4DVariant.CLASSIC).build();
     }
 
     @Override

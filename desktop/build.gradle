@@ -11,7 +11,7 @@ apply plugin: 'org.beryx.runtime'
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'com.diamantino.voxelcraft.desktop.DesktopLauncher'
-sourceCompatibility = 20
+sourceCompatibility = javaVersion
 
 dependencies {
   implementation project(':core')
