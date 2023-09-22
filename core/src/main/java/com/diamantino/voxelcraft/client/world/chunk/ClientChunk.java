@@ -16,8 +16,8 @@ import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.blocks.Blocks;
 import com.diamantino.voxelcraft.common.world.World;
-import com.diamantino.voxelcraft.server.world.chunk.Chunk;
-import com.diamantino.voxelcraft.server.world.chunk.ChunkPos;
+import com.diamantino.voxelcraft.common.world.chunk.Chunk;
+import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
 import java.util.HashMap;
 import java.util.Map;

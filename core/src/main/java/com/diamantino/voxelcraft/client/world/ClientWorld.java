@@ -8,8 +8,8 @@ import com.diamantino.voxelcraft.client.utils.AtlasManager;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.WorldSettings;
-import com.diamantino.voxelcraft.server.world.chunk.Chunk;
-import com.diamantino.voxelcraft.server.world.chunk.ChunkPos;
+import com.diamantino.voxelcraft.common.world.chunk.Chunk;
+import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
 public class ClientWorld extends World {
     public ClientWorld(String name, WorldSettings settings) {

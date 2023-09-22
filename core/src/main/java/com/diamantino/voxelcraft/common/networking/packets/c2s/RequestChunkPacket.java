@@ -5,7 +5,7 @@ import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.server.ServerInstance;
-import com.diamantino.voxelcraft.server.world.chunk.ChunkPos;
+import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
 import java.io.IOException;
 

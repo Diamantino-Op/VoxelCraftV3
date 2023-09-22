@@ -5,7 +5,7 @@ import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.blocks.Blocks;
 import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import com.diamantino.voxelcraft.server.world.chunk.*;
+import com.diamantino.voxelcraft.common.world.chunk.*;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class ChunkSyncPacket extends BasePacket {
         ClientChunk chunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(new ChunkPos(chunkX, chunkY, chunkZ));
 
         // Read chunk data
-        for (int y = 0; y < Chunk.sizeY; y++) {
+        for (byte y = 0; y < Chunk.sizeY; y++) {
             switch (buffer.readByte()) {
                 case 0 -> chunk.setLayer(new SingleBlockChunkLayer(chunk, Blocks.blocks.get(buffer.readShort()), y), y);
                 case 1 -> {
@@ -55,7 +55,7 @@ public class ChunkSyncPacket extends BasePacket {
         buffer.writeInt(chunk.chunkPos.z());
 
         // Write Layers
-        for (int y = 0; y < Chunk.sizeY; y++) {
+        for (byte y = 0; y < Chunk.sizeY; y++) {
             IChunkLayer layer = chunk.getLayer(y);
 
             if (layer instanceof SingleBlockChunkLayer sbcl) {

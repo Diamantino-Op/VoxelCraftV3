@@ -1,13 +1,13 @@
-package com.diamantino.voxelcraft.server.world.chunk;
+package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.world.World;
 
 public class Chunk {
-    public static final int sizeX = 32;
-    public static final int sizeY = 32;
-    public static final int sizeZ = 32;
+    public static final byte sizeX = 32;
+    public static final byte sizeY = 32;
+    public static final byte sizeZ = 32;
     public static final int blocksInChunk = sizeX * sizeY * sizeZ;
     protected final ChunkData chunkData;
 
@@ -21,20 +21,15 @@ public class Chunk {
         this.chunkData = new ChunkData(this);
     }
 
-    public void setBlockAt(Block block, BlockPos localPos, boolean regenerateMesh) {
+    public void setBlockAt(Block block, BlockPos localPos) {
         chunkData.setBlock(block, localPos);
-
-        // TODO: Send packet
-        /*if (regenerateMesh) {
-            regenerateMesh();
-        }*/
     }
 
-    public void setLayer(IChunkLayer layer, int y) {
+    public void setLayer(IChunkLayer layer, byte y) {
         chunkData.setLayer(layer, y);
     }
 
-    public IChunkLayer getLayer(int y) {
+    public IChunkLayer getLayer(byte y) {
         return chunkData.getLayer(y);
     }
 

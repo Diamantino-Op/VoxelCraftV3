@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.server.world.chunk;
+package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
 

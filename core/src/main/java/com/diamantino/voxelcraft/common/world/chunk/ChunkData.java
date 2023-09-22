@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.server.world.chunk;
+package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
@@ -28,11 +28,11 @@ public class ChunkData {
         return layer != null ? layer.getBlockId(localPos.x(), localPos.z()) : Blocks.air.id;
     }
 
-    public void setLayer(IChunkLayer layer, int y) {
+    public void setLayer(IChunkLayer layer, byte y) {
         chunkLayers[y] = layer;
     }
 
-    public IChunkLayer getLayer(int y) {
+    public IChunkLayer getLayer(byte y) {
         return chunkLayers[y];
     }
 
@@ -48,22 +48,22 @@ public class ChunkData {
             } else {
                 chunkLayers[localPos.y()].setBlock(block, localPos.x(), localPos.z());
 
-                tryCompactLayer(localPos.y());
+                tryCompactLayer((byte) localPos.y());
             }
         } else {
             chunkLayers[localPos.y()] = new SingleBlockChunkLayer(chunk, block, localPos.y());
         }
     }
 
-    public IChunkLayer getChunkLayer(int localY) {
+    public IChunkLayer getChunkLayer(byte localY) {
         return chunkLayers[localY];
     }
 
-    public void setChunkLayer(IChunkLayer layer, int localY) {
+    public void setChunkLayer(IChunkLayer layer, byte localY) {
         chunkLayers[localY] = layer;
     }
 
-    public boolean tryCompactLayer(int localY) {
+    public boolean tryCompactLayer(byte localY) {
         boolean changed = false;
 
         IChunkLayer layer = chunkLayers[localY];
