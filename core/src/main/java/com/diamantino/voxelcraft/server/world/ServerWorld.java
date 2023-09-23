@@ -1,7 +1,6 @@
 package com.diamantino.voxelcraft.server.world;
 
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.WorldSettings;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
@@ -12,6 +11,13 @@ import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex3
 import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex4DVariant;
 import de.articdive.jnoise.pipeline.JNoise;
 
+/**
+ * The server-side world.
+ * <p>
+ * See {@link World} for the common functions between client and server.
+ *
+ * @author Diamantino
+ */
 public class ServerWorld extends World {
     public final JNoise noise;
 
@@ -34,17 +40,19 @@ public class ServerWorld extends World {
         return new BlockPos(worldPos.x() % Chunk.sizeX, worldPos.y() % Chunk.sizeY, worldPos.z() % Chunk.sizeZ);
     }
 
+    @Override
+    public Chunk getChunkForSide(ChunkPos pos) {
+        return new ServerChunk(this, pos);
+    }
+
+    /**
+     * Generate the chunk blocks.
+     *
+     * @param chunk The chunk that needs to be generated.
+     */
     public void generateChunk(ServerChunk chunk) {
-        for (byte x = 0; x < Chunk.sizeX; x++) {
-            for (byte z = 0; z < Chunk.sizeZ; z++) {
-                BlockPos worldPos = chunkPosToWorldPos(new BlockPos(x, 0, z), chunk.chunkPos);
-                byte y = (byte) Math.round(noise.evaluateNoise(worldPos.x(), worldPos.z()));
-
-                // TODO: Diff blocks
-                chunk.setBlockAt(Blocks.stone, new BlockPos(x, y, z));
-            }
+        if (!chunk.isGenerated) {
+            chunk.generate(noise, this);
         }
-
-        chunk.sendSyncPacket();
     }
 }

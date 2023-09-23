@@ -4,7 +4,7 @@ import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.world.World;
 
-public class Chunk {
+public abstract class Chunk {
     public static final byte sizeX = 32;
     public static final byte sizeY = 32;
     public static final byte sizeZ = 32;

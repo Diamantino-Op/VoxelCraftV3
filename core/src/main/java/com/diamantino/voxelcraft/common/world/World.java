@@ -12,7 +12,7 @@ import com.diamantino.voxelcraft.server.world.chunk.ServerChunk;
 import java.util.HashMap;
 import java.util.Map;
 
-public class World {
+public abstract class World {
     protected final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
     private final String name;
     private final WorldSettings settings;
@@ -30,8 +30,12 @@ public class World {
         return new ChunkPos(chunkX, chunkY, chunkZ);
     }
 
+    public Chunk getChunkForSide(ChunkPos pos) {
+        return null;
+    }
+
     public Chunk getChunkForPos(ChunkPos chunkPos) {
-        return chunkMap.containsKey(chunkPos) ? chunkMap.get(chunkPos) : chunkMap.put(chunkPos, new Chunk(this, chunkPos));
+        return chunkMap.containsKey(chunkPos) ? chunkMap.get(chunkPos) : chunkMap.put(chunkPos, getChunkForSide(chunkPos));
     }
 
     public Chunk getChunkForBlockPos(BlockPos blockPos) {

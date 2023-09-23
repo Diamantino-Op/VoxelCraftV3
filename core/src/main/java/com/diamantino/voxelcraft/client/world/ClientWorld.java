@@ -21,6 +21,11 @@ public class ClientWorld extends World {
         return super.getChunkForPos(chunkPos);
     }
 
+    @Override
+    public Chunk getChunkForSide(ChunkPos pos) {
+        return new ClientChunk(this, pos);
+    }
+
     public void renderChunks(Matrix4 projMatrix) {
         Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
         Gdx.gl.glEnable(GL20.GL_BLEND);
