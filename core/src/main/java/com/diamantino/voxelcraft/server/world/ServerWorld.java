@@ -40,6 +40,11 @@ public class ServerWorld extends World {
         return new BlockPos(worldPos.x() % Chunk.sizeX, worldPos.y() % Chunk.sizeY, worldPos.z() % Chunk.sizeZ);
     }
 
+    /**
+     * Generate the right chunk class for server-side.
+     *
+     * @param pos The position of the chunk.
+     */
     @Override
     public Chunk getChunkForSide(ChunkPos pos) {
         return new ServerChunk(this, pos);
