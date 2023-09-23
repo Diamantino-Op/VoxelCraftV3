@@ -12,6 +12,13 @@ import com.diamantino.voxelcraft.server.world.chunk.ServerChunk;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The server-side world.
+ * <p>
+ * See {@link World} for the common functions between client and server.
+ *
+ * @author Diamantino
+ */
 public abstract class World {
     protected final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
     private final String name;
@@ -32,6 +39,14 @@ public abstract class World {
 
     public Chunk getChunkForSide(ChunkPos pos) {
         return null;
+    }
+
+    public BlockPos chunkPosToWorldPos(BlockPos localPos, ChunkPos chunkPos) {
+        return new BlockPos(localPos.x() + (chunkPos.x() * Chunk.sizeX), localPos.y() + (chunkPos.y() * Chunk.sizeY), localPos.z() + (chunkPos.z() * Chunk.sizeZ));
+    }
+
+    public BlockPos worldPosToChunkPos(BlockPos worldPos) {
+        return new BlockPos(worldPos.x() % Chunk.sizeX, worldPos.y() % Chunk.sizeY, worldPos.z() % Chunk.sizeZ);
     }
 
     public Chunk getChunkForPos(ChunkPos chunkPos) {
