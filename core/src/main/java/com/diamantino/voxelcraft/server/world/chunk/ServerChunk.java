@@ -8,6 +8,13 @@ import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 import com.diamantino.voxelcraft.server.world.ServerWorld;
 import de.articdive.jnoise.pipeline.JNoise;
 
+/**
+ * Server-side chunk class.
+ * <p>
+ * See {@link Chunk} for the common functions between client and server.
+ *
+ * @author Diamantino
+ */
 public class ServerChunk extends Chunk {
     public boolean isGenerated;
 

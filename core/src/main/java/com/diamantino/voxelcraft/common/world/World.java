@@ -13,9 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The server-side world.
- * <p>
- * See {@link World} for the common functions between client and server.
+ * The common world class.
  *
  * @author Diamantino
  */
