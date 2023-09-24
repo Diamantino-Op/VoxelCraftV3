@@ -24,6 +24,12 @@ public class ServerChunk extends Chunk {
         this.isGenerated = false;
     }
 
+    /**
+     * Generate the chunk blocks.
+     *
+     * @param noise The noise instance from world.
+     * @param world The world instance.
+     */
     public void generate(JNoise noise, ServerWorld world) {
         for (byte x = 0; x < Chunk.sizeX; x++) {
             for (byte z = 0; z < Chunk.sizeZ; z++) {
