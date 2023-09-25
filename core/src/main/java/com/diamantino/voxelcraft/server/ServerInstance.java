@@ -36,7 +36,7 @@ public class ServerInstance {
 
         Packets.registerPackets();
 
-        this.world = new ServerWorld("Test", new WorldSettings(123456));
+        this.world = new ServerWorld(new WorldSettings("Test", 123456));
     }
 
     public void start() throws InterruptedException {

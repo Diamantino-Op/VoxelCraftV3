@@ -12,8 +12,8 @@ import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
 public class ClientWorld extends World {
-    public ClientWorld(String name, WorldSettings settings) {
-        super(name, settings);
+    public ClientWorld(WorldSettings settings) {
+        super(settings);
     }
 
     @Override

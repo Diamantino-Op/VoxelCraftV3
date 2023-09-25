@@ -1,5 +1,5 @@
 package com.diamantino.voxelcraft.common.world;
 
-public record WorldSettings(long seed) {
+public record WorldSettings(String name, long seed) {
 
 }

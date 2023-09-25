@@ -18,12 +18,10 @@ import java.util.Map;
  * @author Diamantino
  */
 public abstract class World {
-    protected final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
-    private final String name;
-    private final WorldSettings settings;
+    public final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
+    public final WorldSettings settings;
 
-    public World(String name, WorldSettings settings) {
-        this.name = name;
+    public World(WorldSettings settings) {
         this.settings = settings;
     }
 

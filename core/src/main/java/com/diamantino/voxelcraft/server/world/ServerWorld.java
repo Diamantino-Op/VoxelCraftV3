@@ -23,8 +23,8 @@ public class ServerWorld extends World {
      */
     public final JNoise noise;
 
-    public ServerWorld(String name, WorldSettings settings) {
-        super(name, settings);
+    public ServerWorld(WorldSettings settings) {
+        super(settings);
 
         this.noise = JNoise.newBuilder().superSimplex(settings.seed(), Simplex2DVariant.CLASSIC, Simplex3DVariant.CLASSIC, Simplex4DVariant.CLASSIC).build();
     }
