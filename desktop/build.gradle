@@ -31,7 +31,7 @@ run {
 }
 
 jar {
-  archiveBaseName.set(appName)
+  archiveBaseName.set(appName + "-Desktop")
   destinationDirectory = file("$project.buildDir/lib")
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   dependsOn configurations.runtimeClasspath

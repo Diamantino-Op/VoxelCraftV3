@@ -16,6 +16,9 @@ import de.articdive.jnoise.pipeline.JNoise;
  * @author Diamantino
  */
 public class ServerChunk extends Chunk {
+    /**
+     * Does the chunk need generation?
+     */
     public boolean isGenerated;
 
     public ServerChunk(World world, ChunkPos chunkPos) {
@@ -46,6 +49,9 @@ public class ServerChunk extends Chunk {
         sendSyncPacket();
     }
 
+    /**
+     * Send the chunk sync packet to the players nearby.
+     */
     public void sendSyncPacket() {
 
     }

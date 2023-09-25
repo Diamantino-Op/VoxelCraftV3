@@ -10,7 +10,7 @@ dependencies {
 }
 
 jar {
-  archiveBaseName.set(appName)
+  archiveBaseName.set(appName + "-Server")
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   dependsOn configurations.runtimeClasspath
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
