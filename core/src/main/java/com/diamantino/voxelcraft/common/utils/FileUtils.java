@@ -2,11 +2,14 @@ package com.diamantino.voxelcraft.common.utils;
 
 import com.badlogic.gdx.files.FileHandle;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class FileUtils {
+    public static final String folderName = "VoxelCraft";
+
     private enum OSType {
         Windows,
         Unix,
@@ -37,11 +40,9 @@ public class FileUtils {
     // TODO: Finish this
     public static String getVoxelCraftFolder() {
         return switch (getOsType()) {
-            case Windows -> System.getenv("APPDATA") + "/VoxelCraft";
-            case Unix -> "";
-            case Mac -> "";
-            case Solaris -> "";
-            case Unknown -> "";
+            case Windows -> System.getenv("APPDATA") + File.separator + folderName;
+            case Unix, Solaris, Unknown -> System.getProperty("user.home") + File.separator + folderName;
+            case Mac -> System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + folderName;
         };
     }
 

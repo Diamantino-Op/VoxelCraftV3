@@ -36,6 +36,10 @@ public class ChunkData {
         return chunkLayers[y];
     }
 
+    public IChunkLayer[] getLayers() {
+        return chunkLayers;
+    }
+
     // TODO: Maybe optimize?
     public void setBlock(Block block, BlockPos localPos) {
         if (chunkLayers[localPos.y()] != null) {

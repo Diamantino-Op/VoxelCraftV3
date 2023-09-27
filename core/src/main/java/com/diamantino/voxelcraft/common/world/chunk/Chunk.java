@@ -33,6 +33,10 @@ public abstract class Chunk {
         return chunkData.getLayer(y);
     }
 
+    public ChunkData getData() {
+        return chunkData;
+    }
+
     public Block getBlockAt(BlockPos localPos) {
         return chunkData.getBlock(localPos);
     }

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class ChunkLayer implements IChunkLayer {
     private final Chunk chunk;
-    private final int blocksPerLayer = Chunk.sizeX * Chunk.sizeZ;
+    public final int blocksPerLayer = Chunk.sizeX * Chunk.sizeZ;
     private final short[] blocksInLayer = new short[blocksPerLayer];
     private final int yLevel;
 
