@@ -9,16 +9,13 @@ public class ChunkLayer implements IChunkLayer {
     private final Chunk chunk;
     public final int blocksPerLayer = Chunk.sizeX * Chunk.sizeZ;
     private final short[] blocksInLayer = new short[blocksPerLayer];
-    private final int yLevel;
 
-    public ChunkLayer(Chunk chunk, int yLevel) {
+    public ChunkLayer(Chunk chunk) {
         this.chunk = chunk;
-        this.yLevel = yLevel;
     }
 
     public ChunkLayer(SingleBlockChunkLayer layer) {
         this.chunk = layer.getChunk();
-        this.yLevel = layer.getLocalYLevel();
 
         Arrays.fill(blocksInLayer, layer.getBlock().id);
     }
@@ -49,11 +46,6 @@ public class ChunkLayer implements IChunkLayer {
             int pos = localX + (localZ * Chunk.sizeX);
             blocksInLayer[pos] = block.id;
         }
-    }
-
-    @Override
-    public int getLocalYLevel() {
-        return yLevel;
     }
 
     public short[] getBlockList() {

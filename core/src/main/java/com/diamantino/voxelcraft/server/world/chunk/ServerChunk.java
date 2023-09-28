@@ -39,8 +39,12 @@ public class ServerChunk extends Chunk {
                 BlockPos worldPos = world.chunkPosToWorldPos(new BlockPos(x, 0, z), this.chunkPos);
                 byte y = (byte) Math.round(noise.evaluateNoise(worldPos.x(), worldPos.z()));
 
-                // TODO: Diff blocks
-                setBlockAt(Blocks.stone, new BlockPos(x, y, z));
+                short worldY = (short) (y + (chunkPos.y() * Chunk.sizeY));
+
+                for (short i = worldY; i > 0; i--) {
+                    // TODO: Diff blocks
+                    world.setBlock(Blocks.stone, new BlockPos(worldPos.x(), worldY, worldPos.z()));
+                }
             }
         }
 

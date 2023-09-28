@@ -55,7 +55,7 @@ public class ChunkData {
                 tryCompactLayer((byte) localPos.y());
             }
         } else {
-            chunkLayers[localPos.y()] = new SingleBlockChunkLayer(chunk, block, localPos.y());
+            chunkLayers[localPos.y()] = new SingleBlockChunkLayer(chunk, block);
         }
     }
 
@@ -88,7 +88,7 @@ public class ChunkData {
             }
 
             if (sameBlock) {
-                chunkLayers[localY] = new SingleBlockChunkLayer(this.chunk, Blocks.blocks.get(prevId), localY);
+                chunkLayers[localY] = new SingleBlockChunkLayer(this.chunk, Blocks.blocks.get(prevId));
                 changed = true;
             }
         }

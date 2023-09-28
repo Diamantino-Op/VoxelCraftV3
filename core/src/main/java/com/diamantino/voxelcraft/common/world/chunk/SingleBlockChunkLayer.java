@@ -6,12 +6,10 @@ import com.diamantino.voxelcraft.common.blocks.Blocks;
 public class SingleBlockChunkLayer implements IChunkLayer {
     private final Chunk chunk;
     private Block block;
-    private final int yLevel;
 
-    public SingleBlockChunkLayer(Chunk chunk, Block block, int yLevel) {
+    public SingleBlockChunkLayer(Chunk chunk, Block block) {
         this.chunk = chunk;
         this.block = block;
-        this.yLevel = yLevel;
     }
 
     @Override
@@ -41,11 +39,6 @@ public class SingleBlockChunkLayer implements IChunkLayer {
         if (!(localX >= Chunk.sizeX || localX < 0 || localZ >= Chunk.sizeZ ||  localZ < 0)) {
             this.block = block;
         }
-    }
-
-    @Override
-    public int getLocalYLevel() {
-        return yLevel;
     }
 
     @Override

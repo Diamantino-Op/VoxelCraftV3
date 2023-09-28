@@ -21,6 +21,8 @@ public abstract class World {
     public final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
     public final WorldSettings settings;
 
+    public final short worldHeight = Chunk.sizeY * 32;
+
     public World(WorldSettings settings) {
         this.settings = settings;
     }

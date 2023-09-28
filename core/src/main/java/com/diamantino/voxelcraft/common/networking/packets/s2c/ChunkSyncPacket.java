@@ -29,9 +29,9 @@ public class ChunkSyncPacket extends BasePacket {
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {
             switch (buffer.readByte()) {
-                case 0 -> chunk.setLayer(new SingleBlockChunkLayer(chunk, Blocks.blocks.get(buffer.readShort()), y), y);
+                case 0 -> chunk.setLayer(new SingleBlockChunkLayer(chunk, Blocks.blocks.get(buffer.readShort())), y);
                 case 1 -> {
-                    ChunkLayer layer = new ChunkLayer(chunk, y);
+                    ChunkLayer layer = new ChunkLayer(chunk);
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
