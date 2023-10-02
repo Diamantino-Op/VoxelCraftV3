@@ -12,6 +12,10 @@ public class WorldIOManager {
         world.chunkMap.forEach((chunkPos, chunk) -> {
             saveChunk(world.settings.name(), chunkPos, chunk);
         });
+
+        world.entityMap.forEach((pos, entity) -> {
+
+        });
     }
 
     public static void saveChunk(String worldName, ChunkPos chunkPos, Chunk chunk) {
@@ -84,5 +88,9 @@ public class WorldIOManager {
         }
 
         return true;
+    }
+
+    public static void saveEntities() {
+
     }
 }

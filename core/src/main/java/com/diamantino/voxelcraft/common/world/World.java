@@ -1,9 +1,11 @@
 package com.diamantino.voxelcraft.common.world;
 
+import com.badlogic.gdx.math.Vector3;
 import com.diamantino.voxelcraft.client.world.ClientWorld;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
+import com.diamantino.voxelcraft.common.entities.Entity;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 import com.diamantino.voxelcraft.server.world.ServerWorld;
@@ -19,6 +21,7 @@ import java.util.Map;
  */
 public abstract class World {
     public final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
+    public final Map<Vector3, Entity> entityMap = new HashMap<>();
     public final WorldSettings settings;
 
     public final short worldHeight = Chunk.sizeY * 32;
