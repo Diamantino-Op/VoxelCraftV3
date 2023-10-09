@@ -16,4 +16,8 @@ public abstract class Entity {
     public byte[] saveData() {
         return new byte[]{};
     }
+
+    public void loadData(byte[] entityData) {
+
+    }
 }
