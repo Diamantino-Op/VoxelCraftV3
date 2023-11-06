@@ -10,7 +10,7 @@ import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
 public class GameScreen implements Screen {
     private final VoxelCraftClient game;
-    private PerspectiveCamera camera;
+
 
     // TODO: Move to settings
     private int FOV = 70;
