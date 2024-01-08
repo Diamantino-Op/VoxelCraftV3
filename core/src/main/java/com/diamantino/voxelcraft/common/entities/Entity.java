@@ -5,6 +5,9 @@ import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.world.World;
 
 public abstract class Entity {
+    /**
+     * Represents the position of an entity in 3D space.
+     */
     public Vector3 entityPos;
     public BlockPos blockPos;
 
