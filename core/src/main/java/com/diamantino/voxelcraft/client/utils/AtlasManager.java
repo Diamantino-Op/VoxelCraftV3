@@ -13,14 +13,29 @@ import com.diamantino.voxelcraft.common.utils.MathUtils;
 import java.util.List;
 
 public class AtlasManager {
+    /**
+     * Block texture packer.
+     */
     private static PixmapPacker blockPacker;
+    /**
+     * The loaded block atlas.
+     */
     public static TextureAtlas blockAtlas;
+    /**
+     * The loaded block atlas' texture.
+     */
     public static Texture blockAtlasTexture;
 
+    /**
+     * Initialize the atlas manager.
+     */
     public void init() {
         initBlocks();
     }
 
+    /**
+     * Load and pack the block textures.
+     */
     private void initBlocks() {
         List<FileHandle> blockTextures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/textures/blocks"), "png");
 
@@ -32,11 +47,18 @@ public class AtlasManager {
         packBlockAtlas(blockTextures);
     }
 
+    /**
+     * Dispose the atlas manager.
+     */
     public void dispose() {
         blockPacker.dispose();
         blockAtlas.dispose();
     }
 
+    /**
+     * Packs the block textures into a single atlas and saves it.
+     * @param blockTextures The texture file list.
+     */
     public void packBlockAtlas(List<FileHandle> blockTextures) {
         for (FileHandle file : blockTextures) {
             Pixmap pixmap = new Pixmap(file);
@@ -52,12 +74,21 @@ public class AtlasManager {
         blockAtlasTexture = blockAtlas.getTextures().first();
     }
 
+    /**
+     * Get the size of the width and height of the atlas in pixels.
+     * @return Size in pixels.
+     */
     private int getAtlasSize(int textureSize, int files) {
         int sideTex = MathUtils.getNearestPO2((int) Math.round(Math.sqrt(files)));
 
         return sideTex * textureSize;
     }
 
+    /**
+     * Get the texture index in the atlas.
+     * @param name Name of the texture.
+     * @return Index of the texture in the atlas.
+     */
     public static int getBlockTextureIndex(String name) {
         for (int i = 0, n = blockAtlas.getRegions().size; i < n; i++) {
             if (blockAtlas.getRegions().get(i).name.equals(name)) {

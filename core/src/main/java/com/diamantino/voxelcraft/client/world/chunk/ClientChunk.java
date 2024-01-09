@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClientChunk extends Chunk {
+    /**
+     * The mesh of the chunk.
+     */
     private Mesh chunkMesh;
     private final MeshBuilder builder;
 

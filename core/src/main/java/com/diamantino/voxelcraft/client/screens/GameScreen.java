@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
     public GameScreen(final VoxelCraftClient game) {
         this.game = game;
 
-        this.camera = new PerspectiveCamera(FOV, resX, rexY);
+//        this.camera = new PerspectiveCamera(FOV, resX, rexY);
     }
 
     @Override
@@ -94,20 +94,20 @@ public class GameScreen implements Screen {
 
             @Override
             public boolean mouseMoved(int screenX, int screenY) {
-                Vector3 direction = camera.direction.cpy();
+                //Vector3 direction = camera.direction.cpy();
 
                 // rotating on the y axis
-                float x = dragX - screenX;
+//                float x = dragX - screenX;
                 // change this Vector3.y with cam.up if you have a dynamic up.
-                camera.rotate(Vector3.Y,x * rotateSpeed);
+//                camera.rotate(Vector3.Y,x * rotateSpeed);
 
                 // rotating on the x and z axis is different
                 float y = (float) Math.sin((double) (dragY - screenY) / 180f);
-                if (Math.abs(camera.direction.y + y * (rotateSpeed * 5.0f)) < 0.9) {
-                    camera.direction.y += y * (rotateSpeed * 5.0f) ;
-                }
+//                if (Math.abs(camera.direction.y + y * (rotateSpeed * 5.0f)) < 0.9) {
+//                    camera.direction.y += y * (rotateSpeed * 5.0f) ;
+//                }
 
-                camera.update();
+//                camera.update();
                 dragX = screenX;
                 dragY = screenY;
                 return true;
@@ -123,60 +123,58 @@ public class GameScreen implements Screen {
 
     private void walking(float timeElapsed) {
         if (forward) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.x *= movementSpeed * 4 * timeElapsed;
-            v.z *= movementSpeed * 4 * timeElapsed;
-            camera.translate(v);
-            camera.update();
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.x *= movementSpeed * 4 * timeElapsed;
+//            v.z *= movementSpeed * 4 * timeElapsed;
+//            camera.translate(v);
+//            camera.update();
         }
         if (back) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.x = -v.x;
-            v.z = -v.z;
-            v.x *= movementSpeed * 4 * timeElapsed;
-            v.z *= movementSpeed * 4 * timeElapsed;
-            camera.translate(v);
-            camera.update();
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.x = -v.x;
+//            v.z = -v.z;
+//            v.x *= movementSpeed * 4 * timeElapsed;
+//            v.z *= movementSpeed * 4 * timeElapsed;
+//            camera.translate(v);
+//            camera.update();
         }
         if (left) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.rotate(Vector3.Y, 90);
-            v.x *= movementSpeed * 4 * timeElapsed;
-            v.z *= movementSpeed * 4 * timeElapsed;
-            camera.translate(v);
-            camera.update();
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.rotate(Vector3.Y, 90);
+//            v.x *= movementSpeed * 4 * timeElapsed;
+//            v.z *= movementSpeed * 4 * timeElapsed;
+//            camera.translate(v);
+//            camera.update();
         }
         if (right) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.rotate(Vector3.Y, -90);
-            v.x *= movementSpeed * 4 * timeElapsed;
-            v.z *= movementSpeed * 4 * timeElapsed;
-            camera.translate(v);
-            camera.update();
-
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.rotate(Vector3.Y, -90);
+//            v.x *= movementSpeed * 4 * timeElapsed;
+//            v.z *= movementSpeed * 4 * timeElapsed;
+//            camera.translate(v);
+//            camera.update();
         }
         if (up) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.y += movementSpeed * 4 * timeElapsed;
-            v.x = 0f;
-            v.z = 0f;
-            camera.translate(v);
-            camera.update();
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.y += movementSpeed * 4 * timeElapsed;
+//            v.x = 0f;
+//            v.z = 0f;
+//            camera.translate(v);
+//            camera.update();
         }
         if (down) {
-            Vector3 v = camera.direction.cpy();
-            v.y = 0f;
-            v.y += -movementSpeed * 4 * timeElapsed;
-            v.x = 0f;
-            v.z = 0f;
-            camera.translate(v);
-            camera.update();
-
+//            Vector3 v = camera.direction.cpy();
+//            v.y = 0f;
+//            v.y += -movementSpeed * 4 * timeElapsed;
+//            v.x = 0f;
+//            v.z = 0f;
+//            camera.translate(v);
+//            camera.update();
         }
     }
 
@@ -187,7 +185,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera = new PerspectiveCamera(FOV, width, height);
+//        camera = new PerspectiveCamera(FOV, width, height);
     }
 
     @Override
