@@ -23,29 +23,49 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Client-side chunk class.
+ *
+ * @author Diamantino
+ */
 public class ClientChunk extends Chunk {
     /**
      * The mesh of the chunk.
      */
     private Mesh chunkMesh;
+    /**
+     * The mesh builder of the chunk.
+     */
     private final MeshBuilder builder;
 
+    /**
+     * Chunk class constructor.
+     */
     public ClientChunk(World world, ChunkPos chunkPos) {
         super(world, chunkPos);
 
         this.builder = new MeshBuilder();
     }
 
+    /**
+     * Renders the mesh of the chunk.
+     */
     public void render() {
         if (chunkMesh == null) return;
 
         chunkMesh.render(Shaders.coreShader, GL20.GL_TRIANGLES);
     }
 
+    /**
+     * Dispose the chunk mesh.
+     */
     public void dispose() {
         chunkMesh.dispose();
     }
 
+    /**
+     * Regenerate the chunk mesh.
+     */
     public void regenerateMesh() {
         if (chunkMesh != null) chunkMesh.dispose();
 
@@ -84,6 +104,9 @@ public class ClientChunk extends Chunk {
         chunkMesh = builder.end();
     }
 
+    /**
+     * Generate the block faces.
+     */
     private int generateFaces(Block currBlock, int x, int y, int z, int currVertex) {
         // Front Face
         if ((world.getBlock(new BlockPos(x, y, z - 1)) == Blocks.air) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x, y, z - 1)).renderType != RenderType.OPAQUE)) {

@@ -3,6 +3,11 @@ package com.diamantino.voxelcraft.client.shaders;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+/**
+ * Shaders class.
+ *
+ * @author Diamantino
+ */
 public class Shaders {
     /**
      * The core shader of the game.

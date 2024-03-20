@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.client;
+package com.diamantino.voxelcraft.client.networking;
 
 import com.diamantino.voxelcraft.common.networking.packets.codec.PacketDecoder;
 import com.diamantino.voxelcraft.common.networking.packets.codec.PacketEncoder;
@@ -7,6 +7,11 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Client connection initializer class.
+ *
+ * @author Diamantino
+ */
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     private final ClientInstance client;
 

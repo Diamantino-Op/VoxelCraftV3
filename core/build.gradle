@@ -7,4 +7,5 @@ dependencies {
   implementation "org.jetbrains:annotations:$jetbrainsAnnotationsVersion"
   implementation "de.articdive:jnoise-pipeline:$jNoiseVersion"
   implementation "org.apache.commons:commons-lang3:$apacheCommonsVersion"
+  implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
 }

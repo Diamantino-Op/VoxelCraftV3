@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.client;
+package com.diamantino.voxelcraft.client.networking;
 
 import com.diamantino.voxelcraft.client.world.ClientWorld;
 import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
@@ -9,6 +9,11 @@ import io.netty.channel.Channel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+/**
+ * Client connection instance class.
+ *
+ * @author Diamantino
+ */
 public class ClientInstance {
     private final NioEventLoopGroup group = new NioEventLoopGroup();
     public Channel serverConnection;

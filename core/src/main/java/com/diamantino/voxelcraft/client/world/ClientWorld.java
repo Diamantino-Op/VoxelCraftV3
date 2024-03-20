@@ -11,6 +11,11 @@ import com.diamantino.voxelcraft.common.world.WorldSettings;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
+/**
+ * Client-side world class.
+ *
+ * @author Diamantino
+ */
 public class ClientWorld extends World {
     public ClientWorld(WorldSettings settings) {
         super(settings);

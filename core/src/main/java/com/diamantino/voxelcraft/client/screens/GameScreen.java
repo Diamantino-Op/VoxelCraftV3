@@ -8,9 +8,13 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
+/**
+ * Game screen class.
+ *
+ * @author Diamantino
+ */
 public class GameScreen implements Screen {
     private final VoxelCraftClient game;
-
 
     // TODO: Move to settings
     private int FOV = 70;

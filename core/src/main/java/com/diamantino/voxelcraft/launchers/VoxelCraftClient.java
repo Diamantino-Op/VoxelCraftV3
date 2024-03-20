@@ -3,7 +3,7 @@ package com.diamantino.voxelcraft.launchers;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.diamantino.voxelcraft.client.ClientInstance;
+import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.client.screens.GameScreen;
 import com.diamantino.voxelcraft.client.utils.AtlasManager;
 

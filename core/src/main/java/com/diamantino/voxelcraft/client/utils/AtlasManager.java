@@ -12,6 +12,11 @@ import com.diamantino.voxelcraft.common.utils.MathUtils;
 
 import java.util.List;
 
+/**
+ * Game atlas manager class.
+ *
+ * @author Diamantino
+ */
 public class AtlasManager {
     /**
      * Block texture packer.

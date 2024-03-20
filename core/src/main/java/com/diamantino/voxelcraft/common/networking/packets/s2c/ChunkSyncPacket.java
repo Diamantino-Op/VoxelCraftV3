@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.networking.packets.s2c;
 
-import com.diamantino.voxelcraft.client.ClientInstance;
+import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.blocks.Blocks;
 import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
