@@ -13,14 +13,25 @@ import org.jetbrains.annotations.NotNull;
  * @author Diamantino
  */
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
+    /**
+     * The client instance.
+     */
     private final ClientInstance client;
 
+    /**
+     * Client initializer class constructor.
+     * @param client The instance of the client.
+     */
     public ClientInitializer(ClientInstance client) {
         this.client = client;
     }
 
+    /**
+     * Client channel initializer.
+     * @param ch The channel to initialize.
+     */
     @Override
-    protected void initChannel(@NotNull SocketChannel ch) throws Exception {
+    protected void initChannel(@NotNull SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast("packet-decoder", new PacketDecoder());
         pipeline.addLast("packet-encoder", new PacketEncoder());

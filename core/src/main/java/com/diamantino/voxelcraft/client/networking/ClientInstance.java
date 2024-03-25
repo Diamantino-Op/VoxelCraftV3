@@ -15,16 +15,39 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author Diamantino
  */
 public class ClientInstance {
+    /**
+     * The client event group.
+     */
     private final NioEventLoopGroup group = new NioEventLoopGroup();
+
+    /**
+     * The instance of the connection to the server.
+     */
     public Channel serverConnection;
 
+    /**
+     * The ip of the server.
+     */
     private final String ip;
+
+    /**
+     * The port of the server.
+     */
     private final int port;
 
+    /**
+     * The client world instance.
+     */
     public ClientWorld world;
 
+    /**
+     * The client instance.
+     */
     public static ClientInstance instance;
 
+    /**
+     * The constructor of the client instance class.
+     */
     public ClientInstance(String ip, int port) {
         instance = this;
 
@@ -33,10 +56,13 @@ public class ClientInstance {
 
         Packets.registerPackets();
 
-        // TODO: Move
+        // TODO: Move or receive from server
         world = new ClientWorld(new WorldSettings("Test", 123456));
     }
 
+    /**
+     * Connect to the server.
+     */
     public void connect() throws InterruptedException {
         this.serverConnection = new Bootstrap()
                 .group(this.group)
@@ -48,10 +74,17 @@ public class ClientInstance {
         this.serverConnection.closeFuture();
     }
 
+    /**
+     * Disconnect from the server.
+     */
     public void disconnect() {
         this.group.shutdownGracefully();
     }
 
+    /**
+     * Read the packet.
+     * @param packet The packet to be read.
+     */
     void readPacket(BasePacket packet) {
 
     }

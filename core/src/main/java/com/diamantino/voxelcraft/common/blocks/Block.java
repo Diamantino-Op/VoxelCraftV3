@@ -2,6 +2,11 @@ package com.diamantino.voxelcraft.common.blocks;
 
 import com.diamantino.voxelcraft.client.rendering.RenderType;
 
+/**
+ * Base block class.
+ *
+ * @author Diamantino
+ */
 public class Block {
     public short id;
     public String name;

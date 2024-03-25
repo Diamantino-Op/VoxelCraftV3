@@ -2,6 +2,11 @@ package com.diamantino.voxelcraft.common.blocks;
 
 import com.diamantino.voxelcraft.client.utils.AtlasManager;
 
+/**
+ * Client connection initializer class.
+ *
+ * @author Diamantino
+ */
 public class BlockTexture implements IBlockTexture {
     private final int frontTexIndex;
     private final int backTexIndex;

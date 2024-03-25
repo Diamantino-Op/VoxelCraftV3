@@ -17,20 +17,37 @@ import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
  * @author Diamantino
  */
 public class ClientWorld extends World {
+    /**
+     * Client world class constructor.
+     * @param settings The settings of the world.
+     */
     public ClientWorld(WorldSettings settings) {
         super(settings);
     }
 
+    /**
+     * @param chunkPos The position of the chunk.
+     * @return The chunk instance at the selected position.
+     */
     @Override
     public Chunk getChunkForPos(ChunkPos chunkPos) {
         return super.getChunkForPos(chunkPos);
     }
 
+    /**
+     * @param chunkPos The position of the chunk.
+     * @return A new client chunk instance.
+     */
+    //TODO: Probably load the data.
     @Override
-    public Chunk getChunkForSide(ChunkPos pos) {
-        return new ClientChunk(this, pos);
+    public Chunk getChunkForSide(ChunkPos chunkPos) {
+        return new ClientChunk(this, chunkPos);
     }
 
+    /**
+     * Renders the chunks in the ChunkMap.
+     * @param projMatrix The Matrix4 on which to render the chunks.
+     */
     public void renderChunks(Matrix4 projMatrix) {
         Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -51,6 +68,9 @@ public class ClientWorld extends World {
         });
     }
 
+    /**
+     * Dispose the chunks in the ChunkMap.
+     */
     public void dispose() {
         chunkMap.forEach((chunkPos, chunk) -> {
             if (chunk instanceof ClientChunk clientChunk)

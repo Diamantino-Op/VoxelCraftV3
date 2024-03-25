@@ -33,6 +33,7 @@ public class ClientChunk extends Chunk {
      * The mesh of the chunk.
      */
     private Mesh chunkMesh;
+
     /**
      * The mesh builder of the chunk.
      */
@@ -40,6 +41,8 @@ public class ClientChunk extends Chunk {
 
     /**
      * Chunk class constructor.
+     * @param world The world instance.
+     * @param chunkPos The position of the chunk
      */
     public ClientChunk(World world, ChunkPos chunkPos) {
         super(world, chunkPos);
@@ -106,6 +109,13 @@ public class ClientChunk extends Chunk {
 
     /**
      * Generate the block faces.
+     * @param currBlock The block used to generate the faces.
+     * @param x The block's X position.
+     * @param y The block's Y position.
+     * @param z The block's Z position.
+     * @param currVertex The current vertex index.
+     *
+     * @return The updated vertex index.
      */
     private int generateFaces(Block currBlock, int x, int y, int z, int currVertex) {
         // Front Face
@@ -189,6 +199,9 @@ public class ClientChunk extends Chunk {
         return currVertex;
     }
 
+    /**
+     * @return The chunk's mesh.
+     */
     public Mesh getChunkMesh() {
         return chunkMesh;
     }

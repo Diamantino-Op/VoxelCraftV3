@@ -17,7 +17,7 @@ public class ChunkSyncPacket extends BasePacket {
     }
 
     @Override
-    public void readPacketData(String senderName, PacketBuffer buffer) throws IOException {
+    public void readPacketData(String senderName, PacketBuffer buffer) {
         // Read ChunkPos
         int chunkX = buffer.readInt();
         int chunkY = buffer.readInt();
@@ -48,7 +48,7 @@ public class ChunkSyncPacket extends BasePacket {
     }
 
     @Override
-    public void writePacketData(PacketBuffer buffer) throws IOException {
+    public void writePacketData(PacketBuffer buffer) {
         // Write ChunkPos
         buffer.writeInt(chunk.chunkPos.x());
         buffer.writeInt(chunk.chunkPos.y());

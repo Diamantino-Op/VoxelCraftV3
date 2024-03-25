@@ -4,6 +4,11 @@ import com.diamantino.voxelcraft.client.rendering.RenderType;
 
 import java.util.HashMap;
 
+/**
+ * Blocks registration class.
+ *
+ * @author Diamantino
+ */
 public class Blocks {
     public static final HashMap<Short, Block> blocks = new HashMap<>(0);
 

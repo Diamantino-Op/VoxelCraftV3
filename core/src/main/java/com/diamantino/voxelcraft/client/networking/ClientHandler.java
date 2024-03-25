@@ -10,14 +10,26 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author Diamantino
  */
 public class ClientHandler extends SimpleChannelInboundHandler<BasePacket> {
+    /**
+     * The client instance.
+     */
     private final ClientInstance client;
 
+    /**
+     * Client handler class constructor.
+     * @param client The instance of the client.
+     */
     public ClientHandler(ClientInstance client) {
         this.client = client;
     }
 
+    /**
+     * Client channel reader.
+     * @param ctx The channel handler context.
+     * @param msg The packet message.
+     */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, BasePacket msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, BasePacket msg) {
         this.client.readPacket(msg);
     }
 }
