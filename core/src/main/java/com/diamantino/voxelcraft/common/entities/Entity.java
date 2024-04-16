@@ -14,7 +14,7 @@ public abstract class Entity {
      */
     public BlockPos blockPos;
 
-    public Entity(World world, BlockPos spawnLocation) {
+    protected Entity(World world, BlockPos spawnLocation) {
         this.blockPos = spawnLocation;
         this.entityPos = spawnLocation.toVec3();
     }

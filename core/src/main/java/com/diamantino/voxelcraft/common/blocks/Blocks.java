@@ -3,6 +3,7 @@ package com.diamantino.voxelcraft.common.blocks;
 import com.diamantino.voxelcraft.client.rendering.RenderType;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Blocks registration class.
@@ -10,7 +11,10 @@ import java.util.HashMap;
  * @author Diamantino
  */
 public class Blocks {
-    public static final HashMap<Short, Block> blocks = new HashMap<>(0);
+    /**
+     *
+     */
+    public static final Map<Short, Block> blocks = new HashMap<>();
 
     private static short id = 0;
 
@@ -18,6 +22,9 @@ public class Blocks {
     public static final Block stone = registerBlock("stone", new SingleBlockTexture("stone"), RenderType.OPAQUE);
     public static final Block glass = registerBlock("glass", new SingleBlockTexture("glass"), RenderType.TRANSPARENT);
 
+    /**
+     *
+     */
     private static Block registerBlock(String name, IBlockTexture texture, RenderType renderType) {
         short tmpId = id++;
         Block tmpBlock = new Block(tmpId, name, texture, renderType);

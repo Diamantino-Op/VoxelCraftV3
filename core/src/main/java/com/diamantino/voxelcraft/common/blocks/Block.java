@@ -8,11 +8,29 @@ import com.diamantino.voxelcraft.client.rendering.RenderType;
  * @author Diamantino
  */
 public class Block {
-    public short id;
-    public String name;
-    public IBlockTexture texture;
-    public RenderType renderType;
+    /**
+     *
+     */
+    public final short id;
 
+    /**
+     *
+     */
+    public final String name;
+
+    /**
+     *
+     */
+    public final IBlockTexture texture;
+
+    /**
+     *
+     */
+    public final RenderType renderType;
+
+    /**
+     *
+     */
     public Block(short id, String name, IBlockTexture texture, RenderType renderType) {
         this.id = id;
         this.name = name;
