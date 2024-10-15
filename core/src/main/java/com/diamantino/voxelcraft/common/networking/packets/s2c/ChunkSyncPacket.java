@@ -9,13 +9,32 @@ import com.diamantino.voxelcraft.common.world.chunk.*;
 
 import java.io.IOException;
 
+/**
+ * Packet sent by the server to synchronize a chunk with the client.
+ *
+ * @author Diamantino
+ */
 public class ChunkSyncPacket extends BasePacket {
+    /**
+     * Chunk to synchronize with the client.
+     */
     private final Chunk chunk;
 
+    /**
+     * Default constructor.
+     *
+     * @param chunk Chunk to synchronize with the client.
+     */
     public ChunkSyncPacket(Chunk chunk) {
         this.chunk = chunk;
     }
 
+    /**
+     * Reads the packet data from the packet buffer.
+     *
+     * @param senderName Name of the sender of the packet.
+     * @param buffer Packet buffer containing the packet data.
+     */
     @Override
     public void readPacketData(String senderName, PacketBuffer buffer) {
         // Read ChunkPos
@@ -24,14 +43,14 @@ public class ChunkSyncPacket extends BasePacket {
         int chunkZ = buffer.readInt();
 
         // Get chunk
-        ClientChunk chunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(new ChunkPos(chunkX, chunkY, chunkZ));
+        ClientChunk clientChunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(new ChunkPos(chunkX, chunkY, chunkZ));
 
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {
             switch (buffer.readByte()) {
-                case 0 -> chunk.setLayer(new SingleBlockChunkLayer(chunk, Blocks.blocks.get(buffer.readShort())), y);
+                case 0 -> clientChunk.setLayer(new SingleBlockChunkLayer(clientChunk, Blocks.blocks.get(buffer.readShort())), y);
                 case 1 -> {
-                    ChunkLayer layer = new ChunkLayer(chunk);
+                    ChunkLayer layer = new ChunkLayer(clientChunk);
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
@@ -39,14 +58,24 @@ public class ChunkSyncPacket extends BasePacket {
                         }
                     }
 
-                    chunk.setLayer(layer, y);
+                    clientChunk.setLayer(layer, y);
+                }
+                case 2 -> {
+                    clientChunk.setLayer(null, y);
+
+
                 }
             }
         }
 
-        chunk.regenerateMesh();
+        clientChunk.regenerateMesh();
     }
 
+    /**
+     * Writes the packet data to the packet buffer.
+     *
+     * @param buffer Packet buffer to write the packet data to.
+     */
     @Override
     public void writePacketData(PacketBuffer buffer) {
         // Write ChunkPos
@@ -58,20 +87,24 @@ public class ChunkSyncPacket extends BasePacket {
         for (byte y = 0; y < Chunk.sizeY; y++) {
             IChunkLayer layer = chunk.getLayer(y);
 
-            if (layer instanceof SingleBlockChunkLayer sbcl) {
-                buffer.writeByte(0);
+            switch (layer) {
+                case SingleBlockChunkLayer sbcl -> {
+                    buffer.writeByte(0);
 
-                buffer.writeShort(sbcl.getBlock().id);
-            } else if (layer instanceof ChunkLayer chunkLayer) {
-                buffer.writeByte(1);
+                    buffer.writeShort(sbcl.getBlock().id);
+                }
 
-                for (int x = 0; x < Chunk.sizeX; x++) {
-                    for (int z = 0; z < Chunk.sizeZ; z++) {
-                        buffer.writeShort(chunkLayer.getBlockId(x, z));
+                case ChunkLayer chunkLayer -> {
+                    buffer.writeByte(1);
+
+                    for (int x = 0; x < Chunk.sizeX; x++) {
+                        for (int z = 0; z < Chunk.sizeZ; z++) {
+                            buffer.writeShort(chunkLayer.getBlockId(x, z));
+                        }
                     }
                 }
-            } else {
-                buffer.writeByte(2);
+
+                default -> buffer.writeByte(2);
             }
         }
     }

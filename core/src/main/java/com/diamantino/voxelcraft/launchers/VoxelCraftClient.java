@@ -1,5 +1,6 @@
 package com.diamantino.voxelcraft.launchers;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,9 +12,16 @@ public class VoxelCraftClient extends ApplicationAdapter {
     private AtlasManager atlasManager;
     private GameScreen gameScreen;
     private ClientInstance clientInstance;
+    private final int logLevel;
+
+    public VoxelCraftClient(int logLevel) {
+        this.logLevel = logLevel;
+    }
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(logLevel);
+
         atlasManager = new AtlasManager();
         atlasManager.init();
 

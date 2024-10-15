@@ -12,7 +12,7 @@ public class VoxelCraftServer extends ApplicationAdapter {
 
         try {
             serverInstance.start();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

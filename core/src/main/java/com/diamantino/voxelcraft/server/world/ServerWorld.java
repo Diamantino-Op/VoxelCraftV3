@@ -23,6 +23,11 @@ public class ServerWorld extends World {
      */
     public final JNoise noise;
 
+    /**
+     * Constructor for the server-side world.
+     *
+     * @param settings The settings for the world.
+     */
     public ServerWorld(WorldSettings settings) {
         super(settings);
 

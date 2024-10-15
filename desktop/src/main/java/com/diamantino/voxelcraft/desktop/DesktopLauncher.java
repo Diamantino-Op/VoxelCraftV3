@@ -1,5 +1,6 @@
 package com.diamantino.voxelcraft.desktop;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
@@ -10,7 +11,7 @@ public class DesktopLauncher {
     }
 
     private static void createApplication() {
-        new Lwjgl3Application(new VoxelCraftClient(), getDefaultConfiguration());
+        new Lwjgl3Application(new VoxelCraftClient(Application.LOG_DEBUG), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

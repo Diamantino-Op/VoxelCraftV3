@@ -81,6 +81,7 @@ public class ClientInstance {
         this.group.shutdownGracefully();
     }
 
+    //TODO: Execute packet code here.
     /**
      * Read the packet.
      * @param packet The packet to be read.

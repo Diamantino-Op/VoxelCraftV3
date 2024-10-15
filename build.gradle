@@ -9,7 +9,7 @@ buildscript {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
   dependencies {
-    classpath 'com.guardsquare:proguard-gradle:7.1.0'
+    classpath "com.guardsquare:proguard-gradle:$proguardVersion"
   }
 }
 
@@ -20,7 +20,9 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: 'java-library'
-  sourceCompatibility = javaVersion
+
+  sourceCompatibility = "${javaVersion}"
+
   compileJava {
     options.incremental = true
   }

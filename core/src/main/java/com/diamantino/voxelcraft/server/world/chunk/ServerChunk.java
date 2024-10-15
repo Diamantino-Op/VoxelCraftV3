@@ -21,6 +21,12 @@ public class ServerChunk extends Chunk {
      */
     public boolean isGenerated;
 
+    /**
+     * Constructor for the server-side chunk.
+     *
+     * @param world    The world instance.
+     * @param chunkPos The chunk position.
+     */
     public ServerChunk(World world, ChunkPos chunkPos) {
         super(world, chunkPos);
 

@@ -87,7 +87,7 @@ public class ClientChunk extends Chunk {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 for (int z = 0; z < sizeZ; z++) {
-                    Block currBlock = chunkData.getBlock(new BlockPos(x, y, z));
+                    Block currBlock = chunkBlockData.getBlock(new BlockPos(x, y, z));
 
                     if (currBlock != Blocks.air) {
                         if (currBlock.renderType == RenderType.OPAQUE) {

@@ -1,6 +1,5 @@
 apply plugin: 'application'
 
-sourceCompatibility = javaVersion
 mainClassName = 'com.diamantino.voxelcraft.server.ServerLauncher'
 
 dependencies {

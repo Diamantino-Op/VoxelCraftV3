@@ -7,9 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Utility class for file operations.
+ *
+ * @author Diamantino
+ */
 public class FileUtils {
+    /**
+     * The name of the folder where the game files are stored.
+     */
     public static final String folderName = "VoxelCraft";
 
+    /**
+     * The operating system types.
+     */
     private enum OSType {
         Windows,
         Unix,
@@ -18,6 +29,13 @@ public class FileUtils {
         Unknown
     }
 
+    /**
+     * Gets all files in an internal folder with a specific extension.
+     *
+     * @param directory The internal folder to search for files.
+     * @param extensionFilter The extension of the files to search for.
+     * @return A list of files with the specified extension.
+     */
     public static List<FileHandle> getAllFilesInFolderInternal(FileHandle directory, String extensionFilter) {
         List<FileHandle> files = new ArrayList<>();
 
@@ -38,6 +56,11 @@ public class FileUtils {
     }
 
     // TODO: Finish this
+
+    /**
+     * Gets the path to the VoxelCraft folder.
+     * @return The path to the VoxelCraft folder.
+     */
     public static String getVoxelCraftFolder() {
         return switch (getOsType()) {
             case Windows -> System.getenv("APPDATA") + File.separator + folderName;
@@ -46,6 +69,10 @@ public class FileUtils {
         };
     }
 
+    /**
+     * Gets the operating system type.
+     * @return The operating system type.
+     */
     private static OSType getOsType() {
         String osName = System.getProperty("os.name").toLowerCase();
 
