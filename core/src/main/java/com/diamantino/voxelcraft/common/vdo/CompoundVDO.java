@@ -1,6 +1,9 @@
 package com.diamantino.voxelcraft.common.vdo;
 
+import com.badlogic.gdx.Gdx;
+import com.diamantino.voxelcraft.common.Constants;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -76,96 +79,190 @@ public class CompoundVDO {
      * @param key The key of the VDO object to remove.
      */
     public void removeVDOObject(String key) {
-        vdoContent.put(key, JSONObject.NULL);
+        try {
+            vdoContent.put(key, JSONObject.NULL);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error removing VDO: " + key, e);
+        }
     }
 
     // Int VDOs
 
     public int getIntVDO(String key) {
-        return vdoContent.getInt(key);
+        try {
+            return vdoContent.getInt(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting int VDO: " + key, e);
+
+            return 0;
+        }
     }
 
     public void setIntVDO(String key, int value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting int VDO: " + key, e);
+        }
     }
 
     // Long VDOs
 
     public long getLongVDO(String key) {
-        return vdoContent.getLong(key);
+        try {
+            return vdoContent.getLong(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting long VDO: " + key, e);
+
+            return 0;
+        }
     }
 
     public void setLongVDO(String key, long value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting long VDO: " + key, e);
+        }
     }
 
     // Float VDOs
 
     public float getFloatVDO(String key) {
-        return vdoContent.getFloat(key);
+        try {
+            return vdoContent.getFloat(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting float VDO: " + key, e);
+
+            return 0;
+        }
     }
 
     public void setFloatVDO(String key, float value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting float VDO: " + key, e);
+        }
     }
 
     // Double VDOs
 
     public double getDoubleVDO(String key) {
-        return vdoContent.getDouble(key);
+        try {
+            return vdoContent.getDouble(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting double VDO: " + key, e);
+
+            return 0;
+        }
     }
 
     public void setDoubleVDO(String key, double value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting double VDO: " + key, e);
+        }
     }
 
     // String VDOs
 
     public String getStringVDO(String key) {
-        return vdoContent.getString(key);
+        try {
+            return vdoContent.getString(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting string VDO: " + key, e);
+
+            return null;
+        }
     }
 
     public void setStringVDO(String key, String value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting string VDO: " + key, e);
+        }
     }
 
     // Boolean VDOs
 
     public boolean getBooleanVDO(String key) {
-        return vdoContent.getBoolean(key);
+        try {
+            return vdoContent.getBoolean(key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting boolean VDO: " + key, e);
+
+            return false;
+        }
     }
 
     public void setBooleanVDO(String key, boolean value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting boolean VDO: " + key, e);
+        }
     }
 
     // Enum VDOs
 
     public <T extends Enum<T>> T getEnumVDO(String key, Class<T> enumClass) {
-        return vdoContent.getEnum(enumClass, key);
+        try {
+            return vdoContent.getEnum(enumClass, key);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting enum VDO: " + key, e);
+
+            return null;
+        }
     }
 
     public <T extends Enum<T>> void setEnumVDO(String key, T value) {
-        vdoContent.put(key, value);
+        try {
+            vdoContent.put(key, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting enum VDO: " + key, e);
+        }
     }
 
     // Array VDOs
 
     public ArrayVDO getArrayVDO(String key) {
-        return new ArrayVDO(vdoContent.getJSONArray(key));
+        try {
+            return new ArrayVDO(vdoContent.getJSONArray(key));
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting array VDO: " + key, e);
+
+            return null;
+        }
     }
 
     public void setArrayVDO(String key, ArrayVDO value) {
-        vdoContent.put(key, value.getContent());
+            try {
+                vdoContent.put(key, value.getContent());
+            } catch (Exception e) {
+                Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting array VDO: " + key, e);
+            }
     }
 
     // Compound VDOs
 
     public CompoundVDO getCompoundVDO(String key) {
-        return new CompoundVDO(vdoContent.getJSONObject(key));
+        try {
+            return new CompoundVDO(vdoContent.getJSONObject(key));
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting compound VDO: " + key, e);
+
+            return null;
+        }
     }
 
     public void setCompoundVDO(String key, CompoundVDO value) {
-        vdoContent.put(key, value.getContent());
+        try {
+            vdoContent.put(key, value.getContent());
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting compound VDO: " + key, e);
+        }
     }
 }

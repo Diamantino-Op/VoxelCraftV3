@@ -1,5 +1,7 @@
 package com.diamantino.voxelcraft.common.vdo;
 
+import com.badlogic.gdx.Gdx;
+import com.diamantino.voxelcraft.common.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,96 +47,190 @@ public class ArrayVDO {
      * @param index The index of the VDO object to remove.
      */
     public void removeVDOObject(int index) {
-        vdoContent.put(index, JSONObject.NULL);
+        try {
+            vdoContent.put(index, JSONObject.NULL);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error removing VDO: " + index, e);
+        }
     }
 
     // Int VDOs
 
     public int getIntVDO(int index) {
-        return vdoContent.getInt(index);
+        try {
+            return vdoContent.getInt(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting int VDO: " + index, e);
+
+            return 0;
+        }
     }
 
     public void setIntVDO(int index, int value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting int VDO: " + index, e);
+        }
     }
 
     // Long VDOs
 
     public long getLongVDO(int index) {
-        return vdoContent.getLong(index);
+        try {
+            return vdoContent.getLong(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting long VDO: " + index, e);
+
+            return 0;
+        }
     }
 
     public void setLongVDO(int index, long value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting long VDO: " + index, e);
+        }
     }
 
     // Float VDOs
 
     public float getFloatVDO(int index) {
-        return vdoContent.getFloat(index);
+        try {
+            return vdoContent.getFloat(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting float VDO: " + index, e);
+
+            return 0;
+        }
     }
 
     public void setFloatVDO(int index, float value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting float VDO: " + index, e);
+        }
     }
 
     // Double VDOs
 
     public double getDoubleVDO(int index) {
-        return vdoContent.getDouble(index);
+        try {
+            return vdoContent.getDouble(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting double VDO: " + index, e);
+
+            return 0;
+        }
     }
 
     public void setDoubleVDO(int index, double value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting double VDO: " + index, e);
+        }
     }
 
     // String VDOs
 
     public String getStringVDO(int index) {
-        return vdoContent.getString(index);
+        try {
+            return vdoContent.getString(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting string VDO: " + index, e);
+
+            return null;
+        }
     }
 
     public void setStringVDO(int index, String value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting string VDO: " + index, e);
+        }
     }
 
     // Boolean VDOs
 
     public boolean getBooleanVDO(int index) {
-        return vdoContent.getBoolean(index);
+        try {
+            return vdoContent.getBoolean(index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting boolean VDO: " + index, e);
+
+            return false;
+        }
     }
 
     public void setBooleanVDO(int index, boolean value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting boolean VDO: " + index, e);
+        }
     }
 
     // Enum VDOs
 
     public <T extends Enum<T>> T getEnumVDO(int index, Class<T> enumClass) {
-        return vdoContent.getEnum(enumClass, index);
+        try {
+            return vdoContent.getEnum(enumClass, index);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting enum VDO: " + index, e);
+
+            return null;
+        }
     }
 
     public <T extends Enum<T>> void setEnumVDO(int index, T value) {
-        vdoContent.put(index, value);
+        try {
+            vdoContent.put(index, value);
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting enum VDO: " + index, e);
+        }
     }
 
     // Array VDOs
 
     public ArrayVDO getArrayVDO(int index) {
-        return new ArrayVDO(vdoContent.getJSONArray(index));
+        try {
+            return new ArrayVDO(vdoContent.getJSONArray(index));
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting array VDO: " + index, e);
+
+            return null;
+        }
     }
 
     public void setArrayVDO(int index, ArrayVDO value) {
-        vdoContent.put(index, value.getContent());
+        try {
+            vdoContent.put(index, value.getContent());
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting array VDO: " + index, e);
+        }
     }
 
     // Compound VDOs
 
     public CompoundVDO getCompoundVDO(int index) {
-        return new CompoundVDO(vdoContent.getJSONObject(index));
+        try {
+            return new CompoundVDO(vdoContent.getJSONObject(index));
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error getting compound VDO: " + index, e);
+
+            return null;
+        }
     }
 
     public void setCompoundVDO(int index, CompoundVDO value) {
-        vdoContent.put(index, value.getContent());
+        try {
+            vdoContent.put(index, value.getContent());
+        } catch (Exception e) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag,"Error setting compound VDO: " + index, e);
+        }
     }
 }

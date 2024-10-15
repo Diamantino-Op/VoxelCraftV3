@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.entities.Entity;
+import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.common.world.World;
 
 import java.util.HashMap;
@@ -61,6 +62,18 @@ public abstract class Chunk {
     }
 
     /**
+     * Creates a new chunk.
+     *
+     * @param world The world the chunk is in.
+     * @param chunkPos The position of the chunk in the world.
+     */
+    public Chunk(World world, ChunkPos chunkPos, CompoundVDO compoundVDO) {
+        this(world, chunkPos);
+
+        this.loadChunkData(compoundVDO);
+    }
+
+    /**
      * Sets the block at the specified position in the chunk.
      * @param block The block to set.
      * @param localPos The position in the chunk.
@@ -102,5 +115,17 @@ public abstract class Chunk {
      */
     public ChunkBlockData getData() {
         return chunkBlockData;
+    }
+
+    public void loadChunkData(CompoundVDO compoundVDO) {
+        chunkBlockData.loadBlockData(compoundVDO.getCompoundVDO("blockData"));
+    }
+
+    public CompoundVDO saveChunkData() {
+        CompoundVDO compoundVDO = new CompoundVDO();
+
+        compoundVDO.setCompoundVDO("blockData", chunkBlockData.saveBlockData());
+
+        return compoundVDO;
     }
 }
