@@ -1,0 +1,19 @@
+{
+  "atlases": [
+    {
+      "name": "blocks",
+      "directory": "textures/blocks",
+      "size": "auto"
+    },
+    {
+      "name": "items",
+      "directory": "textures/items",
+      "size": "auto"
+    },
+    {
+      "name": "gui",
+      "directory": "textures/gui",
+      "size": "1024"
+    }
+  ]
+}

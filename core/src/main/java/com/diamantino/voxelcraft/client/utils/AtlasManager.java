@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
+import com.diamantino.voxelcraft.common.vdo.ArrayVDO;
+import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 
 import java.util.List;
 
@@ -35,7 +37,23 @@ public class AtlasManager {
      * Initialize the atlas manager.
      */
     public void init() {
-        initBlocks();
+        CompoundVDO atlasesVDO = new CompoundVDO();
+
+        atlasesVDO.parseVDO(Gdx.files.internal("assets/voxelcraft/atlases.json").readString());
+
+        ArrayVDO atlases = atlasesVDO.getArrayVDO("atlases");
+
+        for (int i = 0; i < atlases.getContent().length(); i++) {
+            CompoundVDO atlas = atlases.getCompoundVDO(i);
+
+            String name = atlas.getStringVDO("name");
+
+            if (name.equals("blocks")) {
+                initBlocks();
+            }
+        }
+
+
     }
 
     /**
