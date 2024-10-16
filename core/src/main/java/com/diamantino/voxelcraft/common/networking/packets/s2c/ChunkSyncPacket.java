@@ -48,23 +48,25 @@ public class ChunkSyncPacket extends BasePacket {
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {
             switch (buffer.readByte()) {
-                case 0 -> clientChunk.setLayer(new SingleBlockChunkLayer(clientChunk, Blocks.blocks.get(buffer.readShort())), y);
+                case 0 -> {
+                    int nameLength = buffer.readInt();
+                    clientChunk.setLayer(new SingleBlockChunkLayer(clientChunk, Blocks.blocks.get(buffer.readStringFromBuffer(nameLength)).getBlockInstance()), y);
+                }
+
                 case 1 -> {
                     ChunkLayer layer = new ChunkLayer(clientChunk);
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
-                            layer.setBlock(Blocks.blocks.get(buffer.readShort()), x, z);
+                            int nameLength = buffer.readInt();
+                            layer.setBlock(Blocks.blocks.get(buffer.readStringFromBuffer(nameLength)).getBlockInstance(), x, z);
                         }
                     }
 
                     clientChunk.setLayer(layer, y);
                 }
-                case 2 -> {
-                    clientChunk.setLayer(null, y);
 
-
-                }
+                default -> clientChunk.setLayer(null, y);
             }
         }
 
@@ -90,8 +92,8 @@ public class ChunkSyncPacket extends BasePacket {
             switch (layer) {
                 case SingleBlockChunkLayer sbcl -> {
                     buffer.writeByte(0);
-
-                    buffer.writeShort(sbcl.getBlock().id);
+                    buffer.writeInt(sbcl.getBlock().name.length());
+                    buffer.writeString(sbcl.getBlock().name);
                 }
 
                 case ChunkLayer chunkLayer -> {
@@ -99,7 +101,9 @@ public class ChunkSyncPacket extends BasePacket {
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
-                            buffer.writeShort(chunkLayer.getBlockId(x, z));
+                            String blockName = chunkLayer.getBlockName(x, z);
+                            buffer.writeInt(blockName.length());
+                            buffer.writeString(blockName);
                         }
                     }
                 }

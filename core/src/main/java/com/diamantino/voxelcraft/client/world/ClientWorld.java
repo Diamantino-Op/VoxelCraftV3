@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
 import com.diamantino.voxelcraft.client.utils.AtlasManager;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
+import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
+import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.WorldSettings;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
@@ -41,7 +43,13 @@ public class ClientWorld extends World {
     //TODO: Probably load the data.
     @Override
     public Chunk getChunkForSide(ChunkPos chunkPos) {
-        return new ClientChunk(this, chunkPos);
+        if (!chunkMap.containsKey(chunkPos)) {
+            chunkMap.put(chunkPos, new ClientChunk(this, chunkPos));
+
+            Packets.sendToServer(new RequestChunkPacket(chunkPos));
+        }
+
+        return chunkMap.get(chunkPos);
     }
 
     /**
