@@ -1,0 +1,9 @@
+{
+  "type": "nine-patch",
+  "ninePatch": {
+    "cutTop": 0,
+    "cutBottom": 0,
+    "cutLeft": 0,
+    "cutRight": 0
+  }
+}

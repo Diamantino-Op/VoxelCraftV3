@@ -3,17 +3,15 @@
     {
       "name": "blocks",
       "directory": "textures/blocks",
-      "size": "auto"
+      "size": -1
     },
     {
       "name": "items",
       "directory": "textures/items",
-      "size": "auto"
-    },
-    {
-      "name": "gui",
-      "directory": "textures/gui",
-      "size": "1024"
+      "size": -1
     }
+  ],
+  "textureLocations": [
+    "textures/gui"
   ]
 }

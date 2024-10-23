@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.blocks;
 
-import com.diamantino.voxelcraft.client.utils.AtlasManager;
+import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 /**
  * Block texture that uses the same texture for all faces.
@@ -20,7 +20,7 @@ public class SingleBlockTexture implements IBlockTexture {
      */
     // TODO: Get instance from VoxelCraftClient
     public SingleBlockTexture(String blockTexName) {
-        this.blockTexIndex = AtlasManager.getBlockTextureIndex(blockTexName);
+        this.blockTexIndex = TextureManager.getBlockTextureIndex(blockTexName);
     }
 
     /**

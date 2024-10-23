@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.blocks;
 
-import com.diamantino.voxelcraft.client.utils.AtlasManager;
+import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 /**
  * Block texture class with different texture for all sides.
@@ -49,12 +49,12 @@ public class BlockTexture implements IBlockTexture {
      * @param bottomTexName Name of the bottom texture.
      */
     public BlockTexture(String frontTexName, String backTexName, String rightTexName, String leftTexName, String topTexName, String bottomTexName) {
-        this.frontTexIndex = AtlasManager.getBlockTextureIndex(frontTexName);
-        this.backTexIndex = AtlasManager.getBlockTextureIndex(backTexName);
-        this.rightTexIndex = AtlasManager.getBlockTextureIndex(rightTexName);
-        this.leftTexIndex = AtlasManager.getBlockTextureIndex(leftTexName);
-        this.topTexIndex = AtlasManager.getBlockTextureIndex(topTexName);
-        this.bottomTexIndex = AtlasManager.getBlockTextureIndex(bottomTexName);
+        this.frontTexIndex = TextureManager.getBlockTextureIndex(frontTexName);
+        this.backTexIndex = TextureManager.getBlockTextureIndex(backTexName);
+        this.rightTexIndex = TextureManager.getBlockTextureIndex(rightTexName);
+        this.leftTexIndex = TextureManager.getBlockTextureIndex(leftTexName);
+        this.topTexIndex = TextureManager.getBlockTextureIndex(topTexName);
+        this.bottomTexIndex = TextureManager.getBlockTextureIndex(bottomTexName);
     }
 
     /**

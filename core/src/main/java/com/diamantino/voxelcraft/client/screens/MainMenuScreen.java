@@ -20,7 +20,7 @@ public class MainMenuScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        TextButton playButton = new TextButton("Play", game.skin);
+        TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle());
     }
 
     /**

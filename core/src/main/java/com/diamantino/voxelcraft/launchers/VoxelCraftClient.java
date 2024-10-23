@@ -1,18 +1,16 @@
 package com.diamantino.voxelcraft.launchers;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
-import com.diamantino.voxelcraft.client.screens.GameScreen;
 import com.diamantino.voxelcraft.client.screens.MainMenuScreen;
-import com.diamantino.voxelcraft.client.utils.AtlasManager;
+import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 public class VoxelCraftClient extends ApplicationAdapter {
-    private AtlasManager atlasManager;
+    private TextureManager textureManager;
     public SpriteBatch batch;
     public BitmapFont font;
 
@@ -32,8 +30,8 @@ public class VoxelCraftClient extends ApplicationAdapter {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        atlasManager = new AtlasManager();
-        atlasManager.init();
+        textureManager = new TextureManager();
+        textureManager.init();
 
         this.mainMenuScreen = new MainMenuScreen(this);
         this.mainMenuScreen.show();
@@ -60,7 +58,7 @@ public class VoxelCraftClient extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        atlasManager.dispose();
+        textureManager.dispose();
         mainMenuScreen.dispose();
     }
 }

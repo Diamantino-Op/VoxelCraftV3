@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Matrix4;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
-import com.diamantino.voxelcraft.client.utils.AtlasManager;
+import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
 import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
@@ -65,7 +65,7 @@ public class ClientWorld extends World {
         Gdx.gl.glFrontFace(GL20.GL_CW);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        AtlasManager.blockAtlasTexture.bind();
+        TextureManager.blockAtlasTexture.bind();
         Shaders.coreShader.bind();
         Shaders.coreShader.setUniformMatrix("u_projTrans", projMatrix);
         Shaders.coreShader.setUniformi("u_texture", 0);
