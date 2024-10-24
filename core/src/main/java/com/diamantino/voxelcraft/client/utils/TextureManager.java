@@ -24,10 +24,25 @@ import java.util.Map;
  * @author Diamantino
  */
 public class TextureManager {
+    /**
+     * The atlas map.
+     * Key: Atlas name.
+     * Value: TextureAtlas instance.
+     */
     public static Map<String, TextureAtlas> atlases = new HashMap<>();
 
-    public static Map<String, Disposable> graphicalObjects = new HashMap<>();
+    /**
+     * The graphical objects map.
+     * Key: Object name.
+     * Value: Object instance.
+     */
+    public static Map<String, Object> graphicalObjects = new HashMap<>();
 
+    /**
+     * The vcmetas map.
+     * Key: vcmeta name.
+     * Value: CompoundVDO instance.
+     */
     public static Map<String, CompoundVDO> vcmetas = new HashMap<>();
 
     /**
@@ -53,6 +68,12 @@ public class TextureManager {
         }
     }
 
+    /**
+     * Initialize the atlas.
+     * @param name Name of the atlas.
+     * @param size Size of the atlas.
+     * @param location Location of the textures.
+     */
     public void initAtlas(String name, int size, String location) {
         int tmpSize = size;
 
@@ -95,12 +116,18 @@ public class TextureManager {
         atlasPacker.dispose();
     }
 
+    /**
+     * Load the textures from the location.
+     * @param location The location of the textures.
+     */
     public void loadTextures(String location) {
         List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "png");
         List<FileHandle> vcmeta = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "vcmeta");
 
         for (FileHandle texture : textures) {
+            Texture tex = new Texture(texture);
 
+            graphicalObjects.put(texture.nameWithoutExtension(), tex);
         }
 
         for (FileHandle vcmetaFile : vcmeta) {
@@ -122,7 +149,9 @@ public class TextureManager {
                     int cutLeft = ninePatchVDO.getIntVDO("cutLeft");
                     int cutRight = ninePatchVDO.getIntVDO("cutRight");
 
-                    NinePatch ninePatch = new NinePatch((Texture) graphicalObjects, cutLeft, cutRight, cutTop, cutBottom);
+                    NinePatch ninePatch = new NinePatch((Texture) graphicalObjects.get(vcmetaName), cutLeft, cutRight, cutTop, cutBottom);
+
+                    graphicalObjects.put(vcmetaName, ninePatch);
                 }
             }
         }
@@ -136,8 +165,10 @@ public class TextureManager {
             atlas.dispose();
         }
 
-        for (Disposable object : graphicalObjects.values()) {
-            object.dispose();
+        for (Object object : graphicalObjects.values()) {
+            if (object instanceof Disposable disposable) {
+                disposable.dispose();
+            }
         }
     }
 
