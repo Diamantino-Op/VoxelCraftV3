@@ -20,7 +20,7 @@ public class SingleBlockTexture implements IBlockTexture {
      */
     // TODO: Get instance from VoxelCraftClient
     public SingleBlockTexture(String blockTexName) {
-        this.blockTexIndex = TextureManager.getBlockTextureIndex(blockTexName);
+        this.blockTexIndex = TextureManager.getBlockTextureIndex("blocks", blockTexName);
     }
 
     /**

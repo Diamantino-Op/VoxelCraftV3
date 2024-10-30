@@ -1,11 +1,9 @@
 package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
+import com.diamantino.voxelcraft.common.registration.Blocks;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
-import com.diamantino.voxelcraft.common.vdo.ArrayVDO;
-import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
-import org.json.JSONArray;
+import dev.ultreon.ubo.types.MapType;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -30,7 +28,7 @@ public class ChunkLayer implements IChunkLayer {
     /**
      * The blocks in this layer.
      */
-    private final short[] blocksInLayer = new short[blocksPerLayer];
+    private short[] blocksInLayer = new short[blocksPerLayer];
 
     /**
      * Creates a new chunk layer.
@@ -69,7 +67,7 @@ public class ChunkLayer implements IChunkLayer {
      * @param chunk The chunk this layer belongs to.
      * @param data The data to load the layer from.
      */
-    public ChunkLayer(Chunk chunk, CompoundVDO data) {
+    public ChunkLayer(Chunk chunk, MapType data) {
         this.chunk = chunk;
 
         loadLayerData(data);
@@ -152,15 +150,11 @@ public class ChunkLayer implements IChunkLayer {
     /**
      * Loads the layer data.
      *
-     * @param compoundVDO The compound VDO to load the data from.
+     * @param layerData The compound VDO to load the data from.
      */
     @Override
-    public void loadLayerData(CompoundVDO compoundVDO) {
-        ArrayVDO blocksVDO = compoundVDO.getArrayVDO("blocks");
-
-        for (int i = 0; i < blocksPerLayer; i++) {
-            blocksInLayer[i] = (short) blocksVDO.getIntVDO(i);
-        }
+    public void loadLayerData(MapType layerData) {
+        blocksInLayer = layerData.getShortArray("blocks");
     }
 
     /**
@@ -169,16 +163,11 @@ public class ChunkLayer implements IChunkLayer {
      * @return The compound VDO to save the data to.
      */
     @Override
-    public CompoundVDO saveLayerData() {
-        CompoundVDO layerVDO = new CompoundVDO();
-        ArrayVDO blocksVDO = new ArrayVDO();
+    public MapType saveLayerData() {
+        MapType layerData = new MapType();
 
-        for (int i = 0; i < blocksPerLayer; i++) {
-            blocksVDO.setIntVDO(i, blocksInLayer[i]);
-        }
+        layerData.putShortArray("blocks", blocksInLayer);
 
-        layerVDO.setArrayVDO("blocks", blocksVDO);
-
-        return layerVDO;
+        return layerData;
     }
 }

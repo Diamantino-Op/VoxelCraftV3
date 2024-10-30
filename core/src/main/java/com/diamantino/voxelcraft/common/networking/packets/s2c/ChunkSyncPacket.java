@@ -2,12 +2,10 @@ package com.diamantino.voxelcraft.common.networking.packets.s2c;
 
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
+import com.diamantino.voxelcraft.common.registration.Blocks;
 import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.world.chunk.*;
-
-import java.io.IOException;
 
 /**
  * Packet sent by the server to synchronize a chunk with the client.

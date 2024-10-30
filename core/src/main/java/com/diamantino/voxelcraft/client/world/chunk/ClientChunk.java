@@ -14,7 +14,7 @@ import com.diamantino.voxelcraft.client.shaders.Shaders;
 import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
+import com.diamantino.voxelcraft.common.registration.Blocks;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
@@ -120,7 +120,7 @@ public class ClientChunk extends Chunk {
     private int generateFaces(Block currBlock, int x, int y, int z, int currVertex) {
         // Front Face
         if ((world.getBlock(new BlockPos(x, y, z - 1)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x, y, z - 1)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getFrontTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getFrontTexIndex());
             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
@@ -133,7 +133,7 @@ public class ClientChunk extends Chunk {
 
         // Right Face
         if ((world.getBlock(new BlockPos(x + 1, y, z)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x + 1, y, z)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getRightTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getRightTexIndex());
             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
@@ -146,7 +146,7 @@ public class ClientChunk extends Chunk {
 
         // Back Face
         if ((world.getBlock(new BlockPos(x, y, z + 1)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x, y, z + 1)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getBackTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getBackTexIndex());
             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
@@ -159,7 +159,7 @@ public class ClientChunk extends Chunk {
 
         // Left Face
         if ((world.getBlock(new BlockPos(x - 1, y, z)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x - 1, y, z)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getLeftTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getLeftTexIndex());
             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
@@ -172,7 +172,7 @@ public class ClientChunk extends Chunk {
 
         // Top Face
         if ((world.getBlock(new BlockPos(x, y + 1, z)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x, y + 1, z)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getTopTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getTopTexIndex());
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
@@ -185,7 +185,7 @@ public class ClientChunk extends Chunk {
 
         // Bottom Face
         if ((world.getBlock(new BlockPos(x, y - 1, z)) == Blocks.air.getBlockInstance()) || (currBlock.renderType == RenderType.OPAQUE && world.getBlock(new BlockPos(x, y - 1, z)).renderType != RenderType.OPAQUE)) {
-            TextureRegion currFaceRegion = TextureManager.blockAtlas.getRegions().get(currBlock.texture.getBottomTexIndex());
+            TextureRegion currFaceRegion = TextureManager.atlases.get("blocks").getRegions().get(currBlock.texture.getBottomTexIndex());
             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV2()));
             builder.vertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU2(), currFaceRegion.getV()));
             builder.vertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f), null, null, new Vector2(currFaceRegion.getU(), currFaceRegion.getV()));

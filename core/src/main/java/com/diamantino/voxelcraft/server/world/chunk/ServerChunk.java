@@ -1,7 +1,7 @@
 package com.diamantino.voxelcraft.server.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
+import com.diamantino.voxelcraft.common.registration.Blocks;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
@@ -49,7 +49,7 @@ public class ServerChunk extends Chunk {
 
                 for (short i = worldY; i > 0; i--) {
                     // TODO: Diff blocks
-                    world.setBlock(Blocks.stone, new BlockPos(worldPos.x(), worldY, worldPos.z()));
+                    world.setBlock(Blocks.stone.getBlockInstance(), new BlockPos(worldPos.x(), worldY, worldPos.z()));
                 }
             }
         }

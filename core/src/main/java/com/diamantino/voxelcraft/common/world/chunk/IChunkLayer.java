@@ -2,6 +2,7 @@ package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
+import dev.ultreon.ubo.types.MapType;
 
 /**
  * Base interface for a chunk layer.
@@ -42,14 +43,14 @@ public interface IChunkLayer {
     /**
      * Loads the layer data.
      *
-     * @param compoundVDO The compound VDO to load the data from.
+     * @param layerData The compound VDO to load the data from.
      */
-    void loadLayerData(CompoundVDO compoundVDO);
+    void loadLayerData(MapType layerData);
 
     /**
      * Saves the layer data.
      *
      * @return The compound VDO to save the data to.
      */
-    CompoundVDO saveLayerData();
+    MapType saveLayerData();
 }

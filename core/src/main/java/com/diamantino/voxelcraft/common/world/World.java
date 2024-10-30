@@ -26,6 +26,11 @@ public abstract class World {
     public final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
 
     /**
+     * The map of dimensions in the world.
+     */
+    public final Map<String, Dimension> dimensionMap = new HashMap<>();
+
+    /**
      * The settings of the world.
      */
     public final WorldSettings settings;

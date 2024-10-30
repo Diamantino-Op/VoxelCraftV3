@@ -5,6 +5,10 @@ import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.vdo.ArrayVDO;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.common.world.World;
+import dev.ultreon.ubo.types.FloatArrayType;
+import dev.ultreon.ubo.types.MapType;
+
+import java.util.UUID;
 
 /**
  * Base class for all entities in the game.
@@ -30,7 +34,7 @@ public abstract class Entity {
     /**
      * The entity ID.
      */
-    public int entityId;
+    public UUID entityId;
 
     protected Entity(World world, BlockPos spawnLocation) {
         this.world = world;
@@ -41,16 +45,16 @@ public abstract class Entity {
     /**
      * Loads the entity data.
      *
-     * @param compoundVDO The data loaded from the chunk file.
+     * @param entityData The data loaded from the chunk file.
      */
-    public void loadData(CompoundVDO compoundVDO) {
-        ArrayVDO entityPosVDO = compoundVDO.getArrayVDO("entityPos");
-        this.entityPos = new Vector3(entityPosVDO.getFloatVDO(0), entityPosVDO.getFloatVDO(1), entityPosVDO.getFloatVDO(2));
+    public void loadData(MapType entityData) {
+        float[] entityPosArray = entityData.getFloatArray("entityPos");
+        this.entityPos = new Vector3(entityPosArray[0], entityPosArray[1], entityPosArray[2]);
 
-        ArrayVDO blockPosVDO = compoundVDO.getArrayVDO("blockPos");
-        this.blockPos = new BlockPos(blockPosVDO.getIntVDO(0), blockPosVDO.getIntVDO(1), blockPosVDO.getIntVDO(2));
+        int[] blockPosArray = entityData.getIntArray("blockPos");
+        this.blockPos = new BlockPos(blockPosArray[0], blockPosArray[1], blockPosArray[2]);
 
-        this.entityId = compoundVDO.getIntVDO("entityId");
+        this.entityId = entityData.getUUID("entityId");
     }
 
     /**
@@ -58,25 +62,25 @@ public abstract class Entity {
      *
      * @return The byte data that needs to be saved in the chunk.
      */
-    public CompoundVDO saveData() {
-        CompoundVDO compoundVDO = new CompoundVDO();
+    public MapType saveData() {
+        MapType entityData = new MapType();
 
-        ArrayVDO entityPosVDO = new ArrayVDO();
-        entityPosVDO.setFloatVDO(0, this.entityPos.x);
-        entityPosVDO.setFloatVDO(1, this.entityPos.y);
-        entityPosVDO.setFloatVDO(2, this.entityPos.z);
+        float[] entityPosArray = new float[3];
+        entityPosArray[0] = this.entityPos.x;
+        entityPosArray[1] = this.entityPos.y;
+        entityPosArray[2] = this.entityPos.z;
 
-        compoundVDO.setArrayVDO("entityPos", entityPosVDO);
+        entityData.putFloatArray("entityPos", entityPosArray);
 
-        ArrayVDO blockPosVDO = new ArrayVDO();
-        blockPosVDO.setIntVDO(0, this.blockPos.x());
-        blockPosVDO.setIntVDO(1, this.blockPos.y());
-        blockPosVDO.setIntVDO(2, this.blockPos.z());
+        int[] blockPosArray = new int[3];
+        blockPosArray[0] = this.blockPos.x();
+        blockPosArray[1] = this.blockPos.y();
+        blockPosArray[2] = this.blockPos.z();
 
-        compoundVDO.setArrayVDO("blockPos", blockPosVDO);
+        entityData.putIntArray("blockPos", blockPosArray);
 
-        compoundVDO.setIntVDO("entityId", this.entityId);
+        entityData.putUUID("entityId", this.entityId);
 
-        return compoundVDO;
+        return entityData;
     }
 }

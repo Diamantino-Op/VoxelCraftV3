@@ -3,10 +3,17 @@ package com.diamantino.voxelcraft.desktop;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.utils.Os;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
+import org.lwjgl.system.Configuration;
 
 public class DesktopLauncher {
     public static void main(String[] args) {
+        if (SharedLibraryLoader.os == Os.MacOsX) {
+            Configuration.GLFW_LIBRARY_NAME.set("glfw_async");
+        }
+
         createApplication();
     }
 
@@ -17,6 +24,7 @@ public class DesktopLauncher {
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         //configuration.setOpenGLEmulation();
+
         configuration.setTitle("VoxelCraft");
         configuration.useVsync(true);
         //// Limits FPS to the refresh rate of the currently active monitor.

@@ -8,4 +8,5 @@ dependencies {
   implementation "de.articdive:jnoise-pipeline:$jNoiseVersion"
   implementation "org.apache.commons:commons-lang3:$apacheCommonsVersion"
   implementation "org.json:json:$orgJsonVersion"
+  implementation "dev.ultreon:ubo:$uboVersion"
 }

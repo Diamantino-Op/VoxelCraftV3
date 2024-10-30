@@ -11,8 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
-import com.diamantino.voxelcraft.common.vdo.ArrayVDO;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,22 +50,20 @@ public class TextureManager {
      * Initialize the atlas manager.
      */
     public void init() {
-        CompoundVDO texturesVDO = new CompoundVDO();
+        JSONObject texturesVDO = new JSONObject(Gdx.files.internal("assets/voxelcraft/textures.json").readString());
 
-        texturesVDO.parseVDO(Gdx.files.internal("assets/voxelcraft/textures.json").readString());
+        JSONArray atlasesVDO = texturesVDO.getJSONArray("atlases");
 
-        ArrayVDO atlasesVDO = texturesVDO.getArrayVDO("atlases");
+        for (int i = 0; i < atlasesVDO.length(); i++) {
+            JSONObject atlasVDO = atlasesVDO.getJSONObject(i);
 
-        for (int i = 0; i < atlasesVDO.getContent().length(); i++) {
-            CompoundVDO atlasVDO = atlasesVDO.getCompoundVDO(i);
-
-            initAtlas(atlasVDO.getStringVDO("name"), atlasVDO.getIntVDO("size"), atlasVDO.getStringVDO("location"));
+            initAtlas(atlasVDO.getString("name"), atlasVDO.getInt("size"), atlasVDO.getString("location"));
         }
 
-        ArrayVDO textureLocationsVDO = texturesVDO.getArrayVDO("textureLocations");
+        JSONArray textureLocationsVDO = texturesVDO.getJSONArray("textureLocations");
 
-        for (int i = 0; i < textureLocationsVDO.getContent().length(); i++) {
-            loadTextures(textureLocationsVDO.getStringVDO(i));
+        for (int i = 0; i < textureLocationsVDO.length(); i++) {
+            loadTextures(textureLocationsVDO.getString(i));
         }
     }
 

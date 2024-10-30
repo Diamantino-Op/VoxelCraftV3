@@ -1,7 +1,9 @@
-package com.diamantino.voxelcraft.common.blocks;
+package com.diamantino.voxelcraft.common.registration;
 
 import com.diamantino.voxelcraft.client.rendering.RenderType;
-import com.diamantino.voxelcraft.common.registration.RegisteredBlock;
+import com.diamantino.voxelcraft.common.blocks.Block;
+import com.diamantino.voxelcraft.common.blocks.IBlockTexture;
+import com.diamantino.voxelcraft.common.blocks.SingleBlockTexture;
 
 import java.util.HashMap;
 import java.util.Map;

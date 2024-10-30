@@ -1,9 +1,9 @@
 package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
+import com.diamantino.voxelcraft.common.registration.Blocks;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
-import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
+import dev.ultreon.ubo.types.MapType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class SingleBlockChunkLayer implements IChunkLayer {
      * @param chunk The chunk this layer belongs to.
      * @param data The data to load the layer from.
      */
-    public SingleBlockChunkLayer(Chunk chunk, CompoundVDO data) {
+    public SingleBlockChunkLayer(Chunk chunk, MapType data) {
         this.chunk = chunk;
 
         loadLayerData(data);
@@ -124,11 +124,11 @@ public class SingleBlockChunkLayer implements IChunkLayer {
     /**
      * Loads the layer data.
      *
-     * @param compoundVDO The compound VDO to load the data from.
+     * @param layerData The compound VDO to load the data from.
      */
     @Override
-    public void loadLayerData(CompoundVDO compoundVDO) {
-        this.blockId = (short) compoundVDO.getIntVDO("blockId");
+    public void loadLayerData(MapType layerData) {
+        this.blockId = layerData.getShort("blockId");
     }
 
     /**
@@ -137,11 +137,11 @@ public class SingleBlockChunkLayer implements IChunkLayer {
      * @return The compound VDO to save the data to.
      */
     @Override
-    public CompoundVDO saveLayerData() {
-        CompoundVDO layerVDO = new CompoundVDO();
+    public MapType saveLayerData() {
+        MapType layerData = new MapType();
 
-        layerVDO.setIntVDO("blockId", this.blockId);
+        layerData.putShort("blockId", this.blockId);
 
-        return layerVDO;
+        return layerData;
     }
 }

@@ -2,10 +2,11 @@ package com.diamantino.voxelcraft.server.world;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.chunk.*;
+import dev.ultreon.ubo.DataIo;
+import dev.ultreon.ubo.types.MapType;
 
 import java.io.*;
 
@@ -57,35 +58,8 @@ public class WorldIOManager {
     public static void saveChunkBlockData(String worldName, ChunkPos chunkPos, Chunk chunk) {
         File chunkFile = new File(FileUtils.getVoxelCraftFolder() + "/Saves/" + worldName + "/Chunks/" + chunkPos.x() + "_" + chunkPos.y() + "_" + chunkPos.z() + ".vcc");
 
-        try (FileOutputStream outputStream = new FileOutputStream(chunkFile, false)) {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-
-            for (byte y = 0; y < Chunk.sizeY; y++) {
-                IChunkLayer layer = chunk.getLayer(y);
-
-                if (layer instanceof SingleBlockChunkLayer sbcl) {
-                    try (DataOutputStream stream = new DataOutputStream(byteStream)) {
-                        stream.writeBoolean(true);
-                        stream.writeShort(sbcl.getBlock().id);
-                    } catch (IOException e) {
-                        Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "Failed to save single block chunk layer at y: " + y + " in chunk: " + chunkPos.x() + ", " + chunkPos.y() + ", " + chunkPos.z());
-                    }
-                } else if (layer instanceof ChunkLayer cl) {
-                    try (DataOutputStream stream = new DataOutputStream(byteStream)) {
-                        stream.writeBoolean(false);
-
-                        for (byte x = 0; x < Chunk.sizeX; x++) {
-                            for (byte z = 0; z < Chunk.sizeZ; z++) {
-                                stream.writeShort(cl.getBlockId(x, z));
-                            }
-                        }
-                    } catch (IOException e) {
-                        Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "Failed to save chunk layer at y: " + y + " in chunk: " + chunkPos.x() + ", " + chunkPos.y() + ", " + chunkPos.z());
-                    }
-                }
-            }
-
-            outputStream.write(byteStream.toByteArray());
+        try {
+            DataIo.writeCompressed(chunk.saveChunkData(), chunkFile);
         } catch (IOException e) {
             Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "Failed to save chunk: " + chunkPos.x() + ", " + chunkPos.y() + ", " + chunkPos.z());
         }
@@ -105,24 +79,8 @@ public class WorldIOManager {
             return false;
         }
 
-        try (FileInputStream inputStream = new FileInputStream(chunkFile)) {
-            ByteArrayInputStream byteStream = new ByteArrayInputStream(inputStream.readAllBytes());
-
-            for (byte y = 0; y < Chunk.sizeY; y++) {
-                try (DataInputStream stream = new DataInputStream(byteStream)) {
-                    if (stream.readBoolean()) {
-                        chunk.setLayer(new SingleBlockChunkLayer(chunk, Blocks.blocks.get(stream.readShort())), y);
-                    } else {
-                        ChunkLayer layer = new ChunkLayer(chunk);
-
-                        for (byte x = 0; x < Chunk.sizeX; x++) {
-                            for (byte z = 0; z < Chunk.sizeZ; z++) {
-                                layer.setBlock(Blocks.blocks.get(stream.readShort()), x, z) ;
-                            }
-                        }
-                    }
-                }
-            }
+        try {
+            chunk.loadChunkData(DataIo.readCompressed(chunkFile, new MapType()));
         } catch (IOException e) {
             Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "Failed to load chunk: " + chunkPos.x() + ", " + chunkPos.y() + ", " + chunkPos.z());
 

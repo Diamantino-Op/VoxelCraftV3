@@ -6,6 +6,7 @@ import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.entities.Entity;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.common.world.World;
+import dev.ultreon.ubo.types.MapType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,10 +68,10 @@ public abstract class Chunk {
      * @param world The world the chunk is in.
      * @param chunkPos The position of the chunk in the world.
      */
-    public Chunk(World world, ChunkPos chunkPos, CompoundVDO compoundVDO) {
+    public Chunk(World world, ChunkPos chunkPos, MapType chunkData) {
         this(world, chunkPos);
 
-        this.loadChunkData(compoundVDO);
+        this.loadChunkData(chunkData);
     }
 
     /**
@@ -117,15 +118,15 @@ public abstract class Chunk {
         return chunkBlockData;
     }
 
-    public void loadChunkData(CompoundVDO compoundVDO) {
-        chunkBlockData.loadBlockData(compoundVDO.getCompoundVDO("blockData"));
+    public void loadChunkData(MapType chunkData) {
+        chunkBlockData.loadBlockData(chunkData.getMap("blockData"));
     }
 
-    public CompoundVDO saveChunkData() {
-        CompoundVDO compoundVDO = new CompoundVDO();
+    public MapType saveChunkData() {
+        MapType chunkData = new MapType();
 
-        compoundVDO.setCompoundVDO("blockData", chunkBlockData.saveBlockData());
+        chunkData.put("blockData", chunkBlockData.saveBlockData());
 
-        return compoundVDO;
+        return chunkData;
     }
 }

@@ -49,12 +49,12 @@ public class BlockTexture implements IBlockTexture {
      * @param bottomTexName Name of the bottom texture.
      */
     public BlockTexture(String frontTexName, String backTexName, String rightTexName, String leftTexName, String topTexName, String bottomTexName) {
-        this.frontTexIndex = TextureManager.getBlockTextureIndex(frontTexName);
-        this.backTexIndex = TextureManager.getBlockTextureIndex(backTexName);
-        this.rightTexIndex = TextureManager.getBlockTextureIndex(rightTexName);
-        this.leftTexIndex = TextureManager.getBlockTextureIndex(leftTexName);
-        this.topTexIndex = TextureManager.getBlockTextureIndex(topTexName);
-        this.bottomTexIndex = TextureManager.getBlockTextureIndex(bottomTexName);
+        this.frontTexIndex = TextureManager.getBlockTextureIndex("blocks", frontTexName);
+        this.backTexIndex = TextureManager.getBlockTextureIndex("blocks", backTexName);
+        this.rightTexIndex = TextureManager.getBlockTextureIndex("blocks", rightTexName);
+        this.leftTexIndex = TextureManager.getBlockTextureIndex("blocks", leftTexName);
+        this.topTexIndex = TextureManager.getBlockTextureIndex("blocks", topTexName);
+        this.bottomTexIndex = TextureManager.getBlockTextureIndex("blocks", bottomTexName);
     }
 
     /**

@@ -2,9 +2,8 @@ package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
-import com.diamantino.voxelcraft.common.blocks.Blocks;
-import com.diamantino.voxelcraft.common.vdo.ArrayVDO;
-import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
+import com.diamantino.voxelcraft.common.registration.Blocks;
+import dev.ultreon.ubo.types.MapType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -165,29 +164,27 @@ public class ChunkBlockData {
     /**
      * Loads the block data.
      *
-     * @param compoundVDO The compound VDO loaded from the chunk file.
+     * @param chunkBlockData The compound VDO loaded from the chunk file.
      */
-    public void loadBlockData(CompoundVDO compoundVDO) {
-        CompoundVDO blockMapVDO = compoundVDO.getCompoundVDO("blockMap");
-        ArrayVDO mapKeys = blockMapVDO.getArrayVDO("keys");
-        ArrayVDO mapValues = blockMapVDO.getArrayVDO("values");
+    public void loadBlockData(MapType chunkBlockData) {
+        MapType blockDictionaryMap = chunkBlockData.getMap("blockMap");
+        short[] mapKeys = blockDictionaryMap.getShortArray("keys");
 
-        for (int i = 0; i < mapKeys.getContent().length(); i++) {
-            short key = (short) mapKeys.getIntVDO(i);
-            String value = mapValues.getStringVDO(i);
-            blockMap.put(key, value);
+        for (int i = 0; i < mapKeys.length; i++) {
+            String value = blockDictionaryMap.getString("value" + i);
+            blockMap.put(mapKeys[i], value);
         }
 
-        ArrayVDO layers = compoundVDO.getArrayVDO("layers");
+        MapType layers = chunkBlockData.getMap("layers");
 
-        for (int i = 0; i < layers.getContent().length(); i++) {
-            CompoundVDO layerVDO = layers.getCompoundVDO(i);
-            String layerType = layerVDO.getStringVDO("type");
+        for (int i = 0; i < layers.keys().size(); i++) {
+            MapType blockLayerData = layers.getMap("layer" + i);
+            String layerType = blockLayerData.getString("type");
 
             if (layerType.equals("single")) {
-                chunkLayers[i] = new SingleBlockChunkLayer(this.chunk, layerVDO);
+                chunkLayers[i] = new SingleBlockChunkLayer(this.chunk, blockLayerData);
             } else {
-                chunkLayers[i] = new ChunkLayer(this.chunk, layerVDO);
+                chunkLayers[i] = new ChunkLayer(this.chunk, blockLayerData);
             }
         }
     }
@@ -197,46 +194,47 @@ public class ChunkBlockData {
      *
      * @return The compound VDO that needs to be saved in the chunk.
      */
-    public CompoundVDO saveBlockData() {
-        CompoundVDO blockDataVDO = new CompoundVDO();
+    public MapType saveBlockData() {
+        MapType layerData = new MapType();
 
-        CompoundVDO blockMapVDO = new CompoundVDO();
-        ArrayVDO mapKeys = new ArrayVDO();
-        ArrayVDO mapValues = new ArrayVDO();
+        MapType blockDictionaryMap = new MapType();
+
+        //TODO: Might create problems.
+        short[] mapKeys = new short[blockMap.size()];
+        System.arraycopy(blockMap.keySet().toArray(), 0, mapKeys, 0, blockMap.size());
+
+        blockDictionaryMap.putShortArray("keys", mapKeys);
 
         int i = 0;
         for (Map.Entry<Short, String> entry : blockMap.entrySet()) {
-            mapKeys.setIntVDO(i, entry.getKey());
-            mapValues.setStringVDO(i, entry.getValue());
+            blockDictionaryMap.putString("value" + i, entry.getValue());
 
             i++;
         }
 
-        blockMapVDO.setArrayVDO("keys", mapKeys);
-        blockMapVDO.setArrayVDO("values", mapValues);
-        blockDataVDO.setCompoundVDO("blockMap", blockMapVDO);
+        layerData.put("blockMap", blockDictionaryMap);
 
-        ArrayVDO layers = new ArrayVDO();
+        MapType layers = new MapType();
 
         for (int j = 0; j < chunkLayers.length; j++) {
             IChunkLayer layer = chunkLayers[j];
-            CompoundVDO layerVDO = new CompoundVDO();
+            MapType blockLayerData = new MapType();
 
             if (layer instanceof SingleBlockChunkLayer singleLayer) {
-                layerVDO.setStringVDO("type", "single");
+                blockLayerData = singleLayer.saveLayerData();
 
-                layerVDO = singleLayer.saveLayerData();
+                blockLayerData.putString("type", "single");
             } else if (layer instanceof ChunkLayer chunkLayer) {
-                layerVDO.setStringVDO("type", "multi");
+                blockLayerData = chunkLayer.saveLayerData();
 
-                layerVDO = chunkLayer.saveLayerData();
+                blockLayerData.putString("type", "multi");
             }
 
-            layers.setCompoundVDO(j, layerVDO);
+            layers.put("layer" + j, blockLayerData);
         }
 
-        blockDataVDO.setArrayVDO("layers", layers);
+        layerData.put("layers", layers);
 
-        return blockDataVDO;
+        return layerData;
     }
 }
