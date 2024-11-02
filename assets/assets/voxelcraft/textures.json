@@ -2,12 +2,12 @@
   "atlases": [
     {
       "name": "blocks",
-      "directory": "textures/blocks",
+      "location": "textures/blocks",
       "size": -1
     },
     {
       "name": "items",
-      "directory": "textures/items",
+      "location": "textures/items",
       "size": -1
     }
   ],

@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
 import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
+import com.diamantino.voxelcraft.common.Constants;
+import com.diamantino.voxelcraft.common.blocks.Block;
+import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
 import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.world.World;
@@ -21,6 +24,11 @@ import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
  */
 public class ClientWorld extends World {
     /**
+     * The name of the dimension the player is currently in.
+     */
+    public String currentDimension = "";
+
+    /**
      * Client world class constructor.
      * @param settings The settings of the world.
      */
@@ -29,28 +37,29 @@ public class ClientWorld extends World {
     }
 
     /**
-     * @param chunkPos The position of the chunk.
-     * @return The chunk instance at the selected position.
+     * Check if the dimension exists.
+     * @param dimensionName The name of the dimension.
      */
-    @Override
-    public Chunk getChunkForPos(ChunkPos chunkPos) {
-        return super.getChunkForPos(chunkPos);
+    private boolean checkDimension(String dimensionName) {
+        if (!dimensionMap.containsKey(dimensionName)) {
+            Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "Dimension " + dimensionName + " does not exist.");
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * @param chunkPos The position of the chunk.
-     * @return A new client chunk instance.
+     * The method to get the block for a position.
+     * @param pos The position of the block.
+     * @return The block for the position.
      */
-    //TODO: Probably load the data.
-    @Override
-    public Chunk getChunkForSide(ChunkPos chunkPos) {
-        if (!chunkMap.containsKey(chunkPos)) {
-            chunkMap.put(chunkPos, new ClientChunk(this, chunkPos));
+    public Block getBlock(BlockPos pos) {
+        if (!checkDimension(currentDimension))
+            return null;
 
-            Packets.sendToServer(new RequestChunkPacket(chunkPos));
-        }
-
-        return chunkMap.get(chunkPos);
+        return dimensionMap.get(currentDimension).getBlock(pos);
     }
 
     /**
@@ -58,6 +67,9 @@ public class ClientWorld extends World {
      * @param projMatrix The Matrix4 on which to render the chunks.
      */
     public void renderChunks(Matrix4 projMatrix) {
+        if (!checkDimension(currentDimension))
+            return;
+
         Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
@@ -71,7 +83,7 @@ public class ClientWorld extends World {
         Shaders.coreShader.setUniformMatrix("u_projTrans", projMatrix);
         Shaders.coreShader.setUniformi("u_texture", 0);
 
-        chunkMap.forEach((pos, chunk) -> {
+        dimensionMap.get(currentDimension).chunkMap.forEach((pos, chunk) -> {
             if (chunk instanceof ClientChunk clientChunk)
                 clientChunk.render();
         });
@@ -80,8 +92,11 @@ public class ClientWorld extends World {
     /**
      * Dispose the chunks in the ChunkMap.
      */
-    public void dispose() {
-        chunkMap.forEach((chunkPos, chunk) -> {
+    public void dispose(String dimensionName) {
+        if (!checkDimension(currentDimension))
+            return;
+
+        dimensionMap.get(dimensionName).chunkMap.forEach((chunkPos, chunk) -> {
             if (chunk instanceof ClientChunk clientChunk)
                 clientChunk.dispose();
         });

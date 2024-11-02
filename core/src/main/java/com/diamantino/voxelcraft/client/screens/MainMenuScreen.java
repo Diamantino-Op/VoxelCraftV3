@@ -5,22 +5,61 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
 public class MainMenuScreen implements Screen {
     private final VoxelCraftClient game;
 
+    private Stage stage;
+
     private final OrthographicCamera camera;
+
+    private NinePatchDrawable buttonDrawable;
+    private NinePatchDrawable buttonHoverDrawable;
+    private NinePatchDrawable buttonPressedDrawable;
 
     public MainMenuScreen(VoxelCraftClient game) {
         this.game = game;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle());
+        draw(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    public void draw(int width, int height) {
+        if (stage != null) {
+            stage.clear();
+            stage.dispose();
+        }
+
+        camera.setToOrtho(false, width, height);
+
+        stage = new Stage(new ScreenViewport(camera));
+        Gdx.input.setInputProcessor(stage);
+
+        this.buttonDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button"));
+        this.buttonHoverDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_hover"));
+        this.buttonPressedDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_pressed"));
+
+        TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle(this.buttonDrawable, this.buttonHoverDrawable, this.buttonPressedDrawable, game.font));
+        playButton.setPosition(100, 100);
+        playButton.setTransform(true);
+        playButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        stage.addActor(playButton);
     }
 
     /**
@@ -31,10 +70,6 @@ public class MainMenuScreen implements Screen {
         ScreenUtils.clear(0, 0, 1, 1);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-
-        game.batch.begin();
-
     }
 
     /**
@@ -44,7 +79,10 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(0, 0, 1, 1, true);
 
+        stage.act(delta);
+        stage.draw();
     }
 
     /**
@@ -86,6 +124,6 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }

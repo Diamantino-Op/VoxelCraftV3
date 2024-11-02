@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
@@ -79,6 +80,11 @@ public class TextureManager {
         //TODO: Make compatible with mods
         List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "png");
         List<FileHandle> vcmeta = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "vcmeta");
+
+        if (textures.isEmpty()) {
+            Gdx.app.error(Constants.errorLogTag, "No textures found in the location: " + location);
+            return;
+        }
 
         int additionalSpace = 0;
 

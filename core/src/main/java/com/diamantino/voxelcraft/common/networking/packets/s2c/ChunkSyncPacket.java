@@ -19,11 +19,16 @@ public class ChunkSyncPacket extends BasePacket {
     private final Chunk chunk;
 
     /**
+     * Name of the dimension.
+     */
+    private String dimName;
+
+    /**
      * Default constructor.
-     *
+     * @param dimName Name of the dimension.
      * @param chunk Chunk to synchronize with the client.
      */
-    public ChunkSyncPacket(Chunk chunk) {
+    public ChunkSyncPacket(String dimName, Chunk chunk) {
         this.chunk = chunk;
     }
 
@@ -40,8 +45,10 @@ public class ChunkSyncPacket extends BasePacket {
         int chunkY = buffer.readInt();
         int chunkZ = buffer.readInt();
 
+        this.dimName = buffer.readStringFromBuffer(buffer.readInt());
+
         // Get chunk
-        ClientChunk clientChunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(new ChunkPos(chunkX, chunkY, chunkZ));
+        ClientChunk clientChunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(this.dimName, new ChunkPos(chunkX, chunkY, chunkZ));
 
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {
@@ -82,6 +89,9 @@ public class ChunkSyncPacket extends BasePacket {
         buffer.writeInt(chunk.chunkPos.x());
         buffer.writeInt(chunk.chunkPos.y());
         buffer.writeInt(chunk.chunkPos.z());
+
+        buffer.writeInt(dimName.length());
+        buffer.writeString(dimName);
 
         // Write Layers
         for (byte y = 0; y < Chunk.sizeY; y++) {

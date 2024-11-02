@@ -21,12 +21,18 @@ public class RequestChunkPacket extends BasePacket {
     private ChunkPos chunkPos;
 
     /**
+     * The name of the dimension.
+     */
+    private String dimName;
+
+    /**
      * Creates a new RequestChunkPacket.
-     *
+     * @param dimName The name of the dimension.
      * @param chunkPos The position of the chunk requested.
      */
-    public RequestChunkPacket(ChunkPos chunkPos) {
+    public RequestChunkPacket(String dimName, ChunkPos chunkPos) {
         this.chunkPos = chunkPos;
+        this.dimName = dimName;
     }
 
     /**
@@ -38,7 +44,9 @@ public class RequestChunkPacket extends BasePacket {
     @Override
     public void readPacketData(String senderName, PacketBuffer buffer) throws IOException {
         this.chunkPos = new ChunkPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
-        Packets.sendToPlayer(senderName, new ChunkSyncPacket(ServerInstance.instance.world.getChunkForPos(chunkPos)));
+        this.dimName = buffer.readStringFromBuffer(buffer.readInt());
+
+        Packets.sendToPlayer(senderName, new ChunkSyncPacket(this.dimName, ServerInstance.instance.world.getChunkForPos(this.dimName, chunkPos)));
     }
 
     /**
@@ -51,5 +59,7 @@ public class RequestChunkPacket extends BasePacket {
         buffer.writeInt(chunkPos.x());
         buffer.writeInt(chunkPos.y());
         buffer.writeInt(chunkPos.z());
+        buffer.writeInt(dimName.length());
+        buffer.writeString(dimName);
     }
 }

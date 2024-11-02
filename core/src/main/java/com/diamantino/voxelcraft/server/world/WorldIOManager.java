@@ -21,13 +21,13 @@ public class WorldIOManager {
      * @param world The world to save.
      */
     public static void saveWorld(World world) {
-        world.chunkMap.forEach((chunkPos, chunk) -> {
-            saveChunkBlockData(world.settings.name(), chunkPos, chunk);
+        world.dimensionMap.forEach((dimensionName, dimension) -> dimension.chunkMap.forEach((chunkPos, chunk) -> {
+            saveChunkBlockData(world.settings.name(), dimensionName, chunkPos, chunk);
 
             chunk.entityMap.forEach((entityPos, entity) -> {
 
             });
-        });
+        }));
     }
 
     //TODO: Fix
@@ -52,11 +52,12 @@ public class WorldIOManager {
     /**
      * Saves the block data of a chunk to the disk.
      * @param worldName The name of the world.
+     * @param dimName The name of the dimension.
      * @param chunkPos The position of the chunk.
      * @param chunk The chunk to save.
      */
-    public static void saveChunkBlockData(String worldName, ChunkPos chunkPos, Chunk chunk) {
-        File chunkFile = new File(FileUtils.getVoxelCraftFolder() + "/Saves/" + worldName + "/Chunks/" + chunkPos.x() + "_" + chunkPos.y() + "_" + chunkPos.z() + ".vcc");
+    public static void saveChunkBlockData(String worldName, String dimName, ChunkPos chunkPos, Chunk chunk) {
+        File chunkFile = new File(FileUtils.getVoxelCraftFolder() + "/Saves/" + worldName + "/" + dimName + "/Chunks/" + chunkPos.x() + "_" + chunkPos.y() + "_" + chunkPos.z() + ".vcc");
 
         try {
             DataIo.writeCompressed(chunk.saveChunkData(), chunkFile);

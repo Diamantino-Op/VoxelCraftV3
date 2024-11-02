@@ -11,7 +11,6 @@ import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 public class VoxelCraftClient extends ApplicationAdapter {
     private TextureManager textureManager;
-    public SpriteBatch batch;
     public BitmapFont font;
 
     private MainMenuScreen mainMenuScreen;
@@ -27,7 +26,6 @@ public class VoxelCraftClient extends ApplicationAdapter {
     public void create() {
         Gdx.app.setLogLevel(logLevel);
 
-        batch = new SpriteBatch();
         font = new BitmapFont();
 
         textureManager = new TextureManager();

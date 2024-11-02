@@ -21,11 +21,6 @@ import java.util.Map;
  */
 public abstract class World {
     /**
-     * The map of chunks in the world.
-     */
-    public final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
-
-    /**
      * The map of dimensions in the world.
      */
     public final Map<String, Dimension> dimensionMap = new HashMap<>();
@@ -51,22 +46,11 @@ public abstract class World {
 
     /**
      * The method to get the chunk position for a block position.
+     * @param dimensionName The name of the dimension.
+     * @return The chunk position for the block position.
      */
-    public ChunkPos getChunkPosForBlockPos(BlockPos blockPos) {
-        int chunkX = blockPos.x() / Chunk.sizeX;
-        int chunkY = blockPos.y() / Chunk.sizeY;
-        int chunkZ = blockPos.z() / Chunk.sizeZ;
-
-        return new ChunkPos(chunkX, chunkY, chunkZ);
-    }
-
-    /**
-     * The method to get the chunk for a game side (Server or Client).
-     * @param pos The position of the chunk.
-     * @return The chunk for the side.
-     */
-    public Chunk getChunkForSide(ChunkPos pos) {
-        return null;
+    public ChunkPos getChunkPosForBlockPos(String dimensionName, BlockPos blockPos) {
+        return dimensionMap.get(dimensionName).getChunkPosForBlockPos(blockPos);
     }
 
     /**
@@ -90,51 +74,41 @@ public abstract class World {
 
     /**
      * The method to get the chunk for a position.
+     * @param dimensionName The name of the dimension.
      * @param chunkPos The position of the chunk.
      * @return The chunk for the position.
      */
-    public Chunk getChunkForPos(ChunkPos chunkPos) {
-        return chunkMap.containsKey(chunkPos) ? chunkMap.get(chunkPos) : chunkMap.put(chunkPos, getChunkForSide(chunkPos));
+    public Chunk getChunkForPos(String dimensionName, ChunkPos chunkPos) {
+        return dimensionMap.get(dimensionName).getChunkForPos(chunkPos);
     }
 
     /**
      * The method to get the chunk for a block position.
+     * @param dimensionName The name of the dimension.
      * @param blockPos The position of the block.
      * @return The chunk for the block position.
      */
-    public Chunk getChunkForBlockPos(BlockPos blockPos) {
-        return getChunkForPos(getChunkPosForBlockPos(blockPos));
+    public Chunk getChunkForBlockPos(String dimensionName, BlockPos blockPos) {
+        return getChunkForPos(dimensionName, getChunkPosForBlockPos(dimensionName, blockPos));
     }
 
     /**
      * The method to get the block for a position.
+     * @param dimensionName The name of the dimension.
      * @param pos The position of the block.
      * @return The block for the position.
      */
-    public Block getBlock(BlockPos pos) {
-        int x = pos.x() % Chunk.sizeX;
-        int y = pos.y() % Chunk.sizeY;
-        int z = pos.z() % Chunk.sizeZ;
-
-        return getChunkForBlockPos(pos).getBlockAt(new BlockPos(x, y, z));
+    public Block getBlock(String dimensionName, BlockPos pos) {
+        return dimensionMap.get(dimensionName).getBlock(pos);
     }
 
     /**
      * The method to set the block for a position.
+     * @param dimensionName The name of the dimension.
      * @param block The block to set.
      * @param pos The position of the block.
      */
-    public void setBlock(Block block, BlockPos pos) {
-        int x = pos.x() % Chunk.sizeX;
-        int y = pos.y() % Chunk.sizeY;
-        int z = pos.z() % Chunk.sizeZ;
-
-        getChunkForBlockPos(pos).setBlockAt(block, new BlockPos(x, y, z));
-
-        if (this instanceof ClientWorld) {
-            ((ClientChunk) getChunkForBlockPos(pos)).regenerateMesh();
-        } else if (this instanceof ServerWorld) {
-            ((ServerChunk) getChunkForBlockPos(pos)).sendSyncPacket();
-        }
+    public void setBlock(String dimensionName, Block block, BlockPos pos) {
+        dimensionMap.get(dimensionName).setBlock(block, pos);
     }
 }

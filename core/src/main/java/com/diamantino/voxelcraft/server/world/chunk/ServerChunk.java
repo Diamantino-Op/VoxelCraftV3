@@ -35,11 +35,11 @@ public class ServerChunk extends Chunk {
 
     /**
      * Generate the chunk blocks.
-     *
+     * @param dimName The dimension name.
      * @param noise The noise instance from world.
      * @param world The world instance.
      */
-    public void generate(JNoise noise, ServerWorld world) {
+    public void generate(String dimName, JNoise noise, ServerWorld world) {
         for (byte x = 0; x < Chunk.sizeX; x++) {
             for (byte z = 0; z < Chunk.sizeZ; z++) {
                 BlockPos worldPos = world.chunkPosToWorldPos(new BlockPos(x, 0, z), this.chunkPos);
@@ -49,7 +49,7 @@ public class ServerChunk extends Chunk {
 
                 for (short i = worldY; i > 0; i--) {
                     // TODO: Diff blocks
-                    world.setBlock(Blocks.stone.getBlockInstance(), new BlockPos(worldPos.x(), worldY, worldPos.z()));
+                    world.setBlock(dimName, Blocks.stone.getBlockInstance(), new BlockPos(worldPos.x(), worldY, worldPos.z()));
                 }
             }
         }
