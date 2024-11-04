@@ -31,10 +31,10 @@ public class MainMenuScreen implements Screen {
 
         camera = new OrthographicCamera();
 
-        draw(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        draw(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 1f);
     }
 
-    public void draw(int width, int height) {
+    public void draw(int width, int height, float guiScale) {
         if (stage != null) {
             stage.clear();
             stage.dispose();
@@ -45,16 +45,20 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport(camera));
         Gdx.input.setInputProcessor(stage);
 
+        // Buttons
         this.buttonDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button"));
         this.buttonHoverDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_hover"));
         this.buttonPressedDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_pressed"));
 
-        TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle(this.buttonDrawable, this.buttonHoverDrawable, this.buttonPressedDrawable, game.font));
-        playButton.setPosition(100, 100);
+        TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle(this.buttonDrawable, this.buttonPressedDrawable, this.buttonDrawable, game.font));
+        playButton.setSize(300f * guiScale, 30f * guiScale);
+        playButton.setPosition(Math.round(((float) width / 2) - (playButton.getWidth() / 2)), 100);
         playButton.setTransform(true);
         playButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+
+
                 return true;
             }
         });
@@ -92,7 +96,7 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-
+        draw(width, height, 1f);
     }
 
     /**
