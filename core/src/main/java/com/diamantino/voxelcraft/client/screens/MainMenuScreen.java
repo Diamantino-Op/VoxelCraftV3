@@ -59,7 +59,6 @@ public class MainMenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-
                 return true;
             }
         });
