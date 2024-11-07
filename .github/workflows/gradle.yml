@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   build:
@@ -37,5 +38,4 @@ jobs:
       - name: Build Server
         run: gradle build :server:publish
         env:
-          USER: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
