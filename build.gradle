@@ -52,8 +52,8 @@ subprojects {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/VoxelGames24/VoxelCraft")
         credentials {
-          username = new File(project.projectDir.getAbsolutePath() + "/.." + "/Creds/User").getText().replace("\n", "")
-          password = new File(project.projectDir.getAbsolutePath() + "/.." + "/Creds/Password").getText().replace("\n", "")
+          username = System.getenv("USER")
+          password = System.getenv("TOKEN")
         }
       }
     }
