@@ -31,11 +31,23 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Build Desktop
-        run: gradle build :desktop:publish
+        run: gradle build :desktop:build
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VoxelCraft Desktop
+          path: /home/runner/work/VoxelCraft/VoxelCraft/desktop/build/lib
+          overwrite: true
+
       - name: Build Server
-        run: gradle build :server:publish
+        run: gradle build :server:build
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+            name: VoxelCraft Server
+            path: /home/runner/work/VoxelCraft/VoxelCraft/server/build/lib
+            overwrite: true
