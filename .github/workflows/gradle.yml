@@ -30,8 +30,8 @@ jobs:
           cache-disabled: true
           gradle-version: "8.10.2"
 
-      - name: Build Desktop
-        run: gradle build :desktop:build
+      - name: Build All
+        run: gradle build
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -40,14 +40,11 @@ jobs:
           name: VoxelCraft Desktop
           path: /home/runner/work/VoxelCraft/VoxelCraft/desktop/build/libs
           overwrite: true
-
-      - name: Build Server
-        run: gradle build :server:build
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retention-days: 7
 
       - uses: actions/upload-artifact@v4
         with:
             name: VoxelCraft Server
             path: /home/runner/work/VoxelCraft/VoxelCraft/server/build/libs
             overwrite: true
+            retention-days: 7
