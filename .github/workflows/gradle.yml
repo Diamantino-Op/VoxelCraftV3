@@ -38,7 +38,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: VoxelCraft Desktop
-          path: /home/runner/work/VoxelCraft/VoxelCraft/desktop/build/lib
+          path: /home/runner/work/VoxelCraft/VoxelCraft/desktop/build/libs
           overwrite: true
 
       - name: Build Server
@@ -49,5 +49,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
             name: VoxelCraft Server
-            path: /home/runner/work/VoxelCraft/VoxelCraft/server/build/lib
+            path: /home/runner/work/VoxelCraft/VoxelCraft/server/build/libs
             overwrite: true
