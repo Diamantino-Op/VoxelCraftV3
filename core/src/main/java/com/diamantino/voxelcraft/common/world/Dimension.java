@@ -18,6 +18,11 @@ import de.articdive.jnoise.pipeline.JNoise;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Dimension class.
+ *
+ * @author Diamantino
+ */
 public class Dimension {
     /**
      * The world of the dimension.

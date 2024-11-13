@@ -5,10 +5,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -16,12 +18,18 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
+/**
+ * Main menu screen class.
+ *
+ * @author Diamantino
+ */
 public class MainMenuScreen implements Screen {
     private final VoxelCraftClient game;
 
     private Stage stage;
 
     private final OrthographicCamera camera;
+    private final ScreenViewport viewport;
 
     private NinePatchDrawable buttonDrawable;
     private NinePatchDrawable buttonHoverDrawable;
@@ -31,6 +39,8 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
+
+        viewport = new ScreenViewport(camera);
 
         draw(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 1f);
     }
@@ -43,8 +53,19 @@ public class MainMenuScreen implements Screen {
 
         camera.setToOrtho(false, width, height);
 
-        stage = new Stage(new ScreenViewport(camera));
+        viewport.update(width, height, true);
+
+        stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
+
+        float objectScale = (float) width / 1920;
+
+        // Images
+        Image titleImage = new Image((Texture) TextureManager.graphicalObjects.get("voxelcraft"));
+        titleImage.setSize(Math.round((1009 * guiScale) * objectScale), 155 * guiScale);
+        titleImage.setPosition(Math.round(((float) width / 2) - (titleImage.getWidth() / 2)), height - titleImage.getHeight() - 10);
+
+        stage.addActor(titleImage);
 
         // Buttons
         this.buttonDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button"));
@@ -52,7 +73,7 @@ public class MainMenuScreen implements Screen {
         this.buttonPressedDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_pressed"));
 
         TextButton playButton = new TextButton("Play", new TextButton.TextButtonStyle(this.buttonDrawable, this.buttonPressedDrawable, this.buttonDrawable, game.font));
-        playButton.setSize(300f * guiScale, 30f * guiScale);
+        playButton.setSize(Math.round((300f * guiScale) * objectScale), 30f * guiScale);
         playButton.setPosition(Math.round(((float) width / 2) - (playButton.getWidth() / 2)), 100);
         playButton.setTransform(true);
         playButton.addListener(new InputListener() {
