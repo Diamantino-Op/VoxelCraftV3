@@ -4,13 +4,18 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 public class LoadingScreen implements Screen {
@@ -30,6 +35,11 @@ public class LoadingScreen implements Screen {
      */
     private Map<String, String> tempAtlasTextures;
 
+    /**
+     *  List of atlases to load.
+     */
+    private List<String> atlasesList;
+
     public LoadingScreen(VoxelCraftClient game) {
         this.game = game;
 
@@ -41,10 +51,37 @@ public class LoadingScreen implements Screen {
     }
 
     private void startLoadingResources() {
-        game.assetManager.load();
+        //------------------- Stage 1 -------------------
+
+
+        //------------------- Stage 2 -------------------
+
+        //------------------- Stage 3 -------------------
+    }
+
+    private void loadTextures(String modId) {
+        JSONObject texturesVDO = new JSONObject(Gdx.files.internal("assets/" + modId + "/textures.json").readString());
+
+        JSONArray atlasesVDO = texturesVDO.getJSONArray("atlases");
+
+        for (int i = 0; i < atlasesVDO.length(); i++) {
+            JSONObject atlasVDO = atlasesVDO.getJSONObject(i);
+
+            initAtlas(atlasVDO.getString("name"), atlasVDO.getInt("size"), atlasVDO.getString("location"));
+        }
+
+        JSONArray textureLocationsVDO = texturesVDO.getJSONArray("textureLocations");
+
+        for (int i = 0; i < textureLocationsVDO.length(); i++) {
+            loadTextures(textureLocationsVDO.getString(i));
+        }
     }
 
     private void loadTextures() {
+        List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "png");
+    }
+
+    private void loadAtlases() {
 
     }
 
