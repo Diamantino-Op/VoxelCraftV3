@@ -6,17 +6,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.diamantino.voxelcraft.common.registration.Mods;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
+import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LoadingScreen implements Screen {
     private final VoxelCraftClient game;
@@ -33,12 +39,7 @@ public class LoadingScreen implements Screen {
      *  Key: Texture location.
      *  Value: Atlas ID.
      */
-    private Map<String, String> tempAtlasTextures;
-
-    /**
-     *  List of atlases to load.
-     */
-    private List<String> atlasesList;
+    private Map<String, JSONObject> modResources;
 
     public LoadingScreen(VoxelCraftClient game) {
         this.game = game;
@@ -51,29 +52,66 @@ public class LoadingScreen implements Screen {
     }
 
     private void startLoadingResources() {
-        //------------------- Stage 1 -------------------
+        loadResourcesFile("voxelcraft");
 
+        Mods.mods.forEach((modId, _) -> {
+            loadResourcesFile(modId);
+        });
+
+        //------------------- Stage 1 -------------------
+        modResources.forEach(this::loadTextures);
 
         //------------------- Stage 2 -------------------
+        modResources.forEach(this::loadAtlases);
 
         //------------------- Stage 3 -------------------
     }
 
-    private void loadTextures(String modId) {
-        JSONObject texturesVDO = new JSONObject(Gdx.files.internal("assets/" + modId + "/textures.json").readString());
+    private void loadResourcesFile(String modId) {
+        JSONObject resourcesFile = new JSONObject(Gdx.files.internal("assets/" + modId + "/resources.json").readString());
 
-        JSONArray atlasesVDO = texturesVDO.getJSONArray("atlases");
+        modResources.put(modId, resourcesFile);
+    }
 
-        for (int i = 0; i < atlasesVDO.length(); i++) {
-            JSONObject atlasVDO = atlasesVDO.getJSONObject(i);
-
-            initAtlas(atlasVDO.getString("name"), atlasVDO.getInt("size"), atlasVDO.getString("location"));
-        }
-
-        JSONArray textureLocationsVDO = texturesVDO.getJSONArray("textureLocations");
+    private void loadTextures(String modId, JSONObject modResources) {
+        JSONArray textureLocationsVDO = modResources.getJSONArray("textureLocations");
 
         for (int i = 0; i < textureLocationsVDO.length(); i++) {
-            loadTextures(textureLocationsVDO.getString(i));
+            String textureLoc = "assets" + File.separator + modId + File.separator + textureLocationsVDO.getString(i);
+
+            List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "png");
+            List<FileHandle> vcMetas = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "vcmeta");
+            List<String> vcMetasNames = vcMetas.stream().map(FileHandle::pathWithoutExtension).toList();
+
+            textures.forEach(texture -> {
+                String textureName = texture.pathWithoutExtension();
+
+                if (vcMetasNames.contains(textureName)) {
+                    String vcMetaPath = textureName + ".vcmeta";
+
+                    CompoundVDO metaVDO = new CompoundVDO();
+                    metaVDO.parseVDO(Gdx.files.internal(vcMetaPath).readString());
+
+                    game.assetManager.load(vcMetaPath, JSONObject.class);
+
+                    String typeVDO = metaVDO.getStringVDO("type");
+
+                    if (typeVDO.equals("nine-patch")) {
+                        CompoundVDO ninePatchVDO = metaVDO.getCompoundVDO("ninePatch");
+
+                        int cutTop = ninePatchVDO.getIntVDO("cutTop");
+                        int cutBottom = ninePatchVDO.getIntVDO("cutBottom");
+                        int cutLeft = ninePatchVDO.getIntVDO("cutLeft");
+                        int cutRight = ninePatchVDO.getIntVDO("cutRight");
+
+                        NinePatch ninePatch = new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
+
+                        game.assetManager.load(ninePatch, NinePatch.class);
+                    }
+                } else {
+                    game.assetManager.load(texture.path(), Texture.class);
+                }
+            });
         }
     }
 
@@ -81,8 +119,14 @@ public class LoadingScreen implements Screen {
         List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "png");
     }
 
-    private void loadAtlases() {
+    private void loadAtlases(String modId, JSONObject modResources) {
+        JSONArray atlasesVDO = modResources.getJSONArray("atlases");
 
+        for (int i = 0; i < atlasesVDO.length(); i++) {
+            JSONObject atlasVDO = atlasesVDO.getJSONObject(i);
+
+            initAtlas(atlasVDO.getString("name"), atlasVDO.getInt("size"), atlasVDO.getString("location"));
+        }
     }
 
     public void draw(int width, int height, float guiScale) {
