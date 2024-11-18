@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +42,9 @@ public class LoadingScreen implements Screen {
      *  Key: Texture location.
      *  Value: Atlas ID.
      */
-    private Map<String, JSONObject> modResources;
+    private final Map<String, JSONObject> modResources = new HashMap<>();
+
+    private final Map<String, PixmapPacker> atlasPackers = new HashMap<>();
 
     public LoadingScreen(VoxelCraftClient game) {
         this.game = game;
@@ -106,7 +111,7 @@ public class LoadingScreen implements Screen {
 
                         NinePatch ninePatch = new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
 
-                        game.assetManager.load(ninePatch, NinePatch.class);
+                        game.assetManager.load(texture.nameWithoutExtension(), ninePatch);
                     }
                 } else {
                     game.assetManager.load(texture.path(), Texture.class);
@@ -115,17 +120,23 @@ public class LoadingScreen implements Screen {
         }
     }
 
-    private void loadTextures() {
-        List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal("assets/voxelcraft/" + location), "png");
-    }
-
     private void loadAtlases(String modId, JSONObject modResources) {
         JSONArray atlasesVDO = modResources.getJSONArray("atlases");
 
         for (int i = 0; i < atlasesVDO.length(); i++) {
-            JSONObject atlasVDO = atlasesVDO.getJSONObject(i);
+            JSONObject atlasJson = atlasesVDO.getJSONObject(i);
 
-            initAtlas(atlasVDO.getString("name"), atlasVDO.getInt("size"), atlasVDO.getString("location"));
+            PixmapPacker packer = atlasPackers.computeIfAbsent(atlasJson.getString("name"), (_) -> {
+                int size = atlasJson.getInt("size");
+
+                return new PixmapPacker(size, size, Pixmap.Format.RGBA8888, 0, false);
+            });
+
+            String textureLoc = "assets" + File.separator + modId + File.separator + atlasJson.getString("location");
+
+            List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "png");
+            List<FileHandle> vcMetas = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "vcmeta");
+            List<String> vcMetasNames = vcMetas.stream().map(FileHandle::pathWithoutExtension).toList();
         }
     }
 
@@ -142,7 +153,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
-        loadingBar = new ProgressBar(0, 100, 1, false, );
+        loadingBar = new ProgressBar(0, 1, 0.1f, false, );
     }
 
     /**
@@ -208,5 +219,8 @@ public class LoadingScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+
+        modResources.clear();
+        atlasPackers.clear();
     }
 }

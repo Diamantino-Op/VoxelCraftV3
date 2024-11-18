@@ -5,14 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
+import com.diamantino.voxelcraft.client.resources.VoxelAssetManager;
 import com.diamantino.voxelcraft.client.screens.LoadingScreen;
 import com.diamantino.voxelcraft.client.screens.MainMenuScreen;
 import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 public class VoxelCraftClient extends ApplicationAdapter {
-    public final AssetManager assetManager;
+    public final VoxelAssetManager assetManager;
 
     private TextureManager textureManager;
     public BitmapFont font;
@@ -26,7 +26,7 @@ public class VoxelCraftClient extends ApplicationAdapter {
     public VoxelCraftClient(int logLevel) {
         this.logLevel = logLevel;
 
-        this.assetManager = new AssetManager();
+        this.assetManager = new VoxelAssetManager();
     }
 
     @Override

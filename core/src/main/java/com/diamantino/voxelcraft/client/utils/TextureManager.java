@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.PixmapPackerIO;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.diamantino.voxelcraft.common.Constants;
@@ -113,7 +114,10 @@ public class TextureManager {
 
         TextureAtlas atlas = atlasPacker.generateTextureAtlas(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest, true);
 
-        PixmapIO.writePNG(Gdx.files.absolute(FileUtils.getVoxelCraftFolder() + "/cache/" + name + ".png"), atlas.getTextures().first().getTextureData().consumePixmap());
+        PixmapPackerIO pixmapPackerIO = new PixmapPackerIO();
+        pixmapPackerIO.save(Gdx.files.absolute(FileUtils.getVoxelCraftFolder() + "/cache/" + name + ".atlas"), atlasPacker);
+
+        //PixmapIO.writePNG(Gdx.files.absolute(FileUtils.getVoxelCraftFolder() + "/cache/" + name + ".png"), atlas.getTextures().first().getTextureData().consumePixmap());
 
         atlases.put(name, atlas);
         graphicalObjects.put(name + "_atlas", atlas.getTextures().first());
