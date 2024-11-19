@@ -10,12 +10,16 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.PixmapPackerIO;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.registration.Mods;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
+import com.diamantino.voxelcraft.common.utils.MathUtils;
 import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 import org.json.JSONArray;
@@ -67,7 +71,9 @@ public class LoadingScreen implements Screen {
         modResources.forEach(this::loadTextures);
 
         //------------------- Stage 2 -------------------
-        modResources.forEach(this::loadAtlases);
+        modResources.forEach(this::saveAtlases);
+
+        loadAtlases();
 
         //------------------- Stage 3 -------------------
     }
@@ -120,24 +126,82 @@ public class LoadingScreen implements Screen {
         }
     }
 
-    private void loadAtlases(String modId, JSONObject modResources) {
+    /**
+     * Get the size of the width and height of the atlas in pixels.
+     * @return Size in pixels.
+     */
+    private int getAtlasSize(int textureSize, int files) {
+        int sideTex = MathUtils.getNearestPO2((int) Math.round(Math.sqrt(files)));
+
+        return sideTex * textureSize;
+    }
+
+    private void saveAtlases(String modId, JSONObject modResources) {
         JSONArray atlasesVDO = modResources.getJSONArray("atlases");
 
         for (int i = 0; i < atlasesVDO.length(); i++) {
             JSONObject atlasJson = atlasesVDO.getJSONObject(i);
 
-            PixmapPacker packer = atlasPackers.computeIfAbsent(atlasJson.getString("name"), (_) -> {
-                int size = atlasJson.getInt("size");
-
-                return new PixmapPacker(size, size, Pixmap.Format.RGBA8888, 0, false);
-            });
-
             String textureLoc = "assets" + File.separator + modId + File.separator + atlasJson.getString("location");
 
             List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "png");
             List<FileHandle> vcMetas = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "vcmeta");
-            List<String> vcMetasNames = vcMetas.stream().map(FileHandle::pathWithoutExtension).toList();
+
+            if (textures.isEmpty()) {
+                Gdx.app.error(Constants.errorLogTag, "No textures found in the location: " + textureLoc);
+
+                return;
+            }
+
+            PixmapPacker packer = atlasPackers.computeIfAbsent(atlasJson.getString("name"), (_) -> {
+                int additionalSpace = 0;
+
+                for (FileHandle metaFile : vcMetas) {
+                    CompoundVDO metaVDO = new CompoundVDO();
+                    metaVDO.parseVDO(Gdx.files.internal(metaFile.path()).readString());
+
+                    if (metaVDO.getContent().has("frames")) {
+                        additionalSpace += metaVDO.getIntVDO("frames");
+                    }
+                }
+
+                int size = atlasJson.getInt("size");
+
+                if (size == -1) {
+                    size = getAtlasSize(new Texture(textures.getFirst()).getWidth(), textures.size() + additionalSpace);
+                }
+
+                return new PixmapPacker(size, size, Pixmap.Format.RGBA8888, 0, false);
+            });
+
+            for (FileHandle file : textures) {
+                Pixmap pixmap = new Pixmap(file);
+
+                packer.pack(file.name().replace(".png", ""), pixmap);
+
+                pixmap.dispose();
+            }
         }
+    }
+
+    public void loadAtlases() {
+        atlasPackers.forEach((atlasName, packer) -> {
+            try {
+                String atlasLoc = FileUtils.getVoxelCraftFolder() + "/cache/" + atlasName + ".atlas";
+
+                PixmapPackerIO pixmapPackerIO = new PixmapPackerIO();
+
+                pixmapPackerIO.save(Gdx.files.absolute(atlasLoc), packer);
+
+                game.assetManager.load(atlasLoc, TextureAtlas.class);
+
+                packer.dispose();
+            } catch (Exception e) {
+                Gdx.app.error(Constants.errorLogTag, "Error while saving atlas: " + atlasName + ".atlas: " + e.getMessage());
+            }
+        });
+
+        atlasPackers.clear();
     }
 
     public void draw(int width, int height, float guiScale) {

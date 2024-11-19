@@ -188,7 +188,15 @@ public class TextureManager {
     private int getAtlasSize(int textureSize, int files) {
         int sideTex = MathUtils.getNearestPO2((int) Math.round(Math.sqrt(files)));
 
-        return sideTex * textureSize;
+        return sideTex * textureSize;/**
+         * Get the size of the width and height of the atlas in pixels.
+         * @return Size in pixels.
+         */
+        private int getAtlasSize(int textureSize, int files) {
+            int sideTex = MathUtils.getNearestPO2((int) Math.round(Math.sqrt(files)));
+
+            return sideTex * textureSize;
+        }
     }
 
     /**

@@ -19,6 +19,13 @@ public class VoxelAssetManager extends AssetManager {
         instances.put(fileName, instance);
     }
 
+    @Override
+    public synchronized <T> void load(String fileName, Class<T> type) {
+        ((VoxelFileHandleResolver) super.getFileHandleResolver()).setInternal(false);
+
+        super.load(fileName, type);
+    }
+
     public synchronized <T> void load(String fileName, Class<T> type, boolean internal) {
         ((VoxelFileHandleResolver) super.getFileHandleResolver()).setInternal(internal);
 
