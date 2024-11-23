@@ -5,17 +5,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix4;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
-import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
-import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
-import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.world.World;
 import com.diamantino.voxelcraft.common.world.WorldSettings;
-import com.diamantino.voxelcraft.common.world.chunk.Chunk;
-import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 
 /**
  * Client-side world class.

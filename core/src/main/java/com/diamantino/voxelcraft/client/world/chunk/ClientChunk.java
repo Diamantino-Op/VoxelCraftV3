@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.diamantino.voxelcraft.client.rendering.RenderType;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
-import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.client.world.ClientWorld;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;

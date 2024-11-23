@@ -2,14 +2,12 @@ package com.diamantino.voxelcraft.launchers;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.client.resources.VoxelAssetManager;
 import com.diamantino.voxelcraft.client.screens.LoadingScreen;
 import com.diamantino.voxelcraft.client.screens.MainMenuScreen;
-import com.diamantino.voxelcraft.client.utils.TextureManager;
 
 public class VoxelCraftClient extends ApplicationAdapter {
     public final VoxelAssetManager assetManager;

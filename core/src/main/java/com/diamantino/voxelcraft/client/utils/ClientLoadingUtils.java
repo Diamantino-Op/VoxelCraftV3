@@ -19,13 +19,33 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A utility class for client assets loading.
+ *
+ * @author Diamantino
+ */
 public class ClientLoadingUtils {
+    private ClientLoadingUtils() {}
+
+    /**
+     * Load the resources file of a mod.
+     *
+     * @param modResources Map of mod resources.
+     * @param modId Mod ID.
+     */
     public static void loadResourcesFile(Map<String, JSONObject> modResources, String modId) {
         JSONObject resourcesFile = new JSONObject(Gdx.files.internal("assets/" + modId + "/resources.json").readString());
 
         modResources.put(modId, resourcesFile);
     }
 
+    /**
+     * Load the textures of a mod.
+     *
+     * @param clientInstance Client instance.
+     * @param modId Mod ID.
+     * @param modResources Mod resources.
+     */
     public static void loadTextures(VoxelCraftClient clientInstance, String modId, JSONObject modResources) {
         JSONArray textureLocationsVDO = modResources.getJSONArray("textureLocations");
 
@@ -69,6 +89,10 @@ public class ClientLoadingUtils {
 
     /**
      * Get the size of the width and height of the atlas in pixels.
+     *
+     * @param textureSize Size of the textures in the atlas.
+     * @param files Number of files to be packed in the atlas.
+     *
      * @return Size in pixels.
      */
     private static int getAtlasSize(int textureSize, int files) {
@@ -77,6 +101,14 @@ public class ClientLoadingUtils {
         return sideTex * textureSize;
     }
 
+    /**
+     * Save the atlases of a mod.
+     *
+     * @param clientInstance Client instance.
+     * @param atlasPackers Map of atlas packers.
+     * @param modId Mod ID.
+     * @param modResources Mod resources.
+     */
     public static void saveAtlases(VoxelCraftClient clientInstance, Map<String, PixmapPacker> atlasPackers, String modId, JSONObject modResources) {
         JSONArray atlasesVDO = modResources.getJSONArray("atlases");
 
@@ -126,6 +158,12 @@ public class ClientLoadingUtils {
         }
     }
 
+    /**
+     * Load the atlases.
+     *
+     * @param clientInstance Client instance.
+     * @param atlasPackers Map of atlas packers.
+     */
     public static void loadAtlases(VoxelCraftClient clientInstance, Map<String, PixmapPacker> atlasPackers) {
         atlasPackers.forEach((atlasName, packer) -> {
             try {

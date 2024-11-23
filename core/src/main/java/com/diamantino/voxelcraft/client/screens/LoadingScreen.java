@@ -18,6 +18,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A screen that displays a loading bar while the game is loading resources.
+ *
+ * @author Diamantino
+ */
 public class LoadingScreen implements Screen {
     private final VoxelCraftClient game;
 
@@ -37,6 +42,8 @@ public class LoadingScreen implements Screen {
 
     private final Map<String, PixmapPacker> atlasPackers = new HashMap<>();
 
+    private boolean shouldLoad = false;
+
     public LoadingScreen(VoxelCraftClient game) {
         this.game = game;
 
@@ -48,6 +55,8 @@ public class LoadingScreen implements Screen {
     }
 
     private void startLoadingResources() {
+        this.shouldLoad = false;
+
         ClientLoadingUtils.loadResourcesFile(modResources, "voxelcraft");
 
         Mods.mods.forEach((modId, _) -> {
@@ -63,6 +72,8 @@ public class LoadingScreen implements Screen {
         ClientLoadingUtils.loadAtlases(game, atlasPackers);
 
         //------------------- Stage 3 -------------------
+
+        this.shouldLoad = true;
     }
 
     public void draw(int width, int height, float guiScale) {

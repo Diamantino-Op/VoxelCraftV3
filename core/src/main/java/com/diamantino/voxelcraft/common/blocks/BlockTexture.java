@@ -1,7 +1,5 @@
 package com.diamantino.voxelcraft.common.blocks;
 
-import com.diamantino.voxelcraft.client.utils.TextureManager;
-
 /**
  * Block texture class with different texture for all sides.
  *

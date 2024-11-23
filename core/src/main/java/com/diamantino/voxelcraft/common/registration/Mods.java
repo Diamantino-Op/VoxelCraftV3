@@ -5,6 +5,11 @@ import com.diamantino.voxelcraft.common.mods.Mod;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mods registry.
+ *
+ * @author Diamantino
+ */
 public class Mods {
     /**
      *  Mods registry.

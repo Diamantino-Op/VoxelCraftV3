@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.diamantino.voxelcraft.client.utils.GuiHelper;
-import com.diamantino.voxelcraft.client.utils.TextureManager;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 
 /**
