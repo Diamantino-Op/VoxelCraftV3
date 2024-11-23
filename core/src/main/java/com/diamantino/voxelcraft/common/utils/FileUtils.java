@@ -55,6 +55,23 @@ public class FileUtils {
         return files;
     }
 
+    /**
+     * Merges multiple paths into a single path.
+     *
+     * @param paths The paths to merge.
+     * @return The merged path.
+     */
+    public static String mergePaths(String... paths) {
+        StringBuilder mergedPath = new StringBuilder();
+
+        for (String path : paths) {
+            mergedPath.append(path);
+            mergedPath.append(File.separator);
+        }
+
+        return mergedPath.toString();
+    }
+
     // TODO: Finish this
 
     /**

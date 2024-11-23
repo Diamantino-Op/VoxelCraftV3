@@ -185,6 +185,32 @@ public class ClientLoadingUtils {
     }
 
     /**
+     * Get the texture of a mod.
+     *
+     * @param clientInstance Client instance.
+     * @param modId Mod ID.
+     * @param subFolder Sub-folder of the texture.
+     * @param name Name of the texture.
+     *
+     * @return The texture.
+     */
+    public static <T> T getTexture(VoxelCraftClient clientInstance, String modId, String subFolder, String name, Class<T> type) {
+        return clientInstance.assetManager.get(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"), type);
+    }
+
+    /**
+     * Get the resources file of a mod.
+     *
+     * @param clientInstance Client instance.
+     * @param modId Mod ID.
+     *
+     * @return The resource file.
+     */
+    public static JSONObject getModResources(VoxelCraftClient clientInstance, String modId) {
+        return clientInstance.assetManager.get(FileUtils.mergePaths("assets", modId, "resources.json"), JSONObject.class);
+    }
+
+    /**
      * Get the texture index in the atlas.
      * @param name Name of the texture.
      * @return Index of the texture in the atlas.

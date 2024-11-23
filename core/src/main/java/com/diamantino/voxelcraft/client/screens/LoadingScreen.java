@@ -89,7 +89,9 @@ public class LoadingScreen implements Screen {
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
-        loadingBar = new ProgressBar(0, 1, 0.1f, false, );
+        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background"), ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_knob"));
+
+        loadingBar = new ProgressBar(0, 1, 0.1f, false, style);
     }
 
     /**
