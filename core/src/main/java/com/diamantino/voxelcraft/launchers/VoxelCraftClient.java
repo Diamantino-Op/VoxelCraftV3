@@ -12,7 +12,6 @@ import com.diamantino.voxelcraft.client.screens.MainMenuScreen;
 public class VoxelCraftClient extends ApplicationAdapter {
     public final VoxelAssetManager assetManager;
 
-    private TextureManager textureManager;
     public BitmapFont font;
 
     private LoadingScreen loadingScreen;
@@ -33,11 +32,11 @@ public class VoxelCraftClient extends ApplicationAdapter {
 
         font = new BitmapFont();
 
-        textureManager = new TextureManager();
-        textureManager.init();
+        //this.mainMenuScreen = new MainMenuScreen(this);
+        //this.mainMenuScreen.show();
 
-        this.mainMenuScreen = new MainMenuScreen(this);
-        this.mainMenuScreen.show();
+        this.loadingScreen = new LoadingScreen(this);
+        this.loadingScreen.show();
 
         // TODO: Move
         //clientInstance = new ClientInstance("127.0.0.1", 25000);
@@ -51,7 +50,8 @@ public class VoxelCraftClient extends ApplicationAdapter {
         Gdx.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        mainMenuScreen.render(deltaTime);
+        //mainMenuScreen.render(deltaTime);
+        this.loadingScreen.render(deltaTime);
     }
 
     @Override
@@ -61,7 +61,8 @@ public class VoxelCraftClient extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        textureManager.dispose();
-        mainMenuScreen.dispose();
+        //mainMenuScreen.dispose();
+        this.loadingScreen.dispose();
+        this.assetManager.dispose();
     }
 }

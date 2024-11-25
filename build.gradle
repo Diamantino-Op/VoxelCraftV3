@@ -16,6 +16,13 @@ buildscript {
 allprojects {
   apply plugin: "idea"
   apply plugin: "maven-publish"
+
+  idea {
+    module {
+      outputDir file('build/classes/java/main')
+      testOutputDir file('build/classes/java/test')
+    }
+  }
 }
 
 configure(subprojects) {

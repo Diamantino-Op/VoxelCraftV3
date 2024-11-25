@@ -17,6 +17,8 @@ public class ServerLauncher {
     private static HeadlessApplicationConfiguration getDefaultConfiguration() {
         HeadlessApplicationConfiguration configuration = new HeadlessApplicationConfiguration();
 
+        configuration.updatesPerSecond = 20;
+
         return configuration;
     }
 }

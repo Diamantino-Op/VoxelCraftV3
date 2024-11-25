@@ -5,12 +5,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.diamantino.voxelcraft.client.utils.ClientLoadingUtils;
+import com.diamantino.voxelcraft.client.utils.GuiHelper;
 import com.diamantino.voxelcraft.common.registration.Mods;
 import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 import org.json.JSONObject;
@@ -89,9 +92,14 @@ public class LoadingScreen implements Screen {
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
-        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background"), ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_knob"));
+        NinePatchDrawable barBackground = new NinePatchDrawable(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background", NinePatch.class));
+        NinePatchDrawable barKnob = new NinePatchDrawable(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background", NinePatch.class));
+
+        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(barBackground, barKnob);
 
         loadingBar = new ProgressBar(0, 1, 0.1f, false, style);
+        loadingBar.setSize(width - ((float) width / 10), 50);
+        GuiHelper.setObjectPosition(loadingBar, 0, 0, true, false);
     }
 
     /**

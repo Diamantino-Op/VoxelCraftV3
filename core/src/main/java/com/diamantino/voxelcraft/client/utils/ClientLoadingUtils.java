@@ -15,7 +15,6 @@ import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public class ClientLoadingUtils {
      * @param modId Mod ID.
      */
     public static void loadResourcesFile(Map<String, JSONObject> modResources, String modId) {
-        JSONObject resourcesFile = new JSONObject(Gdx.files.internal("assets/" + modId + "/resources.json").readString());
+        JSONObject resourcesFile = new JSONObject(Gdx.files.internal(FileUtils.mergePaths("assets", modId, "resources.json")).readString());
 
         modResources.put(modId, resourcesFile);
     }
@@ -50,7 +49,7 @@ public class ClientLoadingUtils {
         JSONArray textureLocationsVDO = modResources.getJSONArray("textureLocations");
 
         for (int i = 0; i < textureLocationsVDO.length(); i++) {
-            String textureLoc = "assets" + File.separator + modId + File.separator + textureLocationsVDO.getString(i);
+            String textureLoc = FileUtils.mergePaths("assets", modId, "textures", textureLocationsVDO.getString(i));
 
             List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "png");
             List<FileHandle> vcMetas = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "vcmeta");
@@ -78,7 +77,7 @@ public class ClientLoadingUtils {
 
                         NinePatch ninePatch = new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
 
-                        clientInstance.assetManager.load(texture.nameWithoutExtension(), ninePatch);
+                        clientInstance.assetManager.load(texture.path(), ninePatch);
                     }
                 } else {
                     clientInstance.assetManager.load(texture.path(), Texture.class);
@@ -101,6 +100,8 @@ public class ClientLoadingUtils {
         return sideTex * textureSize;
     }
 
+    //TODO: Add loading order for texture packs and catch the exception from the packer.
+
     /**
      * Save the atlases of a mod.
      *
@@ -115,7 +116,7 @@ public class ClientLoadingUtils {
         for (int i = 0; i < atlasesVDO.length(); i++) {
             JSONObject atlasJson = atlasesVDO.getJSONObject(i);
 
-            String textureLoc = "assets" + File.separator + modId + File.separator + atlasJson.getString("location");
+            String textureLoc = FileUtils.mergePaths("assets", modId, "textures", atlasJson.getString("location"));
 
             List<FileHandle> textures = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "png");
             List<FileHandle> vcMetas = FileUtils.getAllFilesInFolderInternal(Gdx.files.internal(textureLoc), "vcmeta");
@@ -126,7 +127,7 @@ public class ClientLoadingUtils {
                 return;
             }
 
-            PixmapPacker packer = atlasPackers.computeIfAbsent(atlasJson.getString("name"), (_) -> {
+            PixmapPacker packer = atlasPackers.computeIfAbsent(atlasJson.getString("name"), _ -> {
                 int additionalSpace = 0;
 
                 for (FileHandle metaFile : vcMetas) {
@@ -151,7 +152,7 @@ public class ClientLoadingUtils {
             for (FileHandle file : textures) {
                 Pixmap pixmap = new Pixmap(file);
 
-                packer.pack(file.name().replace(".png", ""), pixmap);
+                packer.pack(file.nameWithoutExtension(), pixmap);
 
                 pixmap.dispose();
             }
@@ -167,7 +168,7 @@ public class ClientLoadingUtils {
     public static void loadAtlases(VoxelCraftClient clientInstance, Map<String, PixmapPacker> atlasPackers) {
         atlasPackers.forEach((atlasName, packer) -> {
             try {
-                String atlasLoc = FileUtils.getVoxelCraftFolder() + "/cache/atlases/" + atlasName + ".atlas";
+                String atlasLoc = FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas");
 
                 PixmapPackerIO pixmapPackerIO = new PixmapPackerIO();
 
@@ -216,7 +217,7 @@ public class ClientLoadingUtils {
      * @return Index of the texture in the atlas.
      */
     public static int getBlockTextureIndex(VoxelCraftClient clientInstance, String atlasName, String name) {
-        TextureAtlas atlas = clientInstance.assetManager.get(FileUtils.getVoxelCraftFolder() + "/cache/atlases/" + atlasName + ".atlas", TextureAtlas.class);
+        TextureAtlas atlas = clientInstance.assetManager.get(FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas"), TextureAtlas.class);
 
         for (int i = 0, n = atlas.getRegions().size; i < n; i++) {
             if (atlas.getRegions().get(i).name.equals(name)) {

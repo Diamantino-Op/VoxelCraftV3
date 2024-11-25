@@ -2,16 +2,16 @@
   "atlases": [
     {
       "name": "blocks",
-      "location": "textures/blocks",
+      "location": "blocks",
       "size": -1
     },
     {
       "name": "items",
-      "location": "textures/items",
+      "location": "items",
       "size": -1
     }
   ],
   "textureLocations": [
-    "textures/gui"
+    "gui"
   ]
 }
