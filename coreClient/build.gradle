@@ -1,0 +1,6 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+  implementation project(":coreCommon")
+  implementation project(":server")
+}

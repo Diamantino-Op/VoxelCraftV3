@@ -28,8 +28,7 @@ java {
 compileJava.options.release.set(Integer.parseInt(JavaVersion.current().getMajorVersion()));
 
 dependencies {
-  implementation project(':core')
-  implementation project(':server')
+  implementation project(':coreClient')
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
