@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '23'
-          distribution: 'temurin'
+          distribution: 'graalvm'
 
       - name: Setup Gradle 8.10.2
         uses: gradle/actions/setup-gradle@v4

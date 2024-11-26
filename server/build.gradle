@@ -9,7 +9,7 @@ dependencies {
 }
 
 jar {
-  archiveBaseName.set(appName + "-Server")
+  archiveFileName.set("${appName}-Server.jar")
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   dependsOn configurations.runtimeClasspath
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
@@ -25,5 +25,6 @@ jar {
   }
 }
 
-task dist(dependsOn: [jar]) {
+tasks.register('dist') {
+  dependsOn 'jar'
 }

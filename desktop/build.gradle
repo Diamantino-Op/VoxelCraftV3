@@ -4,10 +4,7 @@ buildscript {
   }
   dependencies {
     classpath "io.github.fourlastor:construo:$construoVersion"
-
-    if(enableGraalNative == 'true') {
-      classpath "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.28"
-    }
+    classpath "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:$graalvmBuildtoolsVersion"
   }
 }
 
@@ -35,6 +32,10 @@ dependencies {
   implementation project(':server')
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+  implementation "io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion"
+  implementation "io.github.berstanio:gdx-svmhelper-extension-bullet:$graalHelperVersion"
+  implementation "io.github.berstanio:gdx-svmhelper-extension-freetype:$graalHelperVersion"
 }
 
 def os = System.properties['os.name'].toLowerCase()
@@ -49,8 +50,7 @@ run {
 }
 
 jar {
-  archiveBaseName.set(appName + "-Desktop")
-  destinationDirectory = file("$project.buildDir/libs")
+  archiveFileName.set("${appName}-Desktop.jar")
   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   dependsOn configurations.runtimeClasspath
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
@@ -66,28 +66,70 @@ jar {
   }
 }
 
-jpackageImage.dependsOn jar
+construo {
+  name.set(appName)
+  humanName.set(appName)
+  version.set("$voxelcraftVersion")
 
-runtime {
-  options.set(['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--vm', 'server'])
-  modules.set([
-    'jdk.unsupported'
-  ])
-  distDir.set(file(buildDir))
-  jpackage {
-    imageName = appName
-    skipInstaller = true
-    jpackageHome = javaHome.getOrElse("")
-    mainJar = jar.archiveFileName.get()
-    if (os.contains('win')) {
-      imageOptions = ["--icon", "icons/logo.ico"]
-    } else if (os.contains('nix') || os.contains('nux') || os.contains('bsd')) {
-      imageOptions = ["--icon", "icons/logo.png"]
-    } else if (os.contains('mac')) {
-      imageOptions = ["--icon", "icons/logo.icns", "--java-options", "\"-XstartOnFirstThread\""]
+  targets.configure {
+    //--------------------------- Linux ---------------------------
+    // x86_64
+    create("linuxX64", Target.Linux) {
+      architecture.set(Target.Architecture.X86_64)
+      jdkUrl.set("https://download.oracle.com/graalvm/23/latest/graalvm-jdk-23_linux-x64_bin.tar.gz")
+    }
+
+    // Arm64
+    create("linuxArm64", Target.Linux) {
+      architecture.set(Target.Architecture.AARCH64)
+      jdkUrl.set("https://download.oracle.com/graalvm/23/latest/graalvm-jdk-23_linux-aarch64_bin.tar.gz")
+    }
+
+    //--------------------------- Mac ---------------------------
+    // x86_64
+    create("macX64", Target.MacOs) {
+      architecture.set(Target.Architecture.X86_64)
+      jdkUrl.set("https://download.oracle.com/graalvm/23/latest/graalvm-jdk-23_macos-x64_bin.tar.gz")
+      identifier.set("com.diamantino.voxelcraft." + appName)
+      macIcon.set(project.file("icons/logo.icns"))
+    }
+
+    // Arm64
+    create("macM1", Target.MacOs) {
+      architecture.set(Target.Architecture.AARCH64)
+      jdkUrl.set("https://download.oracle.com/graalvm/23/latest/graalvm-jdk-23_macos-aarch64_bin.tar.gz")
+      identifier.set("com.diamantino.voxelcraft." + appName)
+      macIcon.set(project.file("icons/logo.icns"))
+    }
+
+    //--------------------------- Windows ---------------------------
+    // x86_64
+    create("winX64", Target.Windows) {
+      architecture.set(Target.Architecture.X86_64)
+      jdkUrl.set("https://download.oracle.com/graalvm/23/latest/graalvm-jdk-23_windows-x64_bin.zip")
     }
   }
 }
 
-task dist(dependsOn: [jar]) {
+tasks.register('dist') {
+  dependsOn 'jar'
 }
+
+distributions {
+  main {
+    contents {
+      into('libs') {
+        project.configurations.runtimeClasspath.files.findAll { file ->
+          file.getName() != project.tasks.jar.outputs.files.singleFile.name
+        }.each { file ->
+          exclude file.name
+        }
+      }
+    }
+  }
+}
+
+startScripts.dependsOn(':desktop:jar')
+startScripts.classpath = project.tasks.jar.outputs.files
+
+apply from: file("nativeimage.gradle")
