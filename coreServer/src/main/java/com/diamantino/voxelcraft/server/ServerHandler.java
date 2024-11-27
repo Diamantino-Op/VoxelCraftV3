@@ -2,91 +2,64 @@ package com.diamantino.voxelcraft.server;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
-import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import com.github.terefang.ncs.common.NcsConnection;
+import com.github.terefang.ncs.common.NcsEndpoint;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 /**
  * Handles the server-side channel.
  *
  * @author Diamantino
  */
-public class ServerHandler extends SimpleChannelInboundHandler<BasePacket> {
+public class ServerHandler {
     /**
-     * The server instance.
-     */
-    private final ServerInstance server;
-
-    /**
-     * Creates a new server handler.
+     * Handle the packet.
      *
-     * @param server The server instance.
+     * @param connection The connection.
+     * @param packet The packet.
      */
-    public ServerHandler(ServerInstance server) {
-        this.server = server;
+    public void onPacket(VoxelCraftServer server, NcsConnection connection, SimpleBytesNcsPacket packet) {
+        Gdx.app.log(Constants.debugLogTag, "Packet: " + connection.getPeer().asString());
+        Gdx.app.log(Constants.debugLogTag, packet.asHexString());
     }
 
     /**
-     * Handles a received packet.
+     * Handle the connection.
      *
-     * @param ctx The channel handler context.
-     * @param packet The received packet.
+     * @param connection The connection.
      */
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, BasePacket packet) {
-        this.server.readPacket(ctx, packet);
+    public void onConnect(VoxelCraftServer server, NcsConnection connection) {
+        Gdx.app.log(Constants.debugLogTag, "Connect: " + connection.getPeer().asString());
     }
 
     /**
-     * Handles the addition of the handler to the channel.
+     * Handle the disconnection.
      *
-     * @param ctx The channel handler context.
+     * @param connection The connection.
      */
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        this.server.onConnect(ctx);
-        super.handlerAdded(ctx);
+    public void onDisconnect(VoxelCraftServer server, NcsConnection connection) {
+        Gdx.app.log(Constants.debugLogTag, "Disconnect: " + connection.getPeer().asString());
     }
 
     /**
-     * Handles the removal of the handler from the channel.
+     * Handle the error.
      *
-     * @param ctx The channel handler context.
+     * @param connection The connection.
+     * @param cause The error cause.
      */
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        this.server.onDisconnect(ctx);
-        super.handlerRemoved(ctx);
+    public void onError(VoxelCraftServer server, NcsConnection connection, Throwable cause) {
+        Gdx.app.log(Constants.errorLogTag, "Network error: " + connection.getPeer().asString() + " -- " + cause.getMessage(), cause);
     }
 
     /**
-     * Handles the channel becoming inactive.
+     * Handle the keep alive fail.
      *
-     * @param ctx The channel handler context.
+     * @param connection The connection.
+     * @param timeout The timeout.
+     * @param fails The fails.
+     * @param endpoint The endpoint.
      */
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        this.server.onTimeOut(ctx);
-    }
-
-    /**
-     * Handles the channel becoming unregistered.
-     *
-     * @param ctx The channel handler context.
-     */
-    @Override
-    public void channelUnregistered(ChannelHandlerContext ctx) {
-        this.server.onDisconnect(ctx);
-    }
-
-    /**
-     * Handles an exception.
-     *
-     * @param ctx The channel handler context.
-     * @param cause The exception.
-     */
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Gdx.app.getApplicationLogger().error(Constants.errorLogTag, "An exception occurred in the server handler.", cause);
+    public void onKeepAliveFail(VoxelCraftServer server, NcsConnection connection, long timeout, long fails, NcsEndpoint endpoint) {
+        Gdx.app.log(Constants.errorLogTag, "Keep alive fail: " + endpoint.asString());
     }
 }

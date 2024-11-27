@@ -3,6 +3,7 @@ package com.diamantino.voxelcraft.common.networking.packets.data;
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacket;
 import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
+import com.diamantino.voxelcraft.common.networking.packets.s2c.SyncPropertyPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.server.ServerInstance;
 
@@ -56,6 +57,7 @@ public class Packets {
     public static void registerPackets() {
         // S2C
         registerPacket(ChunkSyncPacket.class);
+        registerPacket(SyncPropertyPacket.class);
 
         // C2S
         registerPacket(RequestChunkPacket.class);

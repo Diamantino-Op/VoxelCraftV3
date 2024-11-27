@@ -1,15 +1,15 @@
 package com.diamantino.voxelcraft.common.networking;
 
-import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import io.netty.channel.Channel;
+import com.github.terefang.ncs.common.NcsConnection;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 /**
  * Represents a connected client, holding the channel used to communicate with it.
  *
  * @author Diamantino
  */
-public record ConnectedClient(Channel channel) {
-    public void sendPacket(BasePacket packet) {
-        this.channel.writeAndFlush(packet);
+public record ConnectedClient(NcsConnection channel) {
+    public void sendPacket(SimpleBytesNcsPacket packet) {
+        this.channel.sendAndFlush(packet);
     }
 }

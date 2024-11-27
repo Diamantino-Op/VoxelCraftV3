@@ -4,6 +4,8 @@ dependencies {
   implementation(project(":coreCommon"))
   implementation(project(":server"))
   implementation("org.json:json:$orgJsonVersion")
+  implementation("io.netty:netty-all:$nettyVersion")
+  implementation("org.jetbrains:annotations:$jetbrainsAnnotationsVersion")
   implementation("com.github.terefang.NettyClientServer:NcsClient:$nettyClientServerVersion") {
     exclude group: "io.netty"
   }
