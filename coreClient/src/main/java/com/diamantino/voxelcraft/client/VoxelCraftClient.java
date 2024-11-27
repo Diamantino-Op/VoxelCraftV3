@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.launchers;
+package com.diamantino.voxelcraft.client;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

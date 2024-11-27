@@ -1,9 +1,12 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-  implementation project(":coreCommon")
-  implementation "de.articdive:jnoise-pipeline:$jNoiseVersion"
-  implementation "org.apache.commons:commons-lang3:$apacheCommonsVersion"
-  implementation "org.json:json:$orgJsonVersion"
-  implementation "dev.ultreon:ubo:$uboVersion"
+  implementation(project(":coreCommon"))
+  implementation("de.articdive:jnoise-pipeline:$jNoiseVersion")
+  implementation("org.apache.commons:commons-lang3:$apacheCommonsVersion")
+  implementation("org.json:json:$orgJsonVersion")
+  implementation("dev.ultreon:ubo:$uboVersion")
+  implementation("com.github.terefang.NettyClientServer:NcsServer:$nettyClientServerVersion") {
+    exclude group: "io.netty"
+  }
 }

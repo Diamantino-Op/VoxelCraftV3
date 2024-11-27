@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.math.Vector3;
-import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
+import com.diamantino.voxelcraft.client.VoxelCraftClient;
 
 /**
  * Game screen class.

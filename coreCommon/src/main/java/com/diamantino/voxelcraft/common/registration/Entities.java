@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.registration;
 
-import com.diamantino.voxelcraft.client.entities.ClientEntity;
+import com.diamantino.voxelcraft.common.entities.Entity;
 import com.diamantino.voxelcraft.server.entities.ServerEntity;
 
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class Entities {
      * @param <S> Server-side entity type.
      * @return The registered entity.
      */
-    public static <C extends ClientEntity, S extends ServerEntity> RegisteredEntity<C, S> registerEntity(String id, Class<C> clientEntity, Class<S> serverEntity) {
+    public static <C extends Entity, S extends Entity> RegisteredEntity<C, S> registerEntity(String id, Class<C> clientEntity, Class<S> serverEntity) {
         RegisteredEntity<C, S> registeredEntity = new RegisteredEntity<>(id, clientEntity, serverEntity);
         entities.put(id, registeredEntity);
 

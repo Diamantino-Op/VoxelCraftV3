@@ -1,7 +1,7 @@
 package com.diamantino.voxelcraft.common.registration;
 
-import com.diamantino.voxelcraft.client.entities.ClientEntity;
-import com.diamantino.voxelcraft.server.entities.ServerEntity;
+import com.diamantino.voxelcraft.common.entities.Entity;
+import lombok.Getter;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -10,10 +10,11 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Diamantino
  */
-public class RegisteredEntity<C extends ClientEntity, S extends ServerEntity> {
+public class RegisteredEntity<C extends Entity, S extends Entity> {
     /**
      * The registry name of the entity.
      */
+    @Getter
     public final String registryName;
 
     /**
@@ -38,15 +39,6 @@ public class RegisteredEntity<C extends ClientEntity, S extends ServerEntity> {
 
         this.clientEntityClass = clientEntityClass;
         this.serverEntityClass = serverEntityClass;
-    }
-
-    /**
-     * Gets the registry name of the entity.
-     *
-     * @return The registry name of the entity.
-     */
-    public String getRegistryName() {
-        return registryName;
     }
 
     /**

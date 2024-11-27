@@ -1,7 +1,6 @@
-package com.diamantino.voxelcraft.launchers;
+package com.diamantino.voxelcraft.server;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.diamantino.voxelcraft.server.ServerInstance;
 
 public class VoxelCraftServer extends ApplicationAdapter {
     private ServerInstance serverInstance;

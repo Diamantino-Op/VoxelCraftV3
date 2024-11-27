@@ -2,7 +2,6 @@ package com.diamantino.voxelcraft.server;
 
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
-import com.diamantino.voxelcraft.launchers.VoxelCraftServer;
 
 /** Launches the server application. */
 public class ServerLauncher {

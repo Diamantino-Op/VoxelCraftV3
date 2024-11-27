@@ -1,8 +1,18 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-  api "com.badlogicgames.gdx:gdx:$gdxVersion"
-  implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-  implementation "io.netty:netty-all:$nettyVersion"
-  implementation "org.jetbrains:annotations:$jetbrainsAnnotationsVersion"
+  compileOnly project(":coreClient")
+  compileOnly project(":coreServer")
+  api("com.badlogicgames.gdx:gdx:$gdxVersion")
+  implementation("com.badlogicgames.gdx:gdx-tools:$gdxVersion")
+  implementation("io.netty:netty-all:$nettyVersion")
+  implementation("org.jetbrains:annotations:$jetbrainsAnnotationsVersion")
+  implementation("com.google.guava:guava:$guavaVersion")
+  implementation("com.github.terefang.NettyClientServer:NcsLib:$nettyClientServerVersion") {
+    exclude group: "io.netty"
+    exclude group: "com.google.guava", module: "guava"
+  }
+  implementation ("com.github.terefang.NettyClientServer:NcsCommons:$nettyClientServerVersion") {
+    exclude group: "io.netty"
+  }
 }

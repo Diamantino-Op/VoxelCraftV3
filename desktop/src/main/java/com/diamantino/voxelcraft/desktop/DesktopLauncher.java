@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.utils.Os;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
-import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
+import com.diamantino.voxelcraft.client.VoxelCraftClient;
 import org.lwjgl.system.Configuration;
 
 public class DesktopLauncher {

@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.utils.FileUtils;
 import com.diamantino.voxelcraft.common.utils.MathUtils;
-import com.diamantino.voxelcraft.launchers.VoxelCraftClient;
+import com.diamantino.voxelcraft.client.VoxelCraftClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -1,6 +1,10 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-  implementation project(":coreCommon")
-  implementation project(":server")
+  implementation(project(":coreCommon"))
+  implementation(project(":server"))
+  implementation("org.json:json:$orgJsonVersion")
+  implementation("com.github.terefang.NettyClientServer:NcsClient:$nettyClientServerVersion") {
+    exclude group: "io.netty"
+  }
 }
