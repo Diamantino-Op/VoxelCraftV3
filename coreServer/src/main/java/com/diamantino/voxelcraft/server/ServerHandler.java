@@ -2,6 +2,7 @@ package com.diamantino.voxelcraft.server;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
+import com.diamantino.voxelcraft.common.networking.ConnectedClient;
 import com.github.terefang.ncs.common.NcsConnection;
 import com.github.terefang.ncs.common.NcsEndpoint;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
@@ -30,6 +31,9 @@ public class ServerHandler {
      */
     public void onConnect(VoxelCraftServer server, NcsConnection connection) {
         Gdx.app.log(Constants.debugLogTag, "Connect: " + connection.getPeer().asString());
+
+        //TODO: Send name packet
+        //server.connectedClients.put(connection.getPeer().asString(), new ConnectedClient(context.channel()));
     }
 
     /**
@@ -39,6 +43,9 @@ public class ServerHandler {
      */
     public void onDisconnect(VoxelCraftServer server, NcsConnection connection) {
         Gdx.app.log(Constants.debugLogTag, "Disconnect: " + connection.getPeer().asString());
+
+        //TODO: Send disconnect packet
+        //server.connectedClients.remove(context.name());
     }
 
     /**

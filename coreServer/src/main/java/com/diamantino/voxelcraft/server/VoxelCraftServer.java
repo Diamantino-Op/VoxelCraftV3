@@ -9,7 +9,6 @@ import com.github.terefang.ncs.common.*;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 import com.github.terefang.ncs.server.NcsServerHelper;
 import com.github.terefang.ncs.server.NcsServerService;
-import com.github.terefang.ncs.server.NcsServerServiceImpl;
 import lombok.Getter;
 
 import java.util.HashMap;

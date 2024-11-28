@@ -136,7 +136,8 @@ public class ServerInstance {
     public void onConnect(ChannelHandlerContext context) {
         Gdx.app.getApplicationLogger().log(Constants.infoLogTag, "Client connected: " + context.name());
 
-        this.connectedClients.put(context.name(), new ConnectedClient(context.channel()));
+
+        //this.connectedClients.put(context.name(), new ConnectedClient(context.channel()));
     }
 
     /**
