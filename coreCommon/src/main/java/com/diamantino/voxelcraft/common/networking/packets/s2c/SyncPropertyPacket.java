@@ -1,8 +1,8 @@
 package com.diamantino.voxelcraft.common.networking.packets.s2c;
 
-import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.properties.SyncedProperty;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 import java.io.IOException;
 
@@ -17,12 +17,12 @@ public class SyncPropertyPacket extends BasePacket {
     }
 
     @Override
-    public void readPacketData(String senderName, PacketBuffer buffer) throws IOException {
+    public void readPacketData(String senderName, SimpleBytesNcsPacket buffer) throws IOException {
 
     }
 
     @Override
-    public void writePacketData(PacketBuffer buffer) throws IOException {
+    public void writePacketData(SimpleBytesNcsPacket buffer) throws IOException {
 
     }
 }

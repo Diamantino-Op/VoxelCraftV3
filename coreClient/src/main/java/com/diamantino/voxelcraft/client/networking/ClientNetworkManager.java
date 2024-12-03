@@ -1,28 +1,35 @@
-package com.diamantino.voxelcraft.common.networking;
+package com.diamantino.voxelcraft.client.networking;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import com.github.terefang.ncs.common.NcsConnection;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
-/**
- * Represents a connected client, holding the channel used to communicate with it.
- *
- * @author Diamantino
- */
-public record ConnectedClient(NcsConnection channel, String playerName) {
-    public void sendPacket(BasePacket packet) {
+public class ClientNetworkManager {
+    public void initManager() {
+
+    }
+
+    public void connectToServer(String ip, int port) {
+
+    }
+
+    /**
+     * Send a packet to the server.
+     *
+     * @param packet Packet to send.
+     */
+    public static void sendToServer(BasePacket packet) {
         SimpleBytesNcsPacket buffer = SimpleBytesNcsPacket.create();
 
         try {
             buffer.startEncoding();
-            buffer.encodeString(packet.getId() + "_client");
+            buffer.encodeString(packet.getId() + "_server");
 
             packet.writePacketData(buffer);
             buffer.finishEncoding();
 
-            this.channel.sendAndFlush(buffer);
+            ClientInstance.instance.serverConnection.writeAndFlush(buffer);
         } catch (Exception e) {
             Gdx.app.error(Constants.errorLogTag, "Error encoding packet: " + packet.getClass().getSimpleName(), e);
         }

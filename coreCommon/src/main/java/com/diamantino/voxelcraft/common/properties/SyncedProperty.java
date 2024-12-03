@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.properties;
 
-import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**
@@ -15,11 +15,12 @@ public abstract class SyncedProperty<T> {
         this.value = value;
     }
 
-    public void writeToBuffer(PacketBuffer buf) {
+    public void writeToBuffer(SimpleBytesNcsPacket buf) {
+        //TODO
         throw new NotImplementedException();
     }
 
-    public void readFromBuffer(PacketBuffer buf) {
+    public void readFromBuffer(SimpleBytesNcsPacket buf) {
         throw new NotImplementedException();
     }
 

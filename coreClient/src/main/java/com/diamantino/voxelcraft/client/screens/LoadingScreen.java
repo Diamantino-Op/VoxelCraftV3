@@ -62,9 +62,7 @@ public class LoadingScreen implements Screen {
 
         ClientLoadingUtils.loadResourcesFile(modResources, "voxelcraft");
 
-        Mods.mods.forEach((modId, _) -> {
-            ClientLoadingUtils.loadResourcesFile(modResources, modId);
-        });
+        Mods.mods.forEach((modId, _) -> ClientLoadingUtils.loadResourcesFile(modResources, modId));
 
         //------------------- Stage 1 -------------------
         modResources.forEach((modId, resourcesJson) -> ClientLoadingUtils.loadTextures(game, modId, resourcesJson));

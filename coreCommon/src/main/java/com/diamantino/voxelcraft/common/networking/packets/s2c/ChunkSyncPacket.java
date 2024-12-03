@@ -3,9 +3,9 @@ package com.diamantino.voxelcraft.common.networking.packets.s2c;
 import com.diamantino.voxelcraft.client.networking.ClientInstance;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.registration.Blocks;
-import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.world.chunk.*;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 /**
  * Packet sent by the server to synchronize a chunk with the client.
@@ -39,23 +39,22 @@ public class ChunkSyncPacket extends BasePacket {
      * @param buffer Packet buffer containing the packet data.
      */
     @Override
-    public void readPacketData(String senderName, PacketBuffer buffer) {
+    public void readPacketData(String senderName, SimpleBytesNcsPacket buffer) {
         // Read ChunkPos
-        int chunkX = buffer.readInt();
-        int chunkY = buffer.readInt();
-        int chunkZ = buffer.readInt();
+        int chunkX = buffer.decodeInt();
+        int chunkY = buffer.decodeInt();
+        int chunkZ = buffer.decodeInt();
 
-        this.dimName = buffer.readStringFromBuffer(buffer.readInt());
+        this.dimName = buffer.decodeString();
 
         // Get chunk
         ClientChunk clientChunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(this.dimName, new ChunkPos(chunkX, chunkY, chunkZ));
 
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {
-            switch (buffer.readByte()) {
+            switch (buffer.decodeByte()) {
                 case 0 -> {
-                    int nameLength = buffer.readInt();
-                    clientChunk.setLayer(new SingleBlockChunkLayer(clientChunk, Blocks.blocks.get(buffer.readStringFromBuffer(nameLength)).getBlockInstance()), y);
+                    clientChunk.setLayer(new SingleBlockChunkLayer(clientChunk, Blocks.blocks.get(buffer.decodeString()).getBlockInstance()), y);
                 }
 
                 case 1 -> {
@@ -63,8 +62,7 @@ public class ChunkSyncPacket extends BasePacket {
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
-                            int nameLength = buffer.readInt();
-                            layer.setBlock(Blocks.blocks.get(buffer.readStringFromBuffer(nameLength)).getBlockInstance(), x, z);
+                            layer.setBlock(Blocks.blocks.get(buffer.decodeString()).getBlockInstance(), x, z);
                         }
                     }
 
@@ -76,6 +74,8 @@ public class ChunkSyncPacket extends BasePacket {
         }
 
         clientChunk.regenerateMesh();
+
+        buffer.finishDecoding();
     }
 
     /**
@@ -84,14 +84,13 @@ public class ChunkSyncPacket extends BasePacket {
      * @param buffer Packet buffer to write the packet data to.
      */
     @Override
-    public void writePacketData(PacketBuffer buffer) {
+    public void writePacketData(SimpleBytesNcsPacket buffer) {
         // Write ChunkPos
-        buffer.writeInt(chunk.chunkPos.x());
-        buffer.writeInt(chunk.chunkPos.y());
-        buffer.writeInt(chunk.chunkPos.z());
+        buffer.encodeInt(chunk.chunkPos.x());
+        buffer.encodeInt(chunk.chunkPos.y());
+        buffer.encodeInt(chunk.chunkPos.z());
 
-        buffer.writeInt(dimName.length());
-        buffer.writeString(dimName);
+        buffer.encodeString(dimName);
 
         // Write Layers
         for (byte y = 0; y < Chunk.sizeY; y++) {
@@ -99,24 +98,22 @@ public class ChunkSyncPacket extends BasePacket {
 
             switch (layer) {
                 case SingleBlockChunkLayer sbcl -> {
-                    buffer.writeByte(0);
-                    buffer.writeInt(sbcl.getBlock().name.length());
-                    buffer.writeString(sbcl.getBlock().name);
+                    buffer.encodeByte((byte) 0);
+                    buffer.encodeString(sbcl.getBlock().name);
                 }
 
                 case ChunkLayer chunkLayer -> {
-                    buffer.writeByte(1);
+                    buffer.encodeByte((byte) 1);
 
                     for (int x = 0; x < Chunk.sizeX; x++) {
                         for (int z = 0; z < Chunk.sizeZ; z++) {
                             String blockName = chunkLayer.getBlockName(x, z);
-                            buffer.writeInt(blockName.length());
-                            buffer.writeString(blockName);
+                            buffer.encodeString(blockName);
                         }
                     }
                 }
 
-                default -> buffer.writeByte(2);
+                default -> buffer.encodeByte((byte) 2);
             }
         }
     }

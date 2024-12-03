@@ -2,6 +2,8 @@ package com.diamantino.voxelcraft.client.resources;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Null;
+import com.diamantino.voxelcraft.client.resources.loaders.JSONObjectLoader;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +13,8 @@ public class VoxelAssetManager extends AssetManager {
 
     public VoxelAssetManager() {
         super(new VoxelFileHandleResolver());
+
+        this.setLoader(JSONObject.class, new JSONObjectLoader(this.getFileHandleResolver()));
 
         this.instances = new HashMap<>();
     }

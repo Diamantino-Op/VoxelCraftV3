@@ -1,11 +1,11 @@
 package com.diamantino.voxelcraft.common.networking.packets.c2s;
 
-import com.diamantino.voxelcraft.common.networking.packets.data.PacketBuffer;
 import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import com.diamantino.voxelcraft.server.ServerInstance;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
+import com.diamantino.voxelcraft.server.VoxelCraftServer;
+import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 import java.io.IOException;
 
@@ -42,11 +42,11 @@ public class RequestChunkPacket extends BasePacket {
      * @param buffer The buffer containing the packet data.
      */
     @Override
-    public void readPacketData(String senderName, PacketBuffer buffer) throws IOException {
-        this.chunkPos = new ChunkPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
-        this.dimName = buffer.readStringFromBuffer(buffer.readInt());
+    public void readPacketData(String senderName, SimpleBytesNcsPacket buffer) throws IOException {
+        this.chunkPos = new ChunkPos(buffer.decodeInt(), buffer.decodeInt(), buffer.decodeInt());
+        this.dimName = buffer.decodeString();
 
-        Packets.sendToPlayer(senderName, new ChunkSyncPacket(this.dimName, ServerInstance.instance.world.getChunkForPos(this.dimName, chunkPos)));
+        Packets.sendToPlayer(senderName, new ChunkSyncPacket(this.dimName, VoxelCraftServer.getInstance().world.getChunkForPos(this.dimName, chunkPos)));
     }
 
     /**
@@ -55,11 +55,10 @@ public class RequestChunkPacket extends BasePacket {
      * @param buffer The buffer to write the packet data to.
      */
     @Override
-    public void writePacketData(PacketBuffer buffer) throws IOException {
-        buffer.writeInt(chunkPos.x());
-        buffer.writeInt(chunkPos.y());
-        buffer.writeInt(chunkPos.z());
-        buffer.writeInt(dimName.length());
-        buffer.writeString(dimName);
+    public void writePacketData(SimpleBytesNcsPacket buffer) throws IOException {
+        buffer.encodeInt(chunkPos.x());
+        buffer.encodeInt(chunkPos.y());
+        buffer.encodeInt(chunkPos.z());
+        buffer.encodeString(dimName);
     }
 }

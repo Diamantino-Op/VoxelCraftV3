@@ -5,7 +5,9 @@ import com.diamantino.voxelcraft.common.networking.packets.c2s.RequestChunkPacke
 import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
 import com.diamantino.voxelcraft.common.networking.packets.s2c.SyncPropertyPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
-import com.diamantino.voxelcraft.server.ServerInstance;
+import com.diamantino.voxelcraft.common.utils.ResourceLocation;
+import com.diamantino.voxelcraft.common.utils.Side;
+import com.diamantino.voxelcraft.server.VoxelCraftServer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,19 +23,14 @@ public class Packets {
      * Key: Packet ID.
      * Value: Packet class.
      */
-    public static final Map<Integer, Class<? extends BasePacket>> registeredPackets = new HashMap<>();
+    public static final Map<ResourceLocation, Class<? extends BasePacket>> registeredPackets = new HashMap<>();
 
     /**
      * Packet registry.
      * Key: Packet class.
      * Value: Packet ID.
      */
-    public static final Map<Class<? extends BasePacket>, Integer> packetIDs = new HashMap<>();
-
-    /**
-     * Packet ID counter.
-     */
-    private static int id = 0;
+    public static final Map<Class<? extends BasePacket>, ResourceLocation> packetIDs = new HashMap<>();
 
     /**
      * Private constructor to prevent instantiation.
@@ -43,12 +40,16 @@ public class Packets {
     /**
      * Register a packet.
      *
+     * @param location The ID of the packet.
+     * @param side The side of the packet (Client or Server).
      * @param packet Packet class.
      */
-    private static void registerPacket(Class<? extends BasePacket> packet) {
-        int tmpId = id++;
-        registeredPackets.put(tmpId, packet);
-        packetIDs.put(packet, tmpId);
+    public static void registerPacket(ResourceLocation location, Side side, Class<? extends BasePacket> packet) {
+        String tmpLocation = location.location() + (side == Side.CLIENT ? "_client" : "_server");
+        ResourceLocation newLocation = new ResourceLocation(location.modId(), tmpLocation);
+
+        registeredPackets.put(newLocation, packet);
+        packetIDs.put(packet, newLocation);
     }
 
     /**
@@ -61,33 +62,5 @@ public class Packets {
 
         // C2S
         registerPacket(RequestChunkPacket.class);
-    }
-
-    /**
-     * Send a packet to the server.
-     *
-     * @param packet Packet to send.
-     */
-    public static void sendToServer(BasePacket packet) {
-        ClientInstance.instance.serverConnection.writeAndFlush(packet);
-    }
-
-    /**
-     * Send a packet to a player.
-     *
-     * @param playerName Player name.
-     * @param packet Packet to send.
-     */
-    public static void sendToPlayer(String playerName, BasePacket packet) {
-        ServerInstance.instance.connectedClients.get(playerName).sendPacket(packet);
-    }
-
-    /**
-     * Send a packet to all players.
-     *
-     * @param packet Packet to send.
-     */
-    public static void sendToAllPlayers(BasePacket packet) {
-        ServerInstance.instance.connectedClients.values().forEach(client -> client.sendPacket(packet));
     }
 }
