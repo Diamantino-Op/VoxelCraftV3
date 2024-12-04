@@ -1,7 +1,6 @@
 package com.diamantino.voxelcraft.server.networking;
 
-import com.diamantino.voxelcraft.common.networking.ConnectedClient;
-import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
+import com.diamantino.voxelcraft.common.networking.packets.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.utils.ResourceLocation;
 import com.diamantino.voxelcraft.common.utils.Side;
@@ -9,6 +8,7 @@ import com.diamantino.voxelcraft.server.VoxelCraftServer;
 import com.diamantino.voxelcraft.server.networking.c2s.ReceiveRequestChunkPacket;
 import com.diamantino.voxelcraft.server.networking.s2c.SendChunkSyncPacket;
 import com.diamantino.voxelcraft.server.networking.s2c.SendSyncPropertyPacket;
+import com.diamantino.voxelcraft.server.networking.s2c.SendWorldSettingsPacket;
 import com.github.terefang.ncs.common.*;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 import com.github.terefang.ncs.server.NcsServerHelper;
@@ -96,6 +96,7 @@ public class ServerNetworkManager implements NcsPacketListener<SimpleBytesNcsPac
         // Server to Client
         Packets.registerPacket(new ResourceLocation("chunk_sync"), Side.SERVER, SendChunkSyncPacket.class);
         Packets.registerPacket(new ResourceLocation("sync_property"), Side.SERVER, SendSyncPropertyPacket.class);
+        Packets.registerPacket(new ResourceLocation("world_settings"), Side.SERVER, SendWorldSettingsPacket.class);
     }
 
     /**

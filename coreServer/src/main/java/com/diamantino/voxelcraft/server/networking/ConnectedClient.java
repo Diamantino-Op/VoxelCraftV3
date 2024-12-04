@@ -1,8 +1,9 @@
-package com.diamantino.voxelcraft.common.networking;
+package com.diamantino.voxelcraft.server.networking;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
+import com.diamantino.voxelcraft.common.networking.packets.utils.ISendPacket;
 import com.github.terefang.ncs.common.NcsConnection;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
@@ -17,9 +18,9 @@ public record ConnectedClient(NcsConnection channel, String playerName) {
 
         try {
             buffer.startEncoding();
-            buffer.encodeString(packet.getId() + "_client");
+            buffer.encodeString(packet.getId().toString().replace("_server", "_client"));
 
-            packet.writePacketData(buffer);
+            ((ISendPacket) packet).writePacketData(buffer);
             buffer.finishEncoding();
 
             this.channel.sendAndFlush(buffer);

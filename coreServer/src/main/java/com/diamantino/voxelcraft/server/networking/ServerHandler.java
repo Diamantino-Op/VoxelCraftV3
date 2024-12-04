@@ -2,10 +2,12 @@ package com.diamantino.voxelcraft.server.networking;
 
 import com.badlogic.gdx.Gdx;
 import com.diamantino.voxelcraft.common.Constants;
-import com.diamantino.voxelcraft.common.networking.ConnectedClient;
-import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
+import com.diamantino.voxelcraft.common.networking.packets.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
+import com.diamantino.voxelcraft.common.networking.packets.utils.IReceivePacket;
 import com.diamantino.voxelcraft.common.utils.ResourceLocation;
+import com.diamantino.voxelcraft.server.VoxelCraftServer;
+import com.diamantino.voxelcraft.server.networking.s2c.SendWorldSettingsPacket;
 import com.github.terefang.ncs.common.NcsConnection;
 import com.github.terefang.ncs.common.NcsEndpoint;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
@@ -30,10 +32,10 @@ public class ServerHandler {
             packet.startDecoding();
             BasePacket pkt = Packets.registeredPackets.get(ResourceLocation.fromString(packet.decodeString())).getDeclaredConstructor().newInstance();
 
-            pkt.readPacketData(connection.getPeer().asString(), packet);
+            ((IReceivePacket) pkt).readPacketData(connection.getPeer().asString(), packet);
             packet.finishDecoding();
         } catch (Exception e) {
-            Gdx.app.log(Constants.errorLogTag, "Error handling packet from: " + connection.getPeer().asString(), e);
+            Gdx.app.log(Constants.errorLogTag, "Error handling server packet from: " + connection.getPeer().asString(), e);
         }
     }
 
@@ -46,7 +48,12 @@ public class ServerHandler {
         Gdx.app.log(Constants.debugLogTag, "Connect: " + connection.getPeer().asString());
 
         //TODO: Add username
-        server.connectedClients.put(connection.getPeer().asString(), new ConnectedClient(connection, "Test"));
+        ConnectedClient client = server.connectedClients.put(connection.getPeer().asString(), new ConnectedClient(connection, "Test"));
+
+        assert client != null;
+
+        SendWorldSettingsPacket worldSettingsPacket = new SendWorldSettingsPacket(VoxelCraftServer.getInstance().world.settings);
+        client.sendPacket(worldSettingsPacket);
 
         //TODO: Send name packet
         //server.connectedClients.put(connection.getPeer().asString(), new ConnectedClient(context.channel()));

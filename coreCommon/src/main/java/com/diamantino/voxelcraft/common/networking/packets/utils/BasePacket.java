@@ -1,6 +1,6 @@
 package com.diamantino.voxelcraft.common.networking.packets.utils;
 
-import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
+import com.diamantino.voxelcraft.common.networking.packets.Packets;
 import com.diamantino.voxelcraft.common.utils.ResourceLocation;
 import lombok.Getter;
 

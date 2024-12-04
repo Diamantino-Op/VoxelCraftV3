@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.common.networking.packets.data;
+package com.diamantino.voxelcraft.common.networking.packets;
 
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.utils.ResourceLocation;
