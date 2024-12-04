@@ -1,8 +1,14 @@
 package com.diamantino.voxelcraft.server.networking;
 
 import com.diamantino.voxelcraft.common.networking.ConnectedClient;
+import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
+import com.diamantino.voxelcraft.common.utils.ResourceLocation;
+import com.diamantino.voxelcraft.common.utils.Side;
 import com.diamantino.voxelcraft.server.VoxelCraftServer;
+import com.diamantino.voxelcraft.server.networking.c2s.ReceiveRequestChunkPacket;
+import com.diamantino.voxelcraft.server.networking.s2c.SendChunkSyncPacket;
+import com.diamantino.voxelcraft.server.networking.s2c.SendSyncPropertyPacket;
 import com.github.terefang.ncs.common.*;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 import com.github.terefang.ncs.server.NcsServerHelper;
@@ -12,6 +18,11 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages the server network.
+ *
+ * @author Diamantino
+ */
 public class ServerNetworkManager implements NcsPacketListener<SimpleBytesNcsPacket>, NcsStateListener, NcsKeepAliveFailListener {
     /**
      * Stores all connected clients.
@@ -37,6 +48,12 @@ public class ServerNetworkManager implements NcsPacketListener<SimpleBytesNcsPac
      */
     private final NcsServerService server;
 
+    /**
+     * Creates a new server network manager.
+     *
+     * @param ip Server IP.
+     * @param port Server port.
+     */
     public ServerNetworkManager(String ip, int port) {
         this.ip = ip;
         this.port = port;
@@ -44,6 +61,9 @@ public class ServerNetworkManager implements NcsPacketListener<SimpleBytesNcsPac
         this.server = NcsServerHelper.createSimpleServer(ip, port, this, this);
     }
 
+    /**
+     * Initializes the server network manager.
+     */
     public void initManager() {
         registerPackets();
 
@@ -59,34 +79,75 @@ public class ServerNetworkManager implements NcsPacketListener<SimpleBytesNcsPac
         server.start();
     }
 
+    /**
+     * Stops the server network manager.
+     */
     public void stopManager() {
         server.stop();
     }
 
+    /**
+     * Registers all packets.
+     */
     private void registerPackets() {
-        //Packets.registerPacket();
+        // Client to Server
+        Packets.registerPacket(new ResourceLocation("request_chunk"), Side.SERVER, ReceiveRequestChunkPacket.class);
+
+        // Server to Client
+        Packets.registerPacket(new ResourceLocation("chunk_sync"), Side.SERVER, SendChunkSyncPacket.class);
+        Packets.registerPacket(new ResourceLocation("sync_property"), Side.SERVER, SendSyncPropertyPacket.class);
     }
 
+    /**
+     * Called when the keep alive fails.
+     *
+     * @param connection The client connection.
+     * @param timeout The timeout.
+     * @param fails The amount fails.
+     * @param endpoint The client endpoint.
+     */
     @Override
     public void onKeepAliveFail(NcsConnection connection, long timeout, long fails, NcsEndpoint endpoint) {
         connection.getContext(ServerHandler.class).onKeepAliveFail(this, connection, timeout, fails, endpoint);
     }
 
+    /**
+     * Called when a packet is received.
+     *
+     * @param connection The client connection.
+     * @param packet The packet.
+     */
     @Override
     public void onPacket(NcsConnection connection, SimpleBytesNcsPacket packet) {
         connection.getContext(ServerHandler.class).onPacket(this, connection, packet);
     }
 
+    /**
+     * Called when a connection is established.
+     *
+     * @param connection The client connection.
+     */
     @Override
     public void onConnect(NcsConnection connection) {
         connection.getContext(ServerHandler.class).onConnect(this, connection);
     }
 
+    /**
+     * Called when a connection is disconnected.
+     *
+     * @param connection The client connection.
+     */
     @Override
     public void onDisconnect(NcsConnection connection) {
         connection.getContext(ServerHandler.class).onDisconnect(this, connection);
     }
 
+    /**
+     * Called when an error occurs.
+     *
+     * @param connection The client connection.
+     * @param throwable The error.
+     */
     @Override
     public void onError(NcsConnection connection, Throwable throwable) {
         connection.getContext(ServerHandler.class).onError(this, connection, throwable);
