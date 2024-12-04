@@ -1,12 +1,11 @@
 package com.diamantino.voxelcraft.server.networking.c2s;
 
-import com.diamantino.voxelcraft.common.networking.packets.data.Packets;
-import com.diamantino.voxelcraft.common.networking.packets.s2c.ChunkSyncPacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.IReceivePacket;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 import com.diamantino.voxelcraft.server.VoxelCraftServer;
 import com.diamantino.voxelcraft.server.networking.ServerNetworkManager;
+import com.diamantino.voxelcraft.server.networking.s2c.SendChunkSyncPacket;
 import com.github.terefang.ncs.common.packet.SimpleBytesNcsPacket;
 
 import java.io.IOException;
@@ -28,6 +27,6 @@ public class ReceiveRequestChunkPacket extends BasePacket implements IReceivePac
         ChunkPos chunkPos = new ChunkPos(buffer.decodeInt(), buffer.decodeInt(), buffer.decodeInt());
         String dimName = buffer.decodeString();
 
-        ServerNetworkManager.sendToPlayer(senderName, new ChunkSyncPacket(dimName, VoxelCraftServer.getInstance().world.getChunkForPos(dimName, chunkPos)));
+        ServerNetworkManager.sendToPlayer(senderName, new SendChunkSyncPacket(dimName, VoxelCraftServer.getInstance().world.getChunkForPos(dimName, chunkPos)));
     }
 }

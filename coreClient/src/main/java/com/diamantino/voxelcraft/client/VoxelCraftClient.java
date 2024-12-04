@@ -4,10 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.diamantino.voxelcraft.client.networking.ClientInstance;
+import com.diamantino.voxelcraft.client.networking.ClientNetworkManager;
 import com.diamantino.voxelcraft.client.resources.VoxelAssetManager;
 import com.diamantino.voxelcraft.client.screens.LoadingScreen;
 import com.diamantino.voxelcraft.client.screens.MainMenuScreen;
+import com.diamantino.voxelcraft.client.world.ClientWorld;
+import lombok.Getter;
 
 public class VoxelCraftClient extends ApplicationAdapter {
     public final VoxelAssetManager assetManager;
@@ -16,12 +18,22 @@ public class VoxelCraftClient extends ApplicationAdapter {
 
     private LoadingScreen loadingScreen;
     private MainMenuScreen mainMenuScreen;
-    private ClientInstance clientInstance;
+
+    public ClientNetworkManager networkManager;
 
     private final int logLevel;
 
+    public ClientWorld world;
+
+    @Getter
+    private static VoxelCraftClient instance;
+
     public VoxelCraftClient(int logLevel) {
+        instance = this;
+
         this.logLevel = logLevel;
+
+        this.networkManager = new ClientNetworkManager();
 
         this.assetManager = new VoxelAssetManager();
     }
@@ -29,6 +41,8 @@ public class VoxelCraftClient extends ApplicationAdapter {
     @Override
     public void create() {
         Gdx.app.setLogLevel(logLevel);
+
+        this.networkManager.initManager();
 
         font = new BitmapFont();
 

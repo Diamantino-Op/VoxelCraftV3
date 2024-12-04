@@ -23,12 +23,21 @@ public class VoxelCraftServer extends ApplicationAdapter {
      */
     public ServerNetworkManager networkManager;
 
+    /**
+     * Constructor for the server.
+     *
+     * @param ip The IP address to bind the server to.
+     * @param port The port to bind the server to.
+     */
     public VoxelCraftServer(String ip, int port) {
         instance = this;
 
         this.networkManager = new ServerNetworkManager(ip, port);
     }
 
+    /**
+     * Initializes the server.
+     */
     @Override
     public void create() {
         this.networkManager.initManager();
@@ -36,11 +45,17 @@ public class VoxelCraftServer extends ApplicationAdapter {
         this.world = new ServerWorld(new WorldSettings("Test", 123456));
     }
 
+    /**
+     * Update loop.
+     */
     @Override
     public void render() {
 
     }
 
+    /**
+     * Disposes of the server.
+     */
     @Override
     public void dispose() {
         this.networkManager.stopManager();
