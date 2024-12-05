@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.diamantino.voxelcraft.common.blocks.Block;
 import com.diamantino.voxelcraft.common.blocks.BlockPos;
 import com.diamantino.voxelcraft.common.entities.Entity;
-import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import com.diamantino.voxelcraft.common.world.World;
 import dev.ultreon.ubo.types.MapType;
 

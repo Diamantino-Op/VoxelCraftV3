@@ -1,7 +1,6 @@
 package com.diamantino.voxelcraft.common.registration;
 
 import com.diamantino.voxelcraft.common.entities.Entity;
-import com.diamantino.voxelcraft.server.entities.ServerEntity;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package com.diamantino.voxelcraft.common.world.chunk;
 
 import com.diamantino.voxelcraft.common.blocks.Block;
-import com.diamantino.voxelcraft.common.vdo.CompoundVDO;
 import dev.ultreon.ubo.types.MapType;
 
 /**

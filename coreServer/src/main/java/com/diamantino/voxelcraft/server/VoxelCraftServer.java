@@ -21,7 +21,7 @@ public class VoxelCraftServer extends ApplicationAdapter {
     /**
      * Stores the server network manager.
      */
-    public ServerNetworkManager networkManager;
+    public final ServerNetworkManager networkManager;
 
     /**
      * Constructor for the server.
