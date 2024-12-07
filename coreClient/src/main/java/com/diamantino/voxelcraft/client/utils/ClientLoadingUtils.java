@@ -41,11 +41,10 @@ public class ClientLoadingUtils {
     /**
      * Load the textures of a mod.
      *
-     * @param clientInstance Client instance.
      * @param modId Mod ID.
      * @param modResources Mod resources.
      */
-    public static void loadTextures(VoxelCraftClient clientInstance, String modId, JSONObject modResources) {
+    public static void loadTextures(String modId, JSONObject modResources) {
         JSONArray textureLocationsVDO = modResources.getJSONArray("textureLocations");
 
         for (int i = 0; i < textureLocationsVDO.length(); i++) {
@@ -63,7 +62,7 @@ public class ClientLoadingUtils {
 
                     JSONObject metaVDO = new JSONObject(Gdx.files.internal(vcMetaPath).readString());
 
-                    clientInstance.assetManager.load(vcMetaPath, JSONObject.class);
+                    VoxelCraftClient.getInstance().assetManager.load(vcMetaPath, JSONObject.class);
 
                     String typeVDO = metaVDO.getString("type");
 
@@ -77,10 +76,10 @@ public class ClientLoadingUtils {
 
                         NinePatch ninePatch = new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
 
-                        clientInstance.assetManager.load(texture.path(), ninePatch);
+                        VoxelCraftClient.getInstance().assetManager.load(texture.path(), ninePatch);
                     }
                 } else {
-                    clientInstance.assetManager.load(texture.path(), Texture.class);
+                    VoxelCraftClient.getInstance().assetManager.load(texture.path(), Texture.class);
                 }
             });
         }
@@ -105,12 +104,11 @@ public class ClientLoadingUtils {
     /**
      * Save the atlases of a mod.
      *
-     * @param clientInstance Client instance.
      * @param atlasPackers Map of atlas packers.
      * @param modId Mod ID.
      * @param modResources Mod resources.
      */
-    public static void saveAtlases(VoxelCraftClient clientInstance, Map<String, PixmapPacker> atlasPackers, String modId, JSONObject modResources) {
+    public static void saveAtlases(Map<String, PixmapPacker> atlasPackers, String modId, JSONObject modResources) {
         JSONArray atlasesVDO = modResources.getJSONArray("atlases");
 
         for (int i = 0; i < atlasesVDO.length(); i++) {
@@ -131,7 +129,7 @@ public class ClientLoadingUtils {
                 int additionalSpace = 0;
 
                 for (FileHandle metaFile : vcMetas) {
-                    clientInstance.assetManager.load(metaFile.path(), JSONObject.class);
+                    VoxelCraftClient.getInstance().assetManager.load(metaFile.path(), JSONObject.class);
 
                     JSONObject metaJson = new JSONObject(Gdx.files.internal(metaFile.path()).readString());
 
@@ -162,10 +160,9 @@ public class ClientLoadingUtils {
     /**
      * Load the atlases.
      *
-     * @param clientInstance Client instance.
      * @param atlasPackers Map of atlas packers.
      */
-    public static void loadAtlases(VoxelCraftClient clientInstance, Map<String, PixmapPacker> atlasPackers) {
+    public static void loadAtlases(Map<String, PixmapPacker> atlasPackers) {
         atlasPackers.forEach((atlasName, packer) -> {
             try {
                 String atlasLoc = FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas");
@@ -174,7 +171,7 @@ public class ClientLoadingUtils {
 
                 pixmapPackerIO.save(Gdx.files.absolute(atlasLoc), packer);
 
-                clientInstance.assetManager.load(atlasLoc, TextureAtlas.class);
+                VoxelCraftClient.getInstance().assetManager.load(atlasLoc, TextureAtlas.class);
 
                 packer.dispose();
             } catch (Exception e) {
@@ -188,36 +185,36 @@ public class ClientLoadingUtils {
     /**
      * Get the texture of a mod.
      *
-     * @param clientInstance Client instance.
      * @param modId Mod ID.
      * @param subFolder Sub-folder of the texture.
      * @param name Name of the texture.
      *
      * @return The texture.
      */
-    public static <T> T getTexture(VoxelCraftClient clientInstance, String modId, String subFolder, String name, Class<T> type) {
-        return clientInstance.assetManager.get(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"), type);
+    public static <T> T getTexture(String modId, String subFolder, String name, Class<T> type) {
+        return VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"), type);
     }
 
     /**
      * Get the resources file of a mod.
      *
-     * @param clientInstance Client instance.
      * @param modId Mod ID.
      *
      * @return The resource file.
      */
-    public static JSONObject getModResources(VoxelCraftClient clientInstance, String modId) {
-        return clientInstance.assetManager.get(FileUtils.mergePaths("assets", modId, "resources.json"), JSONObject.class);
+    public static JSONObject getModResources(String modId) {
+        return VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths("assets", modId, "resources.json"), JSONObject.class);
     }
 
     /**
      * Get the texture index in the atlas.
+     *
+     * @param atlasName Name of the atlas.
      * @param name Name of the texture.
      * @return Index of the texture in the atlas.
      */
-    public static int getBlockTextureIndex(VoxelCraftClient clientInstance, String atlasName, String name) {
-        TextureAtlas atlas = clientInstance.assetManager.get(FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas"), TextureAtlas.class);
+    public static int getBlockTextureIndex(String atlasName, String name) {
+        TextureAtlas atlas = VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas"), TextureAtlas.class);
 
         for (int i = 0, n = atlas.getRegions().size; i < n; i++) {
             if (atlas.getRegions().get(i).name.equals(name)) {
@@ -225,6 +222,6 @@ public class ClientLoadingUtils {
             }
         }
 
-        return getBlockTextureIndex(clientInstance, atlasName, "not_found");
+        return getBlockTextureIndex(atlasName, "not_found");
     }
 }

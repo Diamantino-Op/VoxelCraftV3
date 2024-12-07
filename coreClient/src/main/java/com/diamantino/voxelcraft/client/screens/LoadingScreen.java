@@ -65,12 +65,12 @@ public class LoadingScreen implements Screen {
         Mods.mods.forEach((modId, _) -> ClientLoadingUtils.loadResourcesFile(modResources, modId));
 
         //------------------- Stage 1 -------------------
-        modResources.forEach((modId, resourcesJson) -> ClientLoadingUtils.loadTextures(game, modId, resourcesJson));
+        modResources.forEach(ClientLoadingUtils::loadTextures);
 
         //------------------- Stage 2 -------------------
-        modResources.forEach((modId, resourcesJson) -> ClientLoadingUtils.saveAtlases(game, atlasPackers, modId, resourcesJson));
+        modResources.forEach((modId, resourcesJson) -> ClientLoadingUtils.saveAtlases(atlasPackers, modId, resourcesJson));
 
-        ClientLoadingUtils.loadAtlases(game, atlasPackers);
+        ClientLoadingUtils.loadAtlases(atlasPackers);
 
         //------------------- Stage 3 -------------------
 
@@ -90,8 +90,8 @@ public class LoadingScreen implements Screen {
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
-        NinePatchDrawable barBackground = new NinePatchDrawable(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background", NinePatch.class));
-        NinePatchDrawable barKnob = new NinePatchDrawable(ClientLoadingUtils.getTexture(game, "voxelcraft", "gui", "loading_bar_background", NinePatch.class));
+        NinePatchDrawable barBackground = new NinePatchDrawable(ClientLoadingUtils.getTexture("voxelcraft", "gui", "loading_bar_background", NinePatch.class));
+        NinePatchDrawable barKnob = new NinePatchDrawable(ClientLoadingUtils.getTexture("voxelcraft", "gui", "loading_bar_background", NinePatch.class));
 
         ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(barBackground, barKnob);
 

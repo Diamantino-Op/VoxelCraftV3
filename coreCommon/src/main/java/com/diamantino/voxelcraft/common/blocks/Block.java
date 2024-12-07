@@ -1,7 +1,5 @@
 package com.diamantino.voxelcraft.common.blocks;
 
-import com.diamantino.voxelcraft.client.rendering.RenderType;
-
 /**
  * Base block class.
  *
@@ -14,25 +12,11 @@ public class Block {
     public final String name;
 
     /**
-     * The texture of the block.
-     */
-    public final IBlockTexture texture;
-
-    /**
-     * The render type of the block.
-     */
-    public final RenderType renderType;
-
-    /**
      * Constructor of the block.
      *
      * @param name The registry name of the block.
-     * @param texture The texture of the block.
-     * @param renderType The render type of the block.
      */
-    public Block(String name, IBlockTexture texture, RenderType renderType) {
+    public Block(String name) {
         this.name = name;
-        this.texture = texture;
-        this.renderType = renderType;
     }
 }

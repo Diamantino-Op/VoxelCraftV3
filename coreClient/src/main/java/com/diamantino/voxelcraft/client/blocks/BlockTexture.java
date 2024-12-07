@@ -1,4 +1,7 @@
-package com.diamantino.voxelcraft.common.blocks;
+package com.diamantino.voxelcraft.client.blocks;
+
+import com.diamantino.voxelcraft.client.VoxelCraftClient;
+import com.diamantino.voxelcraft.client.utils.ClientLoadingUtils;
 
 /**
  * Block texture class with different texture for all sides.
@@ -47,12 +50,12 @@ public class BlockTexture implements IBlockTexture {
      * @param bottomTexName Name of the bottom texture.
      */
     public BlockTexture(String frontTexName, String backTexName, String rightTexName, String leftTexName, String topTexName, String bottomTexName) {
-        this.frontTexIndex = TextureManager.getBlockTextureIndex("blocks", frontTexName);
-        this.backTexIndex = TextureManager.getBlockTextureIndex("blocks", backTexName);
-        this.rightTexIndex = TextureManager.getBlockTextureIndex("blocks", rightTexName);
-        this.leftTexIndex = TextureManager.getBlockTextureIndex("blocks", leftTexName);
-        this.topTexIndex = TextureManager.getBlockTextureIndex("blocks", topTexName);
-        this.bottomTexIndex = TextureManager.getBlockTextureIndex("blocks", bottomTexName);
+        this.frontTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", frontTexName);
+        this.backTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", backTexName);
+        this.rightTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", rightTexName);
+        this.leftTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", leftTexName);
+        this.topTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", topTexName);
+        this.bottomTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", bottomTexName);
     }
 
     /**

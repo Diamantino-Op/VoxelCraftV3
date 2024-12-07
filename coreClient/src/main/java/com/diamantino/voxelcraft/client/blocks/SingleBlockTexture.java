@@ -1,4 +1,6 @@
-package com.diamantino.voxelcraft.common.blocks;
+package com.diamantino.voxelcraft.client.blocks;
+
+import com.diamantino.voxelcraft.client.utils.ClientLoadingUtils;
 
 /**
  * Block texture that uses the same texture for all faces.
@@ -16,9 +18,8 @@ public class SingleBlockTexture implements IBlockTexture {
      *
      * @param blockTexName Name of the texture.
      */
-    // TODO: Get instance from VoxelCraftClient
     public SingleBlockTexture(String blockTexName) {
-        this.blockTexIndex = TextureManager.getBlockTextureIndex("blocks", blockTexName);
+        this.blockTexIndex = ClientLoadingUtils.getBlockTextureIndex("blocks", blockTexName);
     }
 
     /**

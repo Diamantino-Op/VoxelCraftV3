@@ -1,4 +1,4 @@
-package com.diamantino.voxelcraft.common.blocks;
+package com.diamantino.voxelcraft.client.blocks;
 
 /**
  * Block texture interface.

@@ -1,9 +1,8 @@
 package com.diamantino.voxelcraft.common.registration;
 
-import com.diamantino.voxelcraft.client.rendering.RenderType;
+import com.badlogic.gdx.Gdx;
+import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.blocks.Block;
-import com.diamantino.voxelcraft.common.blocks.IBlockTexture;
-import com.diamantino.voxelcraft.common.blocks.SingleBlockTexture;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,20 +20,25 @@ public class Blocks {
      */
     public static final Map<String, RegisteredBlock<?>> blocks = new HashMap<>();
 
-    public static final RegisteredBlock<Block> air = registerBlock("air", new SingleBlockTexture(0), RenderType.TRANSPARENT);
-    public static final RegisteredBlock<Block> stone = registerBlock("stone", new SingleBlockTexture("stone"), RenderType.OPAQUE);
-    public static final RegisteredBlock<Block> glass = registerBlock("glass", new SingleBlockTexture("glass"), RenderType.TRANSPARENT);
+    public static final RegisteredBlock<Block> air = registerBlock("air");
+    public static final RegisteredBlock<Block> stone = registerBlock("stone");
+    public static final RegisteredBlock<Block> glass = registerBlock("glass");
 
     /**
      *  Register a block.
      *
      *  @param name Block name.
-     *  @param texture Block texture.
-     *  @param renderType Block render type.
      */
-    private static RegisteredBlock<Block> registerBlock(String name, IBlockTexture texture, RenderType renderType) {
-        RegisteredBlock<Block> tmpBlock = new RegisteredBlock<>(name, new Block(name, texture, renderType));
+    private static RegisteredBlock<Block> registerBlock(String name) {
+        RegisteredBlock<Block> tmpBlock = new RegisteredBlock<>(name, new Block(name));
         blocks.put(name, tmpBlock);
         return tmpBlock;
+    }
+
+    /**
+     *  Register all blocks.
+     */
+    public static void registerBlocks() {
+        Gdx.app.log(Constants.infoLogTag, "Registering blocks...");
     }
 }
