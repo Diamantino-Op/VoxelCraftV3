@@ -63,6 +63,6 @@ public class ServerChunk extends Chunk {
      * Send the chunk sync packet to the players nearby.
      */
     public void sendSyncPacket() {
-
+        //TODO
     }
 }

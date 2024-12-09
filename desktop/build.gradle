@@ -29,6 +29,7 @@ compileJava.options.release.set(Integer.parseInt(JavaVersion.current().getMajorV
 
 dependencies {
   implementation project(':coreClient')
+  implementation "games.rednblack.miniaudio:miniaudio:$miniaudioVersion:natives-desktop"
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 

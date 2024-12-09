@@ -3,6 +3,7 @@
 dependencies {
   implementation(project(":coreCommon"))
   implementation(project(":server"))
+  api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion"
   implementation("org.json:json:$orgJsonVersion")
   implementation("io.netty:netty-all:$nettyVersion")
   implementation("org.jetbrains:annotations:$jetbrainsAnnotationsVersion")
