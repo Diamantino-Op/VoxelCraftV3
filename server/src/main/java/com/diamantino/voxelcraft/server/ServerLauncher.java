@@ -10,7 +10,7 @@ public class ServerLauncher {
     }
 
     private static void createApplication() {
-        new HeadlessApplication(new VoxelCraftServer(), getDefaultConfiguration());
+        new HeadlessApplication(new VoxelCraftServer("127.0.0.1", 25000), getDefaultConfiguration());
     }
 
     private static HeadlessApplicationConfiguration getDefaultConfiguration() {

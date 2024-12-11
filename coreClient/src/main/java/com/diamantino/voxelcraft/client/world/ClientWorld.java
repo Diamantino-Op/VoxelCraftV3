@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix4;
+import com.diamantino.voxelcraft.client.blocks.ClientBlock;
+import com.diamantino.voxelcraft.client.blocks.ClientBlocks;
 import com.diamantino.voxelcraft.client.shaders.Shaders;
+import com.diamantino.voxelcraft.client.utils.ClientLoadingUtils;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.Constants;
 import com.diamantino.voxelcraft.common.blocks.Block;
@@ -47,6 +50,7 @@ public class ClientWorld extends World {
 
     /**
      * The method to get the block for a position.
+     *
      * @param pos The position of the block.
      * @return The block for the position.
      */
@@ -55,6 +59,16 @@ public class ClientWorld extends World {
             return null;
 
         return dimensionMap.get(currentDimension).getBlock(pos);
+    }
+
+    /**
+     * The method to get the client block for a position.
+     *
+     * @param pos The position of the block.
+     * @return The block for the position.
+     */
+    public ClientBlock getClientBlock(BlockPos pos) {
+        return ClientBlocks.clientBlocks.get(getBlock(pos).name);
     }
 
     /**
@@ -73,7 +87,7 @@ public class ClientWorld extends World {
         Gdx.gl.glFrontFace(GL20.GL_CW);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        ((Texture) TextureManager.graphicalObjects.get("block_atlas")).bind();
+        (ClientLoadingUtils.getAtlas("blocks").getTextures().first()).bind();
         Shaders.coreShader.bind();
         Shaders.coreShader.setUniformMatrix("u_projTrans", projMatrix);
         Shaders.coreShader.setUniformi("u_texture", 0);

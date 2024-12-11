@@ -1,5 +1,6 @@
 package com.diamantino.voxelcraft.client.networking.s2c;
 
+import com.diamantino.voxelcraft.client.VoxelCraftClient;
 import com.diamantino.voxelcraft.client.world.chunk.ClientChunk;
 import com.diamantino.voxelcraft.common.networking.packets.utils.BasePacket;
 import com.diamantino.voxelcraft.common.networking.packets.utils.IReceivePacket;
@@ -34,7 +35,7 @@ public class ReceiveChunkSyncPacket extends BasePacket implements IReceivePacket
         String dimName = buffer.decodeString();
 
         // Get chunk
-        ClientChunk clientChunk = (ClientChunk) ClientInstance.instance.world.getChunkForPos(dimName, new ChunkPos(chunkX, chunkY, chunkZ));
+        ClientChunk clientChunk = (ClientChunk) VoxelCraftClient.getInstance().world.getChunkForPos(dimName, new ChunkPos(chunkX, chunkY, chunkZ));
 
         // Read chunk data
         for (byte y = 0; y < Chunk.sizeY; y++) {

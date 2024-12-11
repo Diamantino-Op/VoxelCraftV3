@@ -8,11 +8,16 @@ dependencies {
   implementation("com.google.guava:guava:$guavaVersion")
   implementation("dev.ultreon:ubo:$uboVersion")
   implementation("org.apache.commons:commons-lang3:$apacheCommonsVersion")
+  compileOnly("org.projectlombok:lombok:$lombokVersion")
+  annotationProcessor("org.projectlombok:lombok:$lombokVersion")
   implementation("com.github.terefang.NettyClientServer:NcsLib:$nettyClientServerVersion") {
     exclude group: "io.netty"
     exclude group: "com.google.guava", module: "guava"
+    exclude group: "org.projectlombok", module: "lombok"
   }
   implementation ("com.github.terefang.NettyClientServer:NcsCommons:$nettyClientServerVersion") {
     exclude group: "io.netty"
+    exclude group: "com.google.guava", module: "guava"
+    exclude group: "org.projectlombok", module: "lombok"
   }
 }

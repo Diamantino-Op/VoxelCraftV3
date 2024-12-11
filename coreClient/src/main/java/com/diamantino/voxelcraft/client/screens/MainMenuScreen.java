@@ -15,8 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.diamantino.voxelcraft.client.utils.ClientLoadingUtils;
 import com.diamantino.voxelcraft.client.utils.GuiHelper;
 import com.diamantino.voxelcraft.client.VoxelCraftClient;
+import com.diamantino.voxelcraft.common.Constants;
 
 /**
  * Main menu screen class.
@@ -59,7 +61,7 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         //------------------- Images -------------------
-        Image titleImage = new Image((Texture) TextureManager.graphicalObjects.get("voxelcraft"));
+        Image titleImage = new Image(ClientLoadingUtils.getTexture(Constants.gameId, "gui", "voxelcraft", Texture.class));
 
         GuiHelper.setObjectSize(titleImage, 1009, 155, width, height, guiScale, true, false, false);
         GuiHelper.setObjectPosition(titleImage, 0, height - ((int) titleImage.getHeight()) - 10, width, height, true, false);
@@ -69,9 +71,9 @@ public class MainMenuScreen implements Screen {
         //------------------- Buttons -------------------
 
         // SinglePlayer button
-        this.buttonDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button"));
-        this.buttonHoverDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_hover"));
-        this.buttonPressedDrawable = new NinePatchDrawable((NinePatch) TextureManager.graphicalObjects.get("button_pressed"));
+        this.buttonDrawable = new NinePatchDrawable(ClientLoadingUtils.getTexture(Constants.gameId, "gui", "button", NinePatch.class));
+        this.buttonHoverDrawable = new NinePatchDrawable(ClientLoadingUtils.getTexture(Constants.gameId, "gui", "button_hover", NinePatch.class));
+        this.buttonPressedDrawable = new NinePatchDrawable(ClientLoadingUtils.getTexture(Constants.gameId, "gui", "button_pressed", NinePatch.class));
 
         TextButton playButton = new TextButton("Singleplayer", new TextButton.TextButtonStyle(this.buttonDrawable, this.buttonPressedDrawable, this.buttonDrawable, game.font));
 

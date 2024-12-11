@@ -25,7 +25,7 @@ public class VoxelAssetManager extends AssetManager {
 
     @Override
     public synchronized <T> void load(String fileName, Class<T> type) {
-        ((VoxelFileHandleResolver) super.getFileHandleResolver()).setInternal(false);
+        ((VoxelFileHandleResolver) super.getFileHandleResolver()).setInternal(true);
 
         super.load(fileName, type);
     }

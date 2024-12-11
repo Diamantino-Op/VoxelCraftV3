@@ -11,5 +11,7 @@ public class Constants {
     public static final String errorLogTag = "VoxelCraft ERROR";
     public static final String debugLogTag = "VoxelCraft DEBUG";
 
+    public static final String gameId = "voxelcraft";
+
     private Constants() {}
 }

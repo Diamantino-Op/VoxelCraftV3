@@ -1,17 +1,19 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-  implementation(project(":coreCommon")) {
-    exclude module: ":coreClient"
-    exclude module: "coreClient"
-  }
+  implementation(project(":coreCommon"))
   implementation("de.articdive:jnoise-pipeline:$jNoiseVersion")
   implementation("org.apache.commons:commons-lang3:$apacheCommonsVersion")
   implementation("org.json:json:$orgJsonVersion")
   implementation("dev.ultreon:ubo:$uboVersion")
   implementation("io.netty:netty-all:$nettyVersion")
   implementation("org.jetbrains:annotations:$jetbrainsAnnotationsVersion")
+  implementation("com.google.guava:guava:$guavaVersion")
+  compileOnly("org.projectlombok:lombok:$lombokVersion")
+  annotationProcessor("org.projectlombok:lombok:$lombokVersion")
   implementation("com.github.terefang.NettyClientServer:NcsServer:$nettyClientServerVersion") {
     exclude group: "io.netty"
+    exclude group: "com.google.guava", module: "guava"
+    exclude group: "org.projectlombok", module: "lombok"
   }
 }

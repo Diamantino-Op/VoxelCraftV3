@@ -171,7 +171,7 @@ public class ClientLoadingUtils {
 
                 pixmapPackerIO.save(Gdx.files.absolute(atlasLoc), packer);
 
-                VoxelCraftClient.getInstance().assetManager.load(atlasLoc, TextureAtlas.class);
+                VoxelCraftClient.getInstance().assetManager.load(atlasLoc, TextureAtlas.class, false);
 
                 packer.dispose();
             } catch (Exception e) {
@@ -204,6 +204,17 @@ public class ClientLoadingUtils {
      */
     public static JSONObject getModResources(String modId) {
         return VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths("assets", modId, "resources.json"), JSONObject.class);
+    }
+
+    /**
+     * Get the atlas from the name.
+     *
+     * @param atlasName Name of the atlas.
+     *
+     * @return The atlas.
+     */
+    public static TextureAtlas getAtlas(String atlasName) {
+        return VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths(FileUtils.getVoxelCraftFolder(), "cache", "atlases", atlasName + ".atlas"), TextureAtlas.class);
     }
 
     /**
