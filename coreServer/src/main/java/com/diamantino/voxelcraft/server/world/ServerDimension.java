@@ -5,10 +5,8 @@ import com.diamantino.voxelcraft.common.world.Dimension;
 import com.diamantino.voxelcraft.common.world.chunk.Chunk;
 import com.diamantino.voxelcraft.common.world.chunk.ChunkPos;
 import com.diamantino.voxelcraft.server.world.chunk.ServerChunk;
-import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex2DVariant;
-import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex3DVariant;
-import de.articdive.jnoise.generators.noise_parameters.simplex_variants.Simplex4DVariant;
-import de.articdive.jnoise.pipeline.JNoise;
+import com.sudoplay.joise.module.ModuleAutoCorrect;
+import com.sudoplay.joise.module.ModuleBasisFunction;
 
 public class ServerDimension extends Dimension {
     /**
@@ -44,10 +42,16 @@ public class ServerDimension extends Dimension {
      */
     public void generateChunk(String dimName, ServerChunk chunk) {
         //TODO: Add params
-        JNoise noise = JNoise.newBuilder().superSimplex(world.settings.seed(), Simplex2DVariant.CLASSIC, Simplex3DVariant.CLASSIC, Simplex4DVariant.CLASSIC).build();
+        ModuleBasisFunction startModule = new ModuleBasisFunction();
+        startModule.setType(ModuleBasisFunction.BasisType.SIMPLEX);
+        startModule.setSeed(world.settings.seed());
+
+        ModuleAutoCorrect correctModule = new ModuleAutoCorrect();
+        correctModule.setSource(startModule);
+        correctModule.calculateAll();
 
         if (!chunk.isGenerated) {
-            chunk.generate(dimName, noise, (ServerWorld) world);
+            chunk.generate(dimName, correctModule, (ServerWorld) world);
         }
     }
 

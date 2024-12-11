@@ -2,7 +2,7 @@
 
 dependencies {
   implementation(project(":coreCommon"))
-  implementation("de.articdive:jnoise-pipeline:$jNoiseVersion")
+  implementation("com.sudoplay.joise:joise:$joiseVersion")
   implementation("org.apache.commons:commons-lang3:$apacheCommonsVersion")
   implementation("org.json:json:$orgJsonVersion")
   implementation("dev.ultreon:ubo:$uboVersion")
