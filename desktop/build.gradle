@@ -59,7 +59,7 @@ jar {
     exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
   }
   manifest {
-    attributes 'Main-Class': project.mainClassName
+    attributes 'Main-Class': mainClassName
   }
   doLast {
     file(archiveFile).setExecutable(true, false)
@@ -67,9 +67,10 @@ jar {
 }
 
 construo {
-  name.set(appName)
-  humanName.set(appName)
+  name.set("$gameId")
+  humanName.set("$gameName")
   version.set("$voxelcraftVersion")
+  mainClass.set("$mainClassName")
 
   targets.configure {
     //--------------------------- Linux ---------------------------
