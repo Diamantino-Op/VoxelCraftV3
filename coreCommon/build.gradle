@@ -2,7 +2,9 @@
 
 dependencies {
   api("com.badlogicgames.gdx:gdx:$gdxVersion")
-  implementation("com.badlogicgames.gdx:gdx-tools:$gdxVersion")
+  implementation("com.badlogicgames.gdx:gdx-tools:$gdxVersion") {
+    exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
+  }
   implementation("io.netty:netty-all:$nettyVersion")
   implementation("org.jetbrains:annotations:$jetbrainsAnnotationsVersion")
   implementation("com.google.guava:guava:$guavaVersion")
