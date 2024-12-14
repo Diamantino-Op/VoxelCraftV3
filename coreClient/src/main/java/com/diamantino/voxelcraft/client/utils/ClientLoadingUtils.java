@@ -58,31 +58,35 @@ public class ClientLoadingUtils {
                 String textureName = texture.pathWithoutExtension();
 
                 if (vcMetasNames.contains(textureName)) {
-                    String vcMetaPath = textureName + ".vcmeta";
-
-                    JSONObject metaVDO = new JSONObject(Gdx.files.internal(vcMetaPath).readString());
-
-                    VoxelCraftClient.getInstance().assetManager.load(vcMetaPath, JSONObject.class);
-
-                    String typeVDO = metaVDO.getString("type");
-
-                    if (typeVDO.equals("nine-patch")) {
-                        JSONObject ninePatchVDO = metaVDO.getJSONObject("ninePatch");
-
-                        int cutTop = ninePatchVDO.getInt("cutTop");
-                        int cutBottom = ninePatchVDO.getInt("cutBottom");
-                        int cutLeft = ninePatchVDO.getInt("cutLeft");
-                        int cutRight = ninePatchVDO.getInt("cutRight");
-
-                        NinePatch ninePatch = new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
-
-                        VoxelCraftClient.getInstance().assetManager.load(texture.path(), ninePatch);
-                    }
+                    VoxelCraftClient.getInstance().assetManager.load(texture.path(), loadObject(textureName, texture));
                 } else {
                     VoxelCraftClient.getInstance().assetManager.load(texture.path(), Texture.class);
                 }
             });
         }
+    }
+
+    private static Object loadObject(String textureName, FileHandle texture) {
+        String vcMetaPath = textureName + ".vcmeta";
+
+        JSONObject metaVDO = new JSONObject(Gdx.files.internal(vcMetaPath).readString());
+
+        VoxelCraftClient.getInstance().assetManager.load(vcMetaPath, JSONObject.class);
+
+        String typeVDO = metaVDO.getString("type");
+
+        if (typeVDO.equals("nine-patch")) {
+            JSONObject ninePatchVDO = metaVDO.getJSONObject("ninePatch");
+
+            int cutTop = ninePatchVDO.getInt("cutTop");
+            int cutBottom = ninePatchVDO.getInt("cutBottom");
+            int cutLeft = ninePatchVDO.getInt("cutLeft");
+            int cutRight = ninePatchVDO.getInt("cutRight");
+
+            return new NinePatch(new Texture(texture), cutLeft, cutRight, cutTop, cutBottom);
+        }
+
+        return null;
     }
 
     /**
@@ -193,6 +197,30 @@ public class ClientLoadingUtils {
      */
     public static <T> T getTexture(String modId, String subFolder, String name, Class<T> type) {
         return VoxelCraftClient.getInstance().assetManager.get(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"), type);
+    }
+
+    /**
+     * Get the texture of a mod file.
+     *
+     * @param modId Mod ID.
+     * @param subFolder Sub-folder of the texture.
+     * @param name Name of the texture.
+     *
+     * @return The texture.
+     */
+    public static <T> T getObject(String modId, String subFolder, String name, Class<T> type) {
+        FileHandle texturePath = Gdx.files.internal(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"));
+        FileHandle vcMetaPath = Gdx.files.internal(FileUtils.mergePaths("assets", modId, "textures", subFolder, name + ".png"));
+
+        if (texturePath.exists()) {
+            if (vcMetaPath.exists()) {
+                return type.cast(loadObject(name, texturePath));
+            } else {
+                return type.cast(new Texture(texturePath));
+            }
+        }
+
+        return null;
     }
 
     /**
